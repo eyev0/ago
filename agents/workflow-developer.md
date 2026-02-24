@@ -38,11 +38,11 @@ You work on `~/dev/claude-workflow/` — the standalone git repo that defines co
 ## Current Priority (Iteration 2)
 
 From TODO.md, in rough priority order:
-1. Implement `/status` command — Read registry + status.md, display summary
-2. Implement `/delegate` command — Clarify task → decompose → create task.md → launch agents
-3. Implement `/review` command — Read agent logs → consolidate → create DR → present
-4. Implement `/timeline` command — Parse task frontmatter → generate Mermaid Gantt
-5. Convert skills to executable format: write-raw-log, create-task, update-task-status, evaluate-quality-gate
+1. Implement `ago:status` command — Read registry + status.md, display summary
+2. Implement `ago:clarify` + `ago:execute` commands — Clarify task → decompose → create task.md → launch agents (formerly `/delegate`, now split into two)
+3. Implement `ago:review` command — Read agent logs → consolidate → create DR → present
+4. Implement `ago:timeline` command — Parse task frontmatter → generate Mermaid Gantt
+5. Convert skills to executable format: ago:write-raw-log, ago:create-task, ago:update-task-status, ago:evaluate-quality-gate
 6. Setup script for symlinks after clone
 7. Test full workflow on Shepni STT Phase 2
 

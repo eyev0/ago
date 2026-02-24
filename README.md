@@ -1,6 +1,6 @@
-# Claude Workflow
+# Claude Workflow (`ago:`)
 
-Universal conventions for orchestrating AI agents across software projects.
+Universal conventions for orchestrating AI agents across software projects. Packaged as a Claude Code plugin.
 
 ## What Is This?
 
@@ -9,8 +9,8 @@ A system of rules, templates, and agent definitions that standardize how AI agen
 - **Roles** — 12 specialized agent roles (Product Manager, Architect, Developer, etc.)
 - **Conventions** — Naming, file structure, task lifecycle, decision records, logging
 - **Templates** — Standardized formats for tasks, epics, DRs, project docs
-- **Skills** — Shared capabilities any agent can invoke
-- **Commands** — User-facing slash commands (`/status`, `/delegate`, `/review`, `/timeline`)
+- **Skills** — Shared capabilities any agent can invoke (`ago:write-raw-log`, `ago:create-task`, etc.)
+- **Commands** — User-facing commands (`ago:status`, `ago:clarify`, `ago:execute`, `ago:review`, `ago:timeline`)
 - **Master Session** — Orchestrator that coordinates all agent work
 - **Quality Gates** — T1-T4 tier system to catch hallucinations and ensure grounded decisions
 
@@ -21,29 +21,30 @@ A system of rules, templates, and agent definitions that standardize how AI agen
 - **Two-level logging**: master log (delegations/decisions) + agent raw logs (actions/local decisions)
 - **Decision Records generated from raw logs** by CONS role — agents don't write DRs directly
 - **YAML frontmatter + Mermaid Gantt** — Obsidian-compatible, renders in GitHub
-- **Platform-agnostic** — works with Claude Code (agents/skills) and Codex (AGENTS.md)
+- **Platform-agnostic** — works with Claude Code (plugin) and Codex (AGENTS.md)
 - **Per-project `.workflow/`** directory with epics, tasks, docs, logs, decision records
 - **Session lifecycle**: INIT → BRIEF → COLLABORATE → DECOMPOSE → APPROVE → DELEGATE → MONITOR → CONSOLIDATE → REVIEW → UPDATE
 - **Collaborative mode** (default): master presents plan, user approves before delegation
-- **Autonomous mode** (stub): master reads backlog and executes without approval
 
 ## Quick Start
 
-1. Add `.workflow/` directory to your project (copy from `templates/`)
-2. Symlink agents: `ln -sf ~/dev/claude-workflow/agents/*.md .claude/agents/`
-3. Reference this repo in your project's CLAUDE.md
-4. Start a master session and use `/status` to begin
+1. Install as Claude Code plugin: `claude plugin add /path/to/claude-workflow`
+2. In your project, run `ago:readiness` to assess and bootstrap `.workflow/`
+3. Use `ago:status` to see project state
+4. Use `ago:clarify` to decompose tasks, then `ago:execute` to launch agents
 
 ## Structure
 
 ```
-conventions/    — Rules and standards (9 files)
-templates/      — File templates for projects (12 files)
-agents/         — Agent role definitions (13 files)
-skills/         — Shared agent capabilities (9 files)
-commands/       — Slash commands (6 stubs)
-master-session/ — Master session instructions
-platforms/      — Platform-specific adaptations (Claude Code, Codex)
+.claude-plugin/     — Plugin manifest (plugin.json)
+conventions/        — Rules and standards
+templates/          — File templates for projects
+agents/             — Agent role definitions (13 files)
+skills/             — Shared agent capabilities (9 skill subdirectories)
+commands/           — Slash commands (6 commands)
+master-session/     — Master session instructions
+platforms/          — Platform-specific adaptations (Claude Code, Codex)
+memory/             — Shared agent context (AGENTS.md)
 ```
 
 ## Applying to a Project
@@ -62,22 +63,21 @@ Conventions, templates, agent definitions, skills, commands, master-session logi
 
 | Item | Status |
 |------|--------|
-| `/status` command | Tested on Shepni |
-| `/agent-readiness` command — bootstrap project into workflow system | TODO |
-| `/delegate` command | TODO |
-| `/review` command | TODO |
-| `/timeline` command | TODO |
-| Executable skills (write-raw-log, create-task, update-task-status, evaluate-quality-gate) | TODO |
+| `ago:status` command | Tested on Shepni |
+| `ago:readiness` command — bootstrap project into workflow system | TODO |
+| `ago:clarify` command — requirements + task decomposition | TODO |
+| `ago:execute` command — launch agents for planned tasks | TODO |
+| `ago:review` command | TODO |
+| `ago:timeline` command | TODO |
+| Executable skills (`ago:write-raw-log`, `ago:create-task`, `ago:update-task-status`, `ago:evaluate-quality-gate`) | TODO |
 | End-to-end test on real project work | TODO |
-| Setup script for symlinks after clone | TODO |
+| Plugin install script | TODO |
 
 ### Phase 3: Automation & Hooks
 
 | Item | Status |
 |------|--------|
 | Claude Code hooks for auto-logging (PreToolUse/PostToolUse) | TODO |
-| Master session as packaged skill/plugin | TODO |
-| `/collaborative` and `/autonomous` mode toggles | TODO |
 | CONS agent as periodic process | TODO |
 | Docs integrity CI check | TODO |
 
@@ -96,4 +96,3 @@ Conventions, templates, agent definitions, skills, commands, master-session logi
 2. How to map skills/agents to Codex's execution model?
 3. Should CONS be periodic or on-demand?
 4. Which Obsidian plugins best visualize Gantt + task dependencies?
-5. How to handle git symlinks cross-platform?

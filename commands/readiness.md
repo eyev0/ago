@@ -2,7 +2,7 @@
 description: Assess project readiness for the workflow system and bootstrap .workflow/ from existing docs
 ---
 
-# /agent-readiness
+# ago:readiness
 
 > TODO: Full implementation pending
 
@@ -41,9 +41,9 @@ A readiness report showing:
 ## Usage
 
 ```
-/agent-readiness              — Full readiness check + bootstrap
-/agent-readiness --check      — Report only, don't create .workflow/
-/agent-readiness --roles      — Show recommended roles for this project
+/ago:readiness              — Full readiness check + bootstrap
+/ago:readiness --check      — Report only, don't create .workflow/
+/ago:readiness --roles      — Show recommended roles for this project
 ```
 
 ## Roles Involved

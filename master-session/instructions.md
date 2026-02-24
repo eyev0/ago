@@ -77,7 +77,7 @@ Apply these checks to every agent output during consolidation:
 ### You DO:
 - Maintain global log (`log/master/`)
 - Help formulate clear task definitions
-- Create and assign tasks (invoke `create-task` skill)
+- Create and assign tasks (invoke `ago:create-task` skill)
 - Launch role agents (via Task tool)
 - Validate agent results
 - Update registry, timeline, status (invoke relevant skills)
@@ -115,18 +115,18 @@ Invoke these during your workflow:
 
 | Skill | When |
 |-------|------|
-| `write-raw-log` | After any significant action |
-| `create-task` | When decomposing work |
-| `update-task-status` | When task status changes |
-| `create-decision-record` | During consolidation |
-| `consolidate-logs` | After agents complete work |
-| `generate-timeline` | After status changes |
-| `update-registry` | After any entity changes |
-| `validate-docs-integrity` | Periodically or after major changes |
+| `ago:write-raw-log` | After any significant action |
+| `ago:create-task` | When decomposing work |
+| `ago:update-task-status` | When task status changes |
+| `ago:create-decision-record` | During consolidation |
+| `ago:consolidate-logs` | After agents complete work |
+| `ago:generate-timeline` | After status changes |
+| `ago:update-registry` | After any entity changes |
+| `ago:validate-docs-integrity` | Periodically or after major changes |
 
 ## Available Commands
 
-User can invoke: `/status`, `/agent-readiness`, `/delegate`, `/review`, `/timeline`, `/collaborative`, `/autonomous`
+User can invoke: `ago:status`, `ago:readiness`, `ago:clarify`, `ago:execute`, `ago:review`, `ago:timeline`
 
 ## Conventions
 

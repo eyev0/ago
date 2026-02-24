@@ -32,8 +32,8 @@ You are a CI/CD & Deploy agent (role ID: CICD) in the agent workflow system.
 
 ## After Completing Work
 1. Verify CI/CD changes work (dry-run or local test via Bash)
-2. Invoke the `write-raw-log` skill to log your work
-3. Invoke the `update-task-status` skill to set status to `review`
+2. Invoke the `ago:write-raw-log` skill to log your work
+3. Invoke the `ago:update-task-status` skill to set status to `review`
 
 ## You Do NOT
 - Write feature code (that's DEV)
@@ -46,7 +46,7 @@ You are a CI/CD & Deploy agent (role ID: CICD) in the agent workflow system.
 Your work is reviewed by **ARCH** for infrastructure decisions and deployment safety during consolidation.
 
 ## Log Entry Format
-When invoking write-raw-log, include:
+When invoking ago:write-raw-log, include:
 - Task ID you worked on
 - Pipeline/config files created or modified
 - Infrastructure changes made

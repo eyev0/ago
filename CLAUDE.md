@@ -4,29 +4,36 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-A conventions/templates repo for AI agent orchestration. No code — all markdown.
-Used by other projects via symlinks (`ln -sf ~/dev/claude-workflow/agents/*.md .claude/agents/`).
+Claude Code plugin (`ago:`) for agentic orchestration. All markdown, no code.
+Installed as a plugin via `claude plugin add /path/to/claude-workflow`.
 See `platforms/claude-code.md` for integration instructions.
 
 ## Key Files
 
-- `AGENTS.md` — Entry point for agents: rules, file locations, commands
+- `memory/AGENTS.md` — Entry point for agents: rules, file locations, commands
 - `master-session/instructions.md` — Master session lifecycle and quality gates
 - `conventions/roles.md` — 12 role definitions (MASTER, PM, PROJ, ARCH, SEC, DEV, QAL, QAD, MKT, DOC, CICD, CONS)
 - `conventions/file-structure.md` — `.workflow/` directory structure for target projects
 - `conventions/naming.md` — Naming patterns: `E{NN}-name`, `T{NNN}-ROLE-name`, DR format
 - `conventions/task-lifecycle.md` — Status flow: backlog → planned → in_progress → review → done
+- `.claude-plugin/plugin.json` — Plugin manifest (name: `ago`)
 
 ## Architecture
 
 The system has two sides:
-1. **This repo** — universal conventions, templates, agent definitions, skills, commands
-2. **Target projects** — consume this repo via symlinks; each gets a `.workflow/` directory
+1. **This repo (plugin)** — conventions, templates, agent definitions, skills, commands
+2. **Target projects** — install this plugin; each gets a `.workflow/` directory
 
 Session lifecycle: INIT → BRIEF → COLLABORATE → DECOMPOSE → APPROVE → DELEGATE → MONITOR → CONSOLIDATE → REVIEW → UPDATE
 
 Review hierarchy: ARCH reviews DEV, QAL reviews QAD, PM reviews MKT, SEC reviews DEV
 Quality tiers: T1 (Verified) → T2 (Probable) → T3 (Speculative) → T4 (Ungrounded)
+
+## Plugin Structure
+
+- Commands: `commands/*.md` → `ago:status`, `ago:readiness`, `ago:clarify`, `ago:execute`, `ago:review`, `ago:timeline`
+- Skills: `skills/*/SKILL.md` → `ago:write-raw-log`, `ago:create-task`, etc.
+- Agents: `agents/*.md` → `ago:product-manager`, `ago:architect`, etc.
 
 ## Editing Conventions
 
@@ -39,4 +46,4 @@ Quality tiers: T1 (Verified) → T2 (Probable) → T3 (Speculative) → T4 (Ungr
 ## Roadmap
 
 Phase 2 (Activate) is in progress. See README.md for full roadmap.
-Tested: `/status`. TODO: `/agent-readiness`, `/delegate`, `/review`, `/timeline`, executable skills.
+Tested: `ago:status`. TODO: `ago:readiness`, `ago:clarify`, `ago:execute`, `ago:review`, `ago:timeline`, executable skills.

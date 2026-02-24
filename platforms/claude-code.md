@@ -4,48 +4,55 @@ How to apply agent workflow conventions to a Claude Code project.
 
 ## Setup
 
-### 1. Project CLAUDE.md
+### 1. Install the Plugin
+
+The `claude-workflow` repo is a Claude Code plugin with `.claude-plugin/plugin.json`.
+
+```bash
+# From your project directory, add as a plugin:
+claude plugin add ~/dev/claude-workflow
+```
+
+This makes all `ago:` prefixed commands and skills available in your project.
+
+### 2. Project CLAUDE.md
 
 Add to your project's CLAUDE.md:
 
 ```markdown
 ## Agent Workflow
 
-This project uses the agent workflow system from `~/dev/claude-workflow/`.
+This project uses the agent workflow plugin (`ago:`).
 
 When working as a master session:
-- Read `~/dev/claude-workflow/master-session/instructions.md`
+- Read the master-session instructions via the plugin
 - Follow the session lifecycle
 
 When working as a role agent:
-- Read your role definition from `~/dev/claude-workflow/agents/{role}.md`
-- Always invoke `write-raw-log` skill after work
+- Read your role definition from the plugin agents
+- Always invoke `ago:write-raw-log` skill after work
 
 Project workflow files: `.workflow/`
 ```
 
-### 2. Agent Definitions
-
-Copy or symlink agent files to `.claude/agents/`:
-```bash
-# Option A: Symlink (always up to date)
-ln -s ~/dev/claude-workflow/agents/*.md .claude/agents/
-
-# Option B: Copy (project-independent)
-cp ~/dev/claude-workflow/agents/*.md .claude/agents/
-```
-
 ### 3. Skills
 
-Skills are invoked by agents via instructions (not as separate files in Claude Code).
-They are embedded in agent system prompts or as part of commands.
+Skills live in subdirectories: `skills/skill-name/SKILL.md`
+
+They are invoked with the `ago:` prefix (e.g., `ago:write-raw-log`, `ago:evaluate-quality-gate`).
 
 ### 4. Commands
 
-Copy command stubs to `.claude/commands/`:
-```bash
-cp ~/dev/claude-workflow/commands/*.md .claude/commands/workflow.*.md
-```
+Available commands (all prefixed with `ago:`):
+
+| Command | Description |
+|---------|-------------|
+| `ago:status` | Show project status |
+| `ago:readiness` | Check agent readiness |
+| `ago:clarify` | Clarify and formulate a task |
+| `ago:execute` | Execute a formulated task |
+| `ago:review` | Review agent work results |
+| `ago:timeline` | Generate/update timeline |
 
 ### 5. Initialize .workflow/
 
@@ -60,9 +67,9 @@ cp ~/dev/claude-workflow/templates/project-docs/*.md .workflow/docs/
 
 | Workflow Entity | Claude Code Entity |
 |----------------|-------------------|
-| Role | `.claude/agents/{role}.md` |
-| Skill | Instructions in agent prompt / command |
-| Command | `.claude/commands/{cmd}.md` |
+| Role | Agent definition via plugin |
+| Skill | `ago:{skill-name}` (from `skills/{skill-name}/SKILL.md`) |
+| Command | `ago:{command}` (from plugin commands) |
 | Master Session | Main conversation with CLAUDE.md context |
 | Agent Logs | `.workflow/log/{ROLE}/*.md` |
 

@@ -13,7 +13,7 @@ Read raw agent logs and create Decision Records for any decisions found.
 2. Identify entries with non-empty "Decisions made" sections
 3. For each decision found:
    a. Determine if it warrants a formal DR (significant, affects other tasks/components)
-   b. If yes, invoke `create-decision-record` skill
+   b. If yes, invoke `ago:create-decision-record` skill
    c. If no, note it in the master log as "minor decision, no DR needed"
 4. Check for conflicts between decisions from different roles
 5. Flag any contradictions for MASTER review

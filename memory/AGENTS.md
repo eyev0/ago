@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Workflow System
 
-This repository contains universal conventions for AI agent orchestration.
+This repository is a Claude Code plugin (`ago:`) for agentic orchestration.
 
 ## For Master Session
 
@@ -10,7 +10,7 @@ Follow the session lifecycle: INIT → BRIEF → COLLABORATE → DECOMPOSE → A
 ## For Role Agents
 
 Each agent role is defined in `agents/{role-name}.md`. Follow your role definition strictly.
-Always invoke the `write-raw-log` skill after completing work.
+Always invoke the `ago:write-raw-log` skill after completing work.
 
 ## Key Rules
 
@@ -30,8 +30,9 @@ Always invoke the `write-raw-log` skill after completing work.
 - Conventions: `conventions/`
 - Templates: `templates/`
 - Agent definitions: `agents/`
-- Skills: `skills/`
+- Skills: `skills/*/SKILL.md`
 - Commands: `commands/`
+- Plugin manifest: `.claude-plugin/plugin.json`
 
 ## Conventions
 
@@ -45,10 +46,9 @@ Read these files for the full rule set:
 
 ## Commands
 
-- `/status` — Show project status
-- `/agent-readiness` — Assess project readiness and bootstrap `.workflow/` from existing docs
-- `/delegate` — Decompose and delegate task
-- `/review` — Consolidate and review agent work
-- `/timeline` — Regenerate Gantt charts
-- `/collaborative` — Switch to collaborative mode (default)
-- `/autonomous` — Switch to autonomous mode (TODO)
+- `ago:status` — Show project status
+- `ago:readiness` — Assess project readiness and bootstrap `.workflow/` from existing docs
+- `ago:clarify` — Clarify requirements and decompose into tasks
+- `ago:execute` — Launch agents for planned tasks
+- `ago:review` — Consolidate and review agent work
+- `ago:timeline` — Regenerate Gantt charts

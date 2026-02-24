@@ -14,7 +14,7 @@ Update the `status` and `updated` fields in a task's frontmatter.
 3. Update `status` field to new value
 4. Update `updated` field to today's date
 5. If moving to `blocked`, add blocker reference in Notes section
-6. Log the status change via `write-raw-log` skill
+6. Log the status change via `ago:write-raw-log` skill
 
 ## Valid Transitions
 - backlog → planned
