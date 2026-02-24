@@ -10,25 +10,40 @@ A system of rules, templates, and agent definitions that standardize how AI agen
 - **Conventions** — Naming, file structure, task lifecycle, decision records, logging
 - **Templates** — Standardized formats for tasks, epics, DRs, project docs
 - **Skills** — Shared capabilities any agent can invoke
-- **Commands** — User-facing slash commands
+- **Commands** — User-facing slash commands (`/status`, `/delegate`, `/review`, `/timeline`)
 - **Master Session** — Orchestrator that coordinates all agent work
+- **Quality Gates** — T1-T4 tier system to catch hallucinations and ensure grounded decisions
+
+## Features
+
+- **12 Agent Roles** with clear boundaries: MASTER, PM, PROJ, ARCH, SEC, DEV, QAL, QAD, MKT, DOC, CICD, CONS
+- **Senior-reviews-junior hierarchy** (ARCH reviews DEV, QAL reviews QAD, SEC reviews DEV)
+- **Two-level logging**: master log (delegations/decisions) + agent raw logs (actions/local decisions)
+- **Decision Records generated from raw logs** by CONS role — agents don't write DRs directly
+- **YAML frontmatter + Mermaid Gantt** — Obsidian-compatible, renders in GitHub
+- **Platform-agnostic** — works with Claude Code (agents/skills) and Codex (AGENTS.md)
+- **Per-project `.workflow/`** directory with epics, tasks, docs, logs, decision records
+- **Session lifecycle**: INIT → BRIEF → COLLABORATE → DECOMPOSE → APPROVE → DELEGATE → MONITOR → CONSOLIDATE → REVIEW → UPDATE
+- **Collaborative mode** (default): master presents plan, user approves before delegation
+- **Autonomous mode** (stub): master reads backlog and executes without approval
 
 ## Quick Start
 
 1. Add `.workflow/` directory to your project (copy from `templates/`)
-2. Reference this repo in your project's CLAUDE.md
-3. Start a master session and use `/status` to begin
+2. Symlink agents: `ln -sf ~/dev/claude-workflow/agents/*.md .claude/agents/`
+3. Reference this repo in your project's CLAUDE.md
+4. Start a master session and use `/status` to begin
 
 ## Structure
 
 ```
-conventions/   — Rules and standards
-templates/     — File templates for projects
-agents/        — Agent role definitions
-skills/        — Shared agent capabilities
-commands/      — Slash commands
+conventions/    — Rules and standards (9 files)
+templates/      — File templates for projects (12 files)
+agents/         — Agent role definitions (13 files)
+skills/         — Shared agent capabilities (9 files)
+commands/       — Slash commands (6 stubs)
 master-session/ — Master session instructions
-platforms/     — Platform-specific adaptations
+platforms/      — Platform-specific adaptations (Claude Code, Codex)
 ```
 
 ## Applying to a Project
@@ -36,3 +51,48 @@ platforms/     — Platform-specific adaptations
 See `conventions/file-structure.md` for the standard `.workflow/` structure.
 See `platforms/claude-code.md` for Claude Code integration.
 See `platforms/codex.md` for Codex integration.
+
+## Roadmap
+
+### Phase 1: Foundation — Done
+
+Conventions, templates, agent definitions, skills, commands, master-session logic, platform guides. Applied to first project (Shepni).
+
+### Phase 2: Activate on Real Tasks — In Progress
+
+| Item | Status |
+|------|--------|
+| `/status` command | Tested on Shepni |
+| `/delegate` command | TODO |
+| `/review` command | TODO |
+| `/timeline` command | TODO |
+| Executable skills (write-raw-log, create-task, update-task-status, evaluate-quality-gate) | TODO |
+| End-to-end test on real project work | TODO |
+| Setup script for symlinks after clone | TODO |
+
+### Phase 3: Automation & Hooks
+
+| Item | Status |
+|------|--------|
+| Claude Code hooks for auto-logging (PreToolUse/PostToolUse) | TODO |
+| Master session as packaged skill/plugin | TODO |
+| `/collaborative` and `/autonomous` mode toggles | TODO |
+| CONS agent as periodic process | TODO |
+| Docs integrity CI check | TODO |
+
+### Phase 4: Platform Expansion & Infra
+
+| Item | Status |
+|------|--------|
+| Codex full integration | TODO |
+| Self-hosted git (Gitea/Forgejo) | TODO |
+| Obsidian vault sync (Dataview/Tasks plugins) | TODO |
+| Cross-project task management | TODO |
+
+### Open Questions
+
+1. Can Claude Code hooks reliably write to log files during subagent execution?
+2. How to map skills/agents to Codex's execution model?
+3. Should CONS be periodic or on-demand?
+4. Which Obsidian plugins best visualize Gantt + task dependencies?
+5. How to handle git symlinks cross-platform?
