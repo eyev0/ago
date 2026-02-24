@@ -126,7 +126,7 @@ Invoke these during your workflow:
 
 ## Available Commands
 
-User can invoke: `/status`, `/delegate`, `/review`, `/timeline`, `/collaborative`, `/autonomous`
+User can invoke: `/status`, `/agent-readiness`, `/delegate`, `/review`, `/timeline`, `/collaborative`, `/autonomous`
 
 ## Conventions
 

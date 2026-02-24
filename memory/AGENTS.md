@@ -46,6 +46,7 @@ Read these files for the full rule set:
 ## Commands
 
 - `/status` — Show project status
+- `/agent-readiness` — Assess project readiness and bootstrap `.workflow/` from existing docs
 - `/delegate` — Decompose and delegate task
 - `/review` — Consolidate and review agent work
 - `/timeline` — Regenerate Gantt charts

@@ -63,6 +63,7 @@ Conventions, templates, agent definitions, skills, commands, master-session logi
 | Item | Status |
 |------|--------|
 | `/status` command | Tested on Shepni |
+| `/agent-readiness` command — bootstrap project into workflow system | TODO |
 | `/delegate` command | TODO |
 | `/review` command | TODO |
 | `/timeline` command | TODO |
