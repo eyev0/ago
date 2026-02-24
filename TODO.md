@@ -20,7 +20,7 @@
 
 | Item | Status | Notes |
 |------|--------|-------|
-| Implement `/status` command | TODO | Read registry + status.md, display summary |
+| Implement `/status` command | tested | Manually tested on Shepni — reads config, registry, status, timeline, epics. Needs skill conversion. |
 | Implement `/delegate` command | TODO | Clarify task → decompose → create task.md → launch agents |
 | Implement `/review` command | TODO | Read agent logs → consolidate → create DR → present |
 | Implement `/timeline` command | TODO | Parse task frontmatter → generate Mermaid Gantt |
