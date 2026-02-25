@@ -2,8 +2,8 @@
 
 ## Two Gantt Levels
 
-1. **Project-level** (`docs/timeline.md`) — Epics as sections, milestones
-2. **Epic-level** (`epics/{epic-id}/timeline.md`) — All tasks within the epic
+1. **Project-level** (`.workflow/docs/timeline.md`) — Epics as sections, milestones
+2. **Epic-level** (`.workflow/epics/{epic-id}/timeline.md`) — All tasks within the epic
 
 ## Mermaid Gantt Syntax
 

@@ -41,9 +41,9 @@ A readiness report showing:
 ## Usage
 
 ```
-/ago:readiness              — Full readiness check + bootstrap
-/ago:readiness --check      — Report only, don't create .workflow/
-/ago:readiness --roles      — Show recommended roles for this project
+ago:readiness              — Full readiness check + bootstrap
+ago:readiness --check      — Report only, don't create .workflow/
+ago:readiness --roles      — Show recommended roles for this project
 ```
 
 ## Roles Involved

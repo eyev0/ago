@@ -37,7 +37,7 @@ They follow the standard DR format but focus on:
 - Performance trade-offs
 - Infrastructure decisions
 
-ADRs aggregate into `docs/architecture.md` under a "Decisions" section.
+ADRs aggregate into `.workflow/docs/architecture.md` under a "Decisions" section.
 
 ## Documentation Integrity
 

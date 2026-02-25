@@ -11,12 +11,12 @@ description: Clarify requirements and decompose into tasks with role assignments
 2. Clarifies requirements (scope, motivation, acceptance criteria)
 3. Identifies which roles are needed
 4. Decomposes into subtasks with role assignments
-5. Creates task.md files in .workflow/epics/
+5. After user approval (APPROVE step), creates task.md files via `ago:create-task`
 
 Does NOT launch agents — use `ago:execute` for that.
 
 ## Usage
 ```
-/ago:clarify Add VAD support to STT core
-/ago:clarify               — Interactive mode, asks questions
+ago:clarify Add VAD support to STT core
+ago:clarify               — Interactive mode, asks questions
 ```

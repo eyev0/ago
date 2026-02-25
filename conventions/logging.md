@@ -4,12 +4,12 @@
 
 | Level | Writer | Content | Location |
 |-------|--------|---------|----------|
-| Master log | MASTER | Delegations, validations, conflicts, decisions | `log/master/` |
-| Agent log | Each role | Actions, local decisions, input/output | `log/{ROLE}/` |
+| Master log | MASTER | Delegations, validations, conflicts, decisions | `.workflow/log/master/` |
+| Agent log | Each role | Actions, local decisions, input/output | `.workflow/log/{role}/` |
 
 ## Master Log Format
 
-Daily file: `log/master/{YYYY-MM-DD}.md`
+Daily file: `.workflow/log/master/{YYYY-MM-DD}.md`
 
 ```markdown
 # {YYYY-MM-DD}
@@ -24,7 +24,7 @@ Action types: Task delegation, Review results, Decision accepted, Conflict resol
 
 ## Agent Log Format
 
-Daily file: `log/{ROLE}/{YYYY-MM-DD}.md`
+Daily file: `.workflow/log/{role}/{YYYY-MM-DD}.md`
 
 Each entry:
 ```markdown

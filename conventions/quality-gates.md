@@ -44,5 +44,3 @@ Decisions and artifacts are ranked by confidence:
 - **Consistency check:** Does it align with existing DRs and project docs?
 - **Scope check:** Is the agent operating within their role boundaries?
 - **Context check:** Does the agent's output reflect actual project state?
-
-> TODO: Implement quality gate evaluation as a skill (`ago:evaluate-quality-gate`) in Iteration 2.

@@ -11,8 +11,8 @@ See `platforms/claude-code.md` for integration instructions.
 ## Key Files
 
 - `memory/AGENTS.md` — Entry point for agents: rules, file locations, commands
-- `master-session/instructions.md` — Master session lifecycle and quality gates
-- `conventions/roles.md` — 12 role definitions (MASTER, PM, PROJ, ARCH, SEC, DEV, QAL, QAD, MKT, DOC, CICD, CONS)
+- `agents/master-session.md` — Master session: lifecycle, quality gates, collaborative workflow
+- `conventions/roles.md` — 13 roles (12 project + WFDEV meta) (MASTER, PM, PROJ, ARCH, SEC, DEV, QAL, QAD, MKT, DOC, CICD, CONS, WFDEV)
 - `conventions/file-structure.md` — `.workflow/` directory structure for target projects
 - `conventions/naming.md` — Naming patterns: `E{NN}-name`, `T{NNN}-ROLE-name`, DR format
 - `conventions/task-lifecycle.md` — Status flow: backlog → planned → in_progress → review → done
@@ -26,8 +26,7 @@ The system has two sides:
 
 Session lifecycle: INIT → BRIEF → COLLABORATE → DECOMPOSE → APPROVE → DELEGATE → MONITOR → CONSOLIDATE → REVIEW → UPDATE
 
-Review hierarchy: ARCH reviews DEV, QAL reviews QAD, PM reviews MKT, SEC reviews DEV
-Quality tiers: T1 (Verified) → T2 (Probable) → T3 (Speculative) → T4 (Ungrounded)
+Quality gates: See conventions/quality-gates.md (canonical source for T1-T4 tiers and review hierarchy)
 
 ## Plugin Structure
 
@@ -37,7 +36,7 @@ Quality tiers: T1 (Verified) → T2 (Probable) → T3 (Speculative) → T4 (Ungr
 
 ## Editing Conventions
 
-- All files in `.workflow/` use YAML frontmatter
+- Entity docs in `.workflow/` use YAML frontmatter (config, epic, task, decision, project docs, registry). Log files are exempt.
 - Wikilinks (`[[...]]`) for cross-references
 - Mermaid for timeline/Gantt visualization
 - Task IDs are globally unique (strict increment, never reused)
@@ -46,4 +45,4 @@ Quality tiers: T1 (Verified) → T2 (Probable) → T3 (Speculative) → T4 (Ungr
 ## Roadmap
 
 Phase 2 (Activate) is in progress. See README.md for full roadmap.
-Tested: `ago:status`. TODO: `ago:readiness`, `ago:clarify`, `ago:execute`, `ago:review`, `ago:timeline`, executable skills.
+Tested: `ago:status`. Done: all 9 executable skills. TODO: `ago:readiness`, `ago:clarify`, `ago:execute`, `ago:review`, `ago:timeline`.

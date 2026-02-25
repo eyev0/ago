@@ -71,7 +71,7 @@ cp ~/dev/claude-workflow/templates/project-docs/*.md .workflow/docs/
 | Skill | `ago:{skill-name}` (from `skills/{skill-name}/SKILL.md`) |
 | Command | `ago:{command}` (from plugin commands) |
 | Master Session | Main conversation with CLAUDE.md context |
-| Agent Logs | `.workflow/log/{ROLE}/*.md` |
+| Agent Logs | `.workflow/log/{role}/*.md` |
 
 ## Hooks (Future)
 

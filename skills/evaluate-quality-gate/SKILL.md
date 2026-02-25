@@ -1,55 +1,82 @@
 ---
-name: evaluate-quality-gate
-description: Evaluate agent output for hallucination risk, assign quality tiers (T1-T4), trigger senior role review for T3/T4 items. Used by CONS or MASTER during consolidation.
+name: ago:evaluate-quality-gate
+description: Evaluate agent output for quality and hallucination risk, assign T1-T4 tiers, trigger senior review. Invoke during consolidation for each completed task.
+version: 0.2.0
 ---
 
-# Evaluate Quality Gate
+# ago:evaluate-quality-gate
 
-Assess the quality and groundedness of agent decisions and artifacts during consolidation (step 8 of session lifecycle). Assigns a quality tier and triggers senior review when needed.
+Assess agent decisions and artifacts for quality, assign tiers, trigger reviews.
 
-## Quality Tiers
+## When to Use
 
-| Tier | Label | Meaning | Action |
-|------|-------|---------|--------|
-| T1 | **Verified** | Grounded in code/docs, no hallucination risk | Accept |
-| T2 | **Probable** | Reasonable inference, minor assumptions | Review by senior |
-| T3 | **Speculative** | Assumptions made, needs validation | Must be validated before acceptance |
-| T4 | **Ungrounded** | No evidence in codebase/docs, likely hallucination | Reject, redo |
+During the CONSOLIDATE step, for each agent output. Called by MASTER or CONS. References `conventions/quality-gates.md` as the canonical source for tier definitions and review hierarchy.
 
-## Steps
+## Input
 
-1. Read the agent's log entries and artifacts for the completed task
-2. For each decision or artifact, run the anti-hallucination checks (see below)
-3. Assign a quality tier (T1-T4) based on the check results
-4. For T1/T2 items: mark as ready for acceptance (T2 gets optional senior review)
-5. For T3/T4 items: flag for mandatory senior role review
-6. Identify the correct senior reviewer from the review hierarchy
-7. Log the quality evaluation in the master log
-8. Only T1/T2 items may become accepted Decision Records
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| task_id | Yes | Short task ID (e.g., `T001`) |
+| role | Yes | Role that produced the output (e.g., `dev`) |
 
-## Anti-Hallucination Checks
+## Instructions
 
-- **Code reference check:** Does the decision reference real files/functions that exist in the codebase?
-- **Consistency check:** Does it align with existing Decision Records and project docs?
-- **Scope check:** Is the agent operating within their role boundaries?
-- **Context check:** Does the agent's output reflect the actual project state (not outdated or imagined state)?
+1. **Read the agent's work:** Find log entries for {task_id} in `.workflow/log/{role}/`
+2. **Read artifacts:** Check `.workflow/epics/*/tasks/T{NNN}-*/artifacts/` for deliverables
+3. **For each decision or artifact, run these checks:**
 
-## Review Hierarchy
+### Anti-Hallucination Checks
 
-| Senior (Reviewer) | Junior (Reviewed) | What is reviewed |
-|---|---|---|
-| ARCH (CTO) | DEV | Architecture adherence, code quality, tech decisions |
-| QAL | QAD | Test quality, coverage, test design |
-| PM | MKT | Product alignment, messaging accuracy |
-| SEC | DEV | Security compliance, vulnerability patterns |
-| ARCH | CICD | Infrastructure decisions, deployment safety |
-| PM + ARCH | DEV (frontend) | UX decisions, design alignment |
+| Check | Question | Pass | Fail |
+|-------|----------|------|------|
+| Code reference | Does it reference real files/functions that exist? | +T1 evidence | +T3/T4 evidence |
+| Consistency | Does it align with existing DRs and project docs? | +T1 evidence | +T3 evidence |
+| Scope | Is the agent operating within role boundaries? | neutral | +T4 evidence |
+| Context | Does output reflect actual project state? | +T1 evidence | +T4 evidence |
 
-## Output
+4. **Assign tier based on evidence:**
+   - All checks pass, grounded in code/docs → **T1 (Verified)**
+   - Most checks pass, minor assumptions stated → **T2 (Probable)**
+   - Some checks fail, assumptions not validated → **T3 (Speculative)**
+   - Multiple checks fail, no evidence in codebase → **T4 (Ungrounded)**
 
-For each evaluated item, record:
-- Item description (decision or artifact name)
-- Assigned tier (T1/T2/T3/T4)
-- Evidence summary (what grounded or ungrounded the item)
-- Required reviewer (if T3/T4)
-- Recommendation (accept / review / reject / redo)
+5. **Determine reviewer (for T3/T4):** Using the review hierarchy from `conventions/quality-gates.md`:
+   - DEV output → reviewed by ARCH
+   - QAD output → reviewed by QAL
+   - MKT output → reviewed by PM
+   - DEV (security) → reviewed by SEC
+   - CICD output → reviewed by ARCH
+   - DEV (frontend) → reviewed by PM + ARCH
+
+6. **Log the evaluation** in `.workflow/log/master/{date}.md`:
+
+```markdown
+## {HH:MM} — Quality Gate: {task_id}
+
+**Role:** {role}
+**Items evaluated:** {count}
+
+| Item | Tier | Evidence | Reviewer | Recommendation |
+|------|------|----------|----------|----------------|
+| {description} | T{n} | {summary} | {reviewer or "—"} | {accept/review/reject/redo} |
+
+**Overall:** {T1/T2 → ready for acceptance | T3/T4 → requires senior review}
+```
+
+7. **Actions by tier:**
+   - T1: Mark as ready for DR acceptance
+   - T2: Mark as ready, flag for optional senior review
+   - T3: Flag for mandatory senior review, do NOT accept until reviewed
+   - T4: Reject. Flag for redo by the original agent.
+
+## Validation
+
+- Every decision/artifact from the task was evaluated
+- T3/T4 items have a designated reviewer
+- Evaluation was logged in master log
+
+## Error Handling
+
+- If no log entries found for task: Report "No agent logs found for {task_id}" — cannot evaluate
+- If artifacts directory is empty: Evaluate based on log entries only
+- If role not in review hierarchy: Default reviewer is MASTER

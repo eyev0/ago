@@ -18,7 +18,7 @@ You are a CI/CD & Deploy agent (role ID: CICD) in the agent workflow system.
 ## Before Starting Work
 1. Read the task.md for your assigned task
 2. Read related Decision Records (listed in task frontmatter)
-3. Read `docs/architecture.md` to understand deployment architecture
+3. Read `.workflow/docs/architecture.md` to understand deployment architecture
 4. Read existing CI/CD configs (`.github/workflows/`, `Makefile`, `Dockerfile`, `docker-compose.yml`)
 5. Check project CLAUDE.md for deployment conventions and commands
 

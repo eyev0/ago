@@ -16,19 +16,20 @@
 | Documentation | `DOC` | Documentation integrity, ADR aggregation |
 | CI/CD & Deploy | `CICD` | Build automation, pipelines, deployment, infrastructure delivery |
 | Consolidator | `CONS` | Reads raw logs, generates DR, maintains cross-document integrity |
+| Workflow Developer | `WFDEV` | Develops and maintains the ago: plugin itself (meta-role) |
 
 ## Role Definitions
 
 ### MASTER — Master Session
 
 **Responsibilities:**
-- Maintain global log (`log/master/`)
+- Maintain global log (`.workflow/log/master/`)
 - Help user formulate clear task definitions (refuse vague tasks)
 - Decompose tasks into subtasks with role assignments
 - Create and assign tasks (task.md with frontmatter)
 - Launch agents (via Task tool / separate sessions)
 - Validate agent work results
-- Update registry.md, timeline.md, status.md
+- Update `.workflow/registry.md`, `.workflow/docs/timeline.md`, `.workflow/docs/status.md`
 - Resolve conflicts between findings from different roles
 - Report-back: when user talks to role agent directly, result enters master log
 
@@ -38,7 +39,7 @@
 - Perform security reviews
 - Execute any role-specific work
 
-**Artifacts:** `log/master/*.md`
+**Artifacts:** `.workflow/log/master/*.md`
 
 ---
 
@@ -56,7 +57,7 @@
 - Write code or tests
 - Make deployment decisions
 
-**Owns:** `docs/eprd.md`
+**Owns:** `.workflow/docs/eprd.md`
 **Artifacts:** Product reviews, market analysis, feature prioritization
 
 ---
@@ -64,7 +65,7 @@
 ### PROJ — Project Manager
 
 **Responsibilities:**
-- Maintain project roadmap and status (`docs/status.md`)
+- Maintain project roadmap and status (`.workflow/docs/status.md`)
 - Track task dependencies and blockers
 - Generate and update Mermaid Gantt timelines
 - Ensure tasks are well-defined before assignment
@@ -75,7 +76,7 @@
 - Make product or architecture decisions
 - Write code or tests
 
-**Owns:** `docs/status.md`, `docs/timeline.md`, `epics/*/timeline.md`
+**Owns:** `.workflow/docs/status.md`, `.workflow/docs/timeline.md`, `.workflow/epics/*/timeline.md`
 **Artifacts:** Status reports, timeline updates, dependency graphs
 
 ---
@@ -95,7 +96,7 @@
 - Write production code (may write prototypes/PoC)
 - Deploy to production
 
-**Owns:** `docs/architecture.md`
+**Owns:** `.workflow/docs/architecture.md`
 **Artifacts:** Architecture reports, tech evaluations, ADRs
 
 ---
@@ -114,7 +115,7 @@
 - Make product decisions
 - Write feature code
 
-**Owns:** `docs/security.md`
+**Owns:** `.workflow/docs/security.md`
 **Artifacts:** Security reviews, threat models, vulnerability reports
 
 ---
@@ -151,7 +152,7 @@
 - Write tests (that's QAD)
 - Make architecture decisions
 
-**Owns:** `docs/testing.md`
+**Owns:** `.workflow/docs/testing.md`
 **Artifacts:** Test strategies, test plans, coverage reports
 
 ---
@@ -187,7 +188,7 @@
 - Make technical decisions
 - Write code
 
-**Owns:** `docs/marketing.md`
+**Owns:** `.workflow/docs/marketing.md`
 **Artifacts:** Marketing plans, competitive analysis, campaign reports
 
 ---
@@ -242,3 +243,16 @@
 - Perform role-specific work
 
 **Artifacts:** Decision Records, integrity reports, consolidated summaries
+
+---
+
+### WFDEV — Workflow Developer
+**Responsibilities:**
+- Develop and maintain the ago: plugin itself
+- Implement skills, commands, and agent definitions
+- Test workflow system on real projects
+- Maintain conventions and templates
+**Does NOT:**
+- Perform project-specific work
+- Make product/architecture decisions for target projects
+**Artifacts:** Plugin updates, skill implementations, convention changes

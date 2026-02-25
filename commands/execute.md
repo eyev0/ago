@@ -14,7 +14,7 @@ description: Launch agents for planned tasks
 
 ## Usage
 ```
-/ago:execute               — Execute all planned tasks
-/ago:execute T001          — Execute specific task
-/ago:execute E01           — Execute all tasks in epic
+ago:execute               — Execute all planned tasks
+ago:execute T001          — Execute specific task
+ago:execute E01           — Execute all tasks in epic
 ```

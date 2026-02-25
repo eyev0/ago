@@ -27,12 +27,13 @@ backlog -> planned -> in_progress -> review -> done
 | review | done | MASTER | Validation passed |
 | review | in_progress | MASTER | Revision needed |
 | blocked | planned | MASTER, PROJ | Blocker resolved |
+| blocked | in_progress | MASTER, PROJ | Blocker resolved, work can resume immediately |
 
 ## Rules
 
 1. Every status change MUST be logged in the agent's raw log
 2. `depends_on` tasks must be `done` before a task can move to `in_progress`
-3. Only MASTER can move a task to `done` (validation gate)
+3. Only MASTER can move a task to `done` (validation gate). Only MASTER can transition review → done.
 4. A task in `review` must have all artifacts present
 5. `blocked` tasks must reference the blocker in task.md
 

@@ -1,7 +1,7 @@
 ---
 project: {project-name}
 description: {One-line project description}
-conventions_repo: ~/dev/claude-workflow
+plugin: ago
 task_counter: 0
 ---
 

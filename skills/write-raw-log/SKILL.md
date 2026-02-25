@@ -1,32 +1,66 @@
 ---
-name: write-raw-log
-description: Append an entry to the current role's raw log. Use after completing any significant work.
+name: ago:write-raw-log
+description: Append a log entry to the current role's raw log. Invoke after completing any significant work on a task.
+version: 0.2.0
 ---
 
-# Write Raw Log
+# ago:write-raw-log
 
-Append a log entry to `.workflow/log/{ROLE}/{today's date}.md`.
+Append a timestamped log entry to `.workflow/log/{role}/{YYYY-MM-DD}.md`.
 
-## Steps
+## When to Use
 
-1. Determine the current date (YYYY-MM-DD)
-2. Determine your role ID (from your agent definition)
-3. Create the log directory if it doesn't exist: `.workflow/log/{ROLE}/`
-4. Create or append to `.workflow/log/{ROLE}/{YYYY-MM-DD}.md`
-5. Write entry using the template from `conventions/logging.md`:
+Invoke this skill after completing any significant action on a task. Every agent MUST log their work — this is mandatory, not optional.
+
+## Input
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| role | Yes | Your role ID, lowercase (e.g., `dev`, `arch`, `master`) |
+| task_id | Yes | Short task ID (e.g., `T001`) |
+| input | Yes | What you received as task/instruction |
+| actions | Yes | List of actions performed |
+| output | Yes | What was produced (files, reports, decisions) |
+| decisions | No | Local decisions made, or "None" |
+| new_status | Yes | Task status after this work: `planned`, `in_progress`, `review`, `blocked` |
+
+## Instructions
+
+1. Determine today's date in `YYYY-MM-DD` format
+2. Determine current time in `HH:MM` format
+3. Ensure directory exists: `.workflow/log/{role}/`
+   - If it doesn't exist, create it
+4. Open or create file: `.workflow/log/{role}/{YYYY-MM-DD}.md`
+   - If file is new, add a heading: `# {YYYY-MM-DD}`
+   - If file exists, append to it
+5. Append this entry:
 
 ```markdown
-## {HH:MM} — {TASK_ID}
-**Input:** {What you received as task/instruction}
+## {HH:MM} — {task_id}
+
+**Input:** {input}
+
 **Actions:**
-- {What you did, step by step}
-**Output:** {What you produced}
-**Decisions made:** {Any local decisions, or "None"}
-**Status:** {New task status}
+- {action 1}
+- {action 2}
+- ...
+
+**Output:** {output}
+
+**Decisions made:** {decisions, or "None"}
+
+**Status:** {new_status}
 ```
 
-## Rules
-- Append only — never modify existing entries
-- Include task ID in every entry
-- Be specific about files created/modified
-- Note any decisions made, even small ones
+6. Do NOT add YAML frontmatter to log files — they are exempt
+
+## Validation
+
+- File exists at `.workflow/log/{role}/{YYYY-MM-DD}.md`
+- Entry was appended (not overwriting previous entries)
+- Role directory is lowercase
+
+## Error Handling
+
+- If `.workflow/` doesn't exist: STOP. The project hasn't been initialized with `ago:readiness`.
+- If `.workflow/log/` doesn't exist: Create it along with the role subdirectory.

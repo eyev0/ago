@@ -6,7 +6,7 @@ Universal conventions for orchestrating AI agents across software projects. Pack
 
 A system of rules, templates, and agent definitions that standardize how AI agents (Claude Code, Codex) work together on projects. It defines:
 
-- **Roles** — 12 specialized agent roles (Product Manager, Architect, Developer, etc.)
+- **Roles** — 13 agent roles (12 project + WFDEV meta) (Product Manager, Architect, Developer, etc.)
 - **Conventions** — Naming, file structure, task lifecycle, decision records, logging
 - **Templates** — Standardized formats for tasks, epics, DRs, project docs
 - **Skills** — Shared capabilities any agent can invoke (`ago:write-raw-log`, `ago:create-task`, etc.)
@@ -16,12 +16,12 @@ A system of rules, templates, and agent definitions that standardize how AI agen
 
 ## Features
 
-- **12 Agent Roles** with clear boundaries: MASTER, PM, PROJ, ARCH, SEC, DEV, QAL, QAD, MKT, DOC, CICD, CONS
-- **Senior-reviews-junior hierarchy** (ARCH reviews DEV, QAL reviews QAD, SEC reviews DEV)
+- **13 Agent Roles** with clear boundaries: MASTER, PM, PROJ, ARCH, SEC, DEV, QAL, QAD, MKT, DOC, CICD, CONS, WFDEV
+- **Quality Gates** — T1-T4 tier system with senior-reviews-junior hierarchy (see conventions/quality-gates.md)
 - **Two-level logging**: master log (delegations/decisions) + agent raw logs (actions/local decisions)
 - **Decision Records generated from raw logs** by CONS role — agents don't write DRs directly
 - **YAML frontmatter + Mermaid Gantt** — Obsidian-compatible, renders in GitHub
-- **Platform-agnostic** — works with Claude Code (plugin) and Codex (AGENTS.md)
+- **Platform-agnostic** — works with Claude Code (plugin); Codex support planned
 - **Per-project `.workflow/`** directory with epics, tasks, docs, logs, decision records
 - **Session lifecycle**: INIT → BRIEF → COLLABORATE → DECOMPOSE → APPROVE → DELEGATE → MONITOR → CONSOLIDATE → REVIEW → UPDATE
 - **Collaborative mode** (default): master presents plan, user approves before delegation
@@ -42,7 +42,6 @@ templates/          — File templates for projects
 agents/             — Agent role definitions (13 files)
 skills/             — Shared agent capabilities (9 skill subdirectories)
 commands/           — Slash commands (6 commands)
-master-session/     — Master session instructions
 platforms/          — Platform-specific adaptations (Claude Code, Codex)
 memory/             — Shared agent context (AGENTS.md)
 ```
@@ -69,7 +68,7 @@ Conventions, templates, agent definitions, skills, commands, master-session logi
 | `ago:execute` command — launch agents for planned tasks | TODO |
 | `ago:review` command | TODO |
 | `ago:timeline` command | TODO |
-| Executable skills (`ago:write-raw-log`, `ago:create-task`, `ago:update-task-status`, `ago:evaluate-quality-gate`) | TODO |
+| Executable skills (all 9 skill SKILL.md files) | Done |
 | End-to-end test on real project work | TODO |
 | Plugin install script | TODO |
 

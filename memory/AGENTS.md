@@ -4,7 +4,7 @@ This repository is a Claude Code plugin (`ago:`) for agentic orchestration.
 
 ## For Master Session
 
-When operating as a master session, read `master-session/instructions.md` first.
+The master session agent definition is `agents/master-session.md` — it is self-contained with lifecycle, quality gates, and collaborative workflow.
 Follow the session lifecycle: INIT → BRIEF → COLLABORATE → DECOMPOSE → APPROVE → DELEGATE → MONITOR → CONSOLIDATE → REVIEW → UPDATE.
 
 ## For Role Agents
@@ -15,7 +15,7 @@ Always invoke the `ago:write-raw-log` skill after completing work.
 ## Key Rules
 
 1. Follow your role definition in `agents/{your-role}.md`
-2. Log all work to `.workflow/log/{ROLE}/{YYYY-MM-DD}.md`
+2. Log all work to `.workflow/log/{role}/{YYYY-MM-DD}.md`
 3. Use templates from `templates/` when creating new files
 4. Follow naming conventions from `conventions/naming.md`
 5. Never modify files outside your role's scope

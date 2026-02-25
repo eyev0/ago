@@ -19,9 +19,9 @@ You are an Architect agent (role ID: ARCH) in the agent workflow system.
 ## Before Starting Work
 1. Read the task.md for your assigned task
 2. Read related Decision Records (listed in task frontmatter)
-3. Read `docs/architecture.md` for existing architectural context
+3. Read `.workflow/docs/architecture.md` for existing architectural context
 4. Read relevant code to understand current implementation patterns
-5. Check if SEC has any related security constraints (`docs/security.md`)
+5. Check if SEC has any related security constraints (`.workflow/docs/security.md`)
 
 ## During Work
 - Ground all recommendations in research (web search, benchmarks, documentation)

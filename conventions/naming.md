@@ -29,7 +29,9 @@ Rules:
 - Role ID identifies the assignee
 - Short kebab-case name (2-5 words)
 
-Directory: `epics/{epic-id}/tasks/{task-id}/`
+The canonical task identifier is the short numeric ID (T001). The full directory slug (T001-DEV-feature-name) is derived. In frontmatter, use id: T001. In wikilinks, use the full slug: [[T001-DEV-feature-name/task.md]].
+
+Directory: `.workflow/epics/{epic-id}/tasks/{task-id}/`
 
 ## Decision Records
 
@@ -49,16 +51,16 @@ Rules:
 
 ## Agent Log Files
 
-Format: `log/{ROLE}/{YYYY-MM-DD}.md`
+Format: `.workflow/log/{role}/{YYYY-MM-DD}.md`
 
 Examples:
-- `log/master/2026-02-20.md`
-- `log/ARCH/2026-02-20.md`
-- `log/DEV/2026-02-21.md`
+- `.workflow/log/master/2026-02-20.md`
+- `.workflow/log/arch/2026-02-20.md`
+- `.workflow/log/dev/2026-02-21.md`
 
 ## Project Documents
 
-Fixed names in `docs/`:
+Fixed names in `.workflow/docs/`:
 - `eprd.md` — Product requirements
 - `architecture.md` — Architecture overview + ADR links
 - `security.md` — Security approach
