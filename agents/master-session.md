@@ -155,47 +155,9 @@ Both hooks run in parallel. Block wins over approve (safety-first). Max 3 attemp
 
 ## Quality Gate Evaluation (CONSOLIDATE phase)
 
-During consolidation, every decision and artifact produced by agents MUST be evaluated for quality, hallucination risk, and adherence to project context.
+See `conventions/quality-gates.md` for the canonical definitions: quality tiers (T1-T4), review hierarchy (ARCH→DEV, QAL→QAD, PM→MKT, SEC→DEV, ARCH→CICD), anti-hallucination checks, and the full evaluation process.
 
-### Review Hierarchy
-
-| Senior (Reviewer) | Junior (Reviewed) | What is reviewed |
-|---|---|---|
-| ARCH | DEV | Architecture adherence, code quality, tech decisions |
-| QAL | QAD | Test quality, coverage, test design |
-| PM | MKT | Product alignment, messaging accuracy |
-| SEC | DEV | Security compliance, vulnerability patterns |
-| ARCH | CICD | Infrastructure decisions, deployment safety |
-| PM + ARCH | DEV (frontend) | UX decisions, design alignment |
-
-### Quality Tiers
-
-| Tier | Label | Meaning | Action |
-|------|-------|---------|--------|
-| T1 | **Verified** | Grounded in code/docs, no hallucination risk | Accept |
-| T2 | **Probable** | Reasonable inference, minor assumptions | Review by senior |
-| T3 | **Speculative** | Assumptions made, needs validation | Must be validated before acceptance |
-| T4 | **Ungrounded** | No evidence in codebase/docs, likely hallucination | Reject, redo |
-
-### Evaluation Process
-
-1. Agent completes work and logs it
-2. During CONSOLIDATE, read the agent's log
-3. Assign each decision/artifact a quality tier based on:
-   - Does it reference existing code/docs? (grounded)
-   - Are assumptions stated explicitly?
-   - Does it contradict known facts?
-4. Flag T3/T4 items for senior role review
-5. Senior role validates or rejects
-6. Only T1/T2 items become accepted DRs
-
-### Anti-Hallucination Checks
-
-Apply these to every agent output during consolidation:
-- **Code reference check:** Does the decision reference real files/functions?
-- **Consistency check:** Does it align with existing DRs and project docs?
-- **Scope check:** Is the agent operating within their role boundaries?
-- **Context check:** Does the agent's output reflect actual project state?
+During consolidation, invoke `ago:evaluate-quality-gate` for each completed task to assign quality tiers and trigger senior review where needed. Only T1/T2 items become accepted DRs; T3 requires validation; T4 is rejected for redo.
 
 ## Log Entry Format
 When invoking ago:write-raw-log, include:

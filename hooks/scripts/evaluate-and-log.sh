@@ -43,8 +43,13 @@ task_title=$(awk '/^---$/{n++; next} n==1 && /^title:/{sub(/^title:[[:space:]]*/
 task_title=$(printf '%s' "$task_title" | tr -d '`$\\')
 [ -z "$task_title" ] && task_title="unknown"
 
-# Read acceptance criteria from YAML frontmatter
+# Extract acceptance_criteria — try YAML frontmatter first, fall back to markdown body
 criteria=$(awk '/^---$/{n++; next} n==1 && /acceptance_criteria:/{found=1; next} found && /^  - /{print; next} found && !/^  -/{found=0}' "$task_file")
+
+# Fallback: parse "## Acceptance Criteria" section checkboxes from markdown body
+if [ -z "$criteria" ]; then
+  criteria=$(awk '/^## Acceptance Criteria/{found=1; next} found && /^## /{exit} found && /^- \[.\] /{print}' "$task_file")
+fi
 
 if [ -z "$criteria" ]; then
   echo '{"decision": "approve", "systemMessage": "ago: evaluate-and-log: no acceptance criteria for '"$task_id"'"}'

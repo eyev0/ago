@@ -68,8 +68,13 @@ fi
 
 # --- Stage 2: Criteria Check ---
 
-# Extract acceptance_criteria from YAML frontmatter
+# Extract acceptance_criteria — try YAML frontmatter first, fall back to markdown body
 criteria=$(awk '/^---$/{n++; next} n==1 && /acceptance_criteria:/{found=1; next} found && /^  - /{print; next} found && !/^  -/{found=0}' "$task_file")
+
+# Fallback: parse "## Acceptance Criteria" section checkboxes from markdown body
+if [ -z "$criteria" ]; then
+  criteria=$(awk '/^## Acceptance Criteria/{found=1; next} found && /^## /{exit} found && /^- \[.\] /{print}' "$task_file")
+fi
 
 criteria_total=0
 criteria_met=0
@@ -77,7 +82,8 @@ criteria_results=""
 
 if [ -n "$criteria" ]; then
   while IFS= read -r criterion; do
-    criterion_text=$(echo "$criterion" | sed 's/^  - //')
+    # Strip both frontmatter format ("  - text") and body format ("- [ ] text")
+    criterion_text=$(echo "$criterion" | sed 's/^  - //; s/^- \[.\] //')
     criteria_total=$((criteria_total + 1))
     # Search transcript for evidence (fuzzy: first 3 significant words)
     search_words=$(echo "$criterion_text" | tr -cs '[:alnum:]' ' ' | awk '{for(i=1;i<=3&&i<=NF;i++) printf "%s.*", $i}')
@@ -130,7 +136,7 @@ if [ "$decision" = "BLOCK" ]; then
   fi
   if [ -n "$criteria" ]; then
     while IFS= read -r criterion; do
-      criterion_text=$(echo "$criterion" | sed 's/^  - //')
+      criterion_text=$(echo "$criterion" | sed 's/^  - //; s/^- \[.\] //')
       search_words=$(echo "$criterion_text" | tr -cs '[:alnum:]' ' ' | awk '{for(i=1;i<=3&&i<=NF;i++) printf "%s.*", $i}')
       if ! grep -qiE "$search_words" "$transcript_path" 2>/dev/null; then
         retry_prompt="${retry_prompt}${gap_num}. $criterion_text\n"
