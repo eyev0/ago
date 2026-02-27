@@ -416,39 +416,38 @@ Obsidian wikilinks `[[name]]` ищут файлы с таким именем, н
 
 | # | Проблема | Серьёзность | Новая? | TODO.md |
 |---|---------|-------------|--------|---------|
-| C1 | Пути без `.workflow/` в агентах | Критическая | Нет | P03 (scope занижен) |
-| C2 | 12 ролей vs 13 агентов | Критическая | Частично | — |
+| ~~C1~~ | ~~Пути без `.workflow/` в агентах~~ | ~~Критическая~~ | — | **ИСПРАВЛЕНО** (P03) |
+| ~~C2~~ | ~~12 ролей vs 13 агентов~~ | ~~Критическая~~ | — | **ИСПРАВЛЕНО** |
 | ~~C3~~ | ~~`evaluate-quality-gate` нет в таблице master-session~~ | ~~Критическая~~ | — | **ИСПРАВЛЕНО** |
 | ~~C4~~ | ~~master-session agent без Task tool~~ | ~~Критическая~~ | — | **ИСПРАВЛЕНО** |
 | ~~C5~~ | ~~Два canonical source для MASTER без связи~~ | ~~Критическая~~ | — | **ИСПРАВЛЕНО** |
-| H1 | TODO про нереализованный навык (уже реализован) | Высокая | Да | — |
-| H2 | `log/master/` vs `log/MASTER/` | Высокая | Нет | P04 |
-| H3 | Неполная иерархия ревью в README | Высокая | Да | — |
-| H4 | Дублирование quality gates в 3 местах | Высокая | Да | — |
-| H5 | Счёт convention-файлов в MEMORY.md | Высокая | Да | — |
+| ~~H1~~ | ~~TODO про нереализованный навык (уже реализован)~~ | ~~Высокая~~ | — | **ИСПРАВЛЕНО** |
+| ~~H2~~ | ~~`log/master/` vs `log/MASTER/`~~ | ~~Высокая~~ | — | **ИСПРАВЛЕНО** (P04) |
+| ~~H3~~ | ~~Неполная иерархия ревью в README~~ | ~~Высокая~~ | — | **ИСПРАВЛЕНО** (ссылка на quality-gates.md) |
+| ~~H4~~ | ~~Дублирование quality gates в 3 местах~~ | ~~Высокая~~ | — | **ИСПРАВЛЕНО** (canonical: quality-gates.md) |
+| ~~H5~~ | ~~Счёт convention-файлов в MEMORY.md~~ | ~~Высокая~~ | — | **ИСПРАВЛЕНО** |
 | ~~H6~~ | ~~collaborative-mode.md — сиротский файл~~ | ~~Высокая~~ | — | **ИСПРАВЛЕНО** |
-| **H7** | **P03 scope — 20+ файлов, не 5** | **Высокая** | **Да** | P03 (уточнение) |
-| **H8** | **documentation.md — смешанные пути** | **Высокая** | **Да** | — |
-| M1 | Codex.md: стаб с утвердительным языком | Средняя | Нет | P12 |
-| M2 | Правило фронтматтера: исключения не оговорены | Средняя | Нет | P09 |
+| ~~H7~~ | ~~P03 scope — 20+ файлов, не 5~~ | ~~Высокая~~ | — | **ИСПРАВЛЕНО** (все 20+ файлов) |
+| ~~H8~~ | ~~documentation.md — смешанные пути~~ | ~~Высокая~~ | — | **ИСПРАВЛЕНО** |
+| ~~M1~~ | ~~Codex.md: стаб с утвердительным языком~~ | ~~Средняя~~ | — | **ИСПРАВЛЕНО** (P12) |
+| ~~M2~~ | ~~Правило фронтматтера: исключения не оговорены~~ | ~~Средняя~~ | — | **ИСПРАВЛЕНО** (P09) |
 | M3 | Agent-log-entry: неполный список статусов | Средняя | Да | — |
-| M4 | Нет шаблона `project-docs/timeline.md` | Средняя | Нет | P02 |
-| M5 | Синтаксис вызова: `/ago:` vs `ago:` | Средняя | Нет | P10 |
+| ~~M4~~ | ~~Нет шаблона `project-docs/timeline.md`~~ | ~~Средняя~~ | — | **ИСПРАВЛЕНО** (P02) |
+| ~~M5~~ | ~~Синтаксис вызова: `/ago:` vs `ago:`~~ | ~~Средняя~~ | — | **ИСПРАВЛЕНО** (P10) |
 | ~~M6~~ | ~~Два списка навыков MASTER рассинхронизированы~~ | ~~Средняя~~ | — | **ИСПРАВЛЕНО** |
-| **M7** | **PM agent не описан как reviewer MKT** | **Средняя** | **Да** | — |
+| ~~M7~~ | ~~PM agent не описан как reviewer MKT~~ | ~~Средняя~~ | — | **ИСПРАВЛЕНО** |
 | L1 | task-lifecycle не ссылается на naming | Низкая | Да | — |
 | L2 | Роль DOC не ссылается на documentation.md | Низкая | Да | — |
 | L3 | target_date без пояснений | Низкая | Да | — |
-| — | Роудмап: нет границы spec vs working | Высокая | Да | P11 |
-| — | P13: DOC scope contradiction | Высокая | Нет | P13 ✓ |
-| — | P14: MASTER logging ownership | Средняя | Нет | P14 ✓ |
-| — | P15: ago:clarify пропускает APPROVE | Высокая | Нет | P15 ✓ |
-| — | P16: Hardcoded path | Низкая | Нет | P16 ✓ |
-| — | P17: Wikilink target ambiguity | Средняя | Нет | P17 ✓ |
+| ~~—~~ | ~~Роудмап: нет границы spec vs working~~ | ~~Высокая~~ | — | **ИСПРАВЛЕНО** (P11) |
+| ~~—~~ | ~~P13: DOC scope contradiction~~ | ~~Высокая~~ | — | **ИСПРАВЛЕНО** |
+| ~~—~~ | ~~P14: MASTER logging ownership~~ | ~~Средняя~~ | — | **ИСПРАВЛЕНО** |
+| ~~—~~ | ~~P15: ago:clarify пропускает APPROVE~~ | ~~Высокая~~ | — | **ИСПРАВЛЕНО** |
+| ~~—~~ | ~~P16: Hardcoded path~~ | ~~Низкая~~ | — | **ИСПРАВЛЕНО** |
+| ~~—~~ | ~~P17: Wikilink target ambiguity~~ | ~~Средняя~~ | — | **ИСПРАВЛЕНО** |
 
-**Все 17 пунктов TODO.md подтверждены.**
-**Новых проблем найдено: 13** (C2, C3, C4, C5, H1, H3, H4, H5, H6, H7, H8, M3, M6, M7, L1-L3)
-**Исправлено в этой сессии: 5** (C3, C4, C5, H6, M6)
+**Все 17 пунктов TODO.md исправлены.**
+**Все AUDIT проблемы исправлены, кроме 4 низкоприоритетных:** M3 (статусы в шаблоне лога), L1-L3
 
 ---
 
@@ -467,4 +466,30 @@ Obsidian wikilinks `[[name]]` ищут файлы с таким именем, н
 8. **Fixed paths** in `agents/master-session.md`: all refs now use `.workflow/` prefix
 9. **Updated** `CLAUDE.md` and `memory/AGENTS.md` references
 
-**Remaining open:** C1, C2, H1-H5, H7-H8, M1-M5, M7, L1-L3, P01-P17
+**Remaining open:** M3, L1, L2, L3 (низкий приоритет)
+
+### 2026-02-27 — Executable skills v0.2.0 + full consistency pass
+
+**Выполнено:**
+1. **All 9 skills rewritten** to executable v0.2.0 format (frontmatter, params, step-by-step instructions, validation, error handling)
+2. **Fixed C1/H7/H8:** `.workflow/` path normalization across all 20+ files (agents, conventions, skills)
+3. **Fixed C2:** WFDEV role added to `conventions/roles.md`, counts updated to 13 everywhere
+4. **Fixed H1:** Removed stale TODO from `conventions/quality-gates.md`
+5. **Fixed H2:** All log dirs lowercase (`{role}`, not `{ROLE}`)
+6. **Fixed H3/H4:** README and CLAUDE.md now reference `conventions/quality-gates.md` as canonical source
+7. **Fixed H5:** Convention file count corrected in MEMORY.md (9 files)
+8. **Fixed M1/P12:** Codex claims narrowed to "planned" in README
+9. **Fixed M2/P09:** Frontmatter rule narrowed to entity docs; logs exempt
+10. **Fixed M4/P02:** Added `templates/project-docs/timeline.md`
+11. **Fixed M5/P10:** All commands use `ago:` without leading slash
+12. **Fixed M7:** PM agent now describes review of MKT work
+13. **Fixed P05:** Short ID (`T001`) documented as canonical
+14. **Fixed P06:** `blocked → planned | in_progress` transitions explicit
+15. **Fixed P07/P08:** Doc ownership and DR authorship clarified
+16. **Fixed P13:** DOC scope limited to `.workflow/` only
+17. **Fixed P14:** MASTER logs transitions in own log only
+18. **Fixed P15:** `ago:clarify` creates task.md after APPROVE step
+19. **Fixed P16:** Removed hardcoded path from config template
+20. **Fixed P17:** Wikilinks use full slug format
+
+**Remaining open:** M3, L1, L2, L3 (низкий приоритет)
