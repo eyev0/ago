@@ -37,6 +37,8 @@ backlog -> planned -> in_progress -> review -> done
 4. A task in `review` must have all artifacts present
 5. `blocked` tasks must reference the blocker in task.md
 
+See `conventions/naming.md` for task ID format and directory naming.
+
 ## Task Creation Rules
 
 1. MASTER creates tasks during DECOMPOSE phase

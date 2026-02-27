@@ -4,7 +4,7 @@ title: {Epic title}
 status: planned
 owner: PROJ
 created: {YYYY-MM-DD}
-target_date: {YYYY-MM-DD}
+target_date: {YYYY-MM-DD}  # Planning target, not a hard deadline
 ---
 
 ## Goal

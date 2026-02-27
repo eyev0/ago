@@ -11,6 +11,6 @@
 
 **Decisions made:** {Any local decisions made during execution, or "None"}
 
-**Status:** {New task status: planned | in_progress | review | blocked}
+**Status:** {New task status: backlog | planned | in_progress | review | blocked}
 
-> Note: Agents cannot set done — only MASTER transitions tasks to done.
+> Note: Agents cannot set `done` — only MASTER transitions tasks to `done` after validation.

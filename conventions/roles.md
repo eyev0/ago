@@ -195,16 +195,18 @@
 
 ### DOC — Documentation Agent
 
+See also: `conventions/documentation.md` for ownership and editing rules.
+
 **Responsibilities:**
-- Maintain documentation integrity across all project docs
-- Ensure cross-references and links are valid
+- Maintain documentation integrity across `.workflow/docs/`
+- Ensure cross-references and wikilinks are valid
 - Update documentation after feature implementations
 - Aggregate Decision Records into project docs where appropriate
-- Maintain README and developer guides
 
 **Does NOT:**
 - Write code or tests
 - Make product/architecture decisions
+- Modify files outside `.workflow/` directory
 
 **Artifacts:** Documentation updates, integrity reports
 
