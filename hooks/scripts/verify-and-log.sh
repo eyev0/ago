@@ -55,8 +55,8 @@ else
   artifacts_ok=false
 fi
 
-# Check: task status was updated (POSIX-compatible: sed instead of grep -P)
-task_status=$(sed -n 's/^status:[[:space:]]*\([^[:space:]]*\).*/\1/p' "$task_file" 2>/dev/null | head -1)
+# Check: task status was updated (POSIX-compatible: awk scoped to frontmatter)
+task_status=$(awk '/^---$/{n++; next} n==1 && /^status:/{sub(/^status:[[:space:]]*/,""); sub(/[[:space:]]*$/,""); print; exit} n>=2{exit}' "$task_file" 2>/dev/null)
 [ -z "$task_status" ] && task_status="unknown"
 
 if [ "$task_status" = "review" ] || [ "$task_status" = "done" ]; then
@@ -105,8 +105,9 @@ max_retries=3
 
 mkdir -p "$log_dir"
 
-# Extract task title (POSIX-compatible: sed instead of grep -P)
-task_title=$(sed -n 's/^title:[[:space:]]*//p' "$task_file" 2>/dev/null | head -1)
+# Extract task title (POSIX-compatible: awk scoped to frontmatter)
+task_title=$(awk '/^---$/{n++; next} n==1 && /^title:/{sub(/^title:[[:space:]]*/,""); print; exit} n>=2{exit}' "$task_file" 2>/dev/null)
+task_title=$(printf '%s' "$task_title" | tr -d '`$\\')
 [ -z "$task_title" ] && task_title="unknown"
 
 # Determine decision
@@ -164,7 +165,7 @@ VERIFY_EOF
 
 if [ "$decision" = "BLOCK" ]; then
   system_msg="ago: Verification failed for $task_id (attempt $attempt/$max_retries, ${completeness}% complete). Address gaps listed in .workflow/log/$role/verify-${task_id}-${attempt}.md before completing."
-  echo "{\"decision\": \"block\", \"reason\": \"Verification: ${completeness}% complete (need 80%)\", \"systemMessage\": \"$system_msg\"}" >&2
+  echo "{\"decision\": \"block\", \"reason\": \"Verification: ${completeness}% complete (need 80%)\", \"systemMessage\": \"$system_msg\"}"
   exit 2
 else
   echo "{\"decision\": \"approve\", \"systemMessage\": \"ago: Verification passed for $task_id (${completeness}% complete, attempt $attempt). Log: .workflow/log/$role/verify-${task_id}-${attempt}.md\"}"

@@ -38,8 +38,9 @@ task_file="$task_dir/task.md"
 # Extract role (T001-DEV-name -> dev)
 role=$(basename "$task_dir" | sed 's/^T[0-9]*-\([A-Z]*\)-.*/\1/' | tr '[:upper:]' '[:lower:]')
 
-# Extract task title (POSIX-compatible: sed instead of grep -P)
-task_title=$(sed -n 's/^title:[[:space:]]*//p' "$task_file" 2>/dev/null | head -1)
+# Extract task title (POSIX-compatible: awk scoped to frontmatter)
+task_title=$(awk '/^---$/{n++; next} n==1 && /^title:/{sub(/^title:[[:space:]]*/,""); print; exit} n>=2{exit}' "$task_file" 2>/dev/null)
+task_title=$(printf '%s' "$task_title" | tr -d '`$\\')
 [ -z "$task_title" ] && task_title="unknown"
 
 # Read acceptance criteria from YAML frontmatter
@@ -129,7 +130,7 @@ echo "$eval_result" > "$log_dir/eval-${task_id}-${attempt}.md"
 if echo "$eval_result" | grep -qi 'Decision:.*BLOCK'; then
   completeness=$(echo "$eval_result" | grep -oE 'Completeness:[[:space:]]*[0-9]+' | grep -oE '[0-9]+' || echo "0")
   system_msg="ago: LLM evaluation blocked ${task_id} (attempt ${attempt}, ${completeness}% complete). Details: .workflow/log/${role}/eval-${task_id}-${attempt}.md"
-  echo "{\"decision\": \"block\", \"reason\": \"LLM evaluation: ${completeness}% complete (need 80%)\", \"systemMessage\": \"$system_msg\"}" >&2
+  echo "{\"decision\": \"block\", \"reason\": \"LLM evaluation: ${completeness}% complete (need 80%)\", \"systemMessage\": \"$system_msg\"}"
   exit 2
 else
   echo "{\"decision\": \"approve\", \"systemMessage\": \"ago: LLM evaluation passed for ${task_id}. Log: .workflow/log/${role}/eval-${task_id}-${attempt}.md\"}"
