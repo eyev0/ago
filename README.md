@@ -62,12 +62,12 @@ Conventions, templates, agent definitions, skills, commands, master-session logi
 
 | Item | Status |
 |------|--------|
-| `ago:status` command | Tested on Shepni |
-| `ago:readiness` command — bootstrap project into workflow system | TODO |
-| `ago:clarify` command — requirements + task decomposition | TODO |
-| `ago:execute` command — launch agents for planned tasks | TODO |
-| `ago:review` command | TODO |
-| `ago:timeline` command | TODO |
+| `ago:status` command | Done (tested on Shepni) |
+| `ago:readiness` command — bootstrap project into workflow system | Done |
+| `ago:clarify` command — requirements + task decomposition | Done |
+| `ago:execute` command — launch agents for planned tasks | Done |
+| `ago:review` command | Done |
+| `ago:timeline` command | Done |
 | Executable skills (all 9 skill SKILL.md files) | Done |
 | End-to-end test on real project work | TODO |
 | Plugin install script | TODO |

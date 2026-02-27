@@ -45,4 +45,4 @@ Quality gates: See conventions/quality-gates.md (canonical source for T1-T4 tier
 ## Roadmap
 
 Phase 2 (Activate) is in progress. See README.md for full roadmap.
-Tested: `ago:status`. Done: all 9 executable skills. TODO: `ago:readiness`, `ago:clarify`, `ago:execute`, `ago:review`, `ago:timeline`.
+Done: all 9 executable skills, all 6 commands. TODO: end-to-end test, plugin install script.
