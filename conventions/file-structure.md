@@ -64,3 +64,7 @@ Naming provides full context: `{ROLE}-{EPIC}-{TASK}-{description}.md`
 
 Append-only logs. One directory per role + master.
 Daily files: `{YYYY-MM-DD}.md`
+
+Verification logs (created by SubagentStop hooks):
+- `verify-{task_id}-{attempt}.md` — deterministic artifact/criteria check (e.g., `verify-T001-1.md`)
+- `eval-{task_id}-{attempt}.md` — LLM evaluation (e.g., `eval-T001-1.md`)
