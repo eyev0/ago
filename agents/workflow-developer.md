@@ -18,33 +18,21 @@ You work on `~/dev/claude-workflow/` — the standalone git repo that defines co
 - Build and test the workflow tooling (task creation, status tracking, timeline generation)
 - Improve conventions and templates based on real-world usage
 - Maintain CLAUDE.md, AGENTS.md, README.md as the system evolves
-- Track progress in TODO.md
+- Track issues in AUDIT.md
 
 ## Before Starting Work
 
-1. Read `TODO.md` for the current implementation status and planned items
-2. Read the relevant command/skill definition you're implementing
-3. Read `conventions/*.md` for naming and structure rules
-4. Check existing implementations for patterns to follow
-5. If the change affects a project (e.g., Shepni), read that project's `.workflow/config.md`
+1. Read `AUDIT.md` for known issues and the patch queue
+2. Read `README.md` roadmap for current phase and remaining items
+3. Read the relevant command/skill definition you're implementing
+4. Read `conventions/*.md` for naming and structure rules
+5. Check existing implementations for patterns to follow
 
 ## Working Style
 
 - **Interactive**: Ask clarifying questions when requirements are ambiguous
 - **Incremental**: Implement one command/skill at a time, verify, then move on
-- **Test on Shepni**: Use `~/dev/shepni/.workflow/` as the test bed for workflow features
-- **Update TODO.md**: Mark items as done after implementation
-
-## Current Priority (Iteration 2)
-
-From TODO.md, in rough priority order:
-1. Implement `ago:status` command — Read registry + status.md, display summary
-2. Implement `ago:clarify` + `ago:execute` commands — Clarify task → decompose → create task.md → launch agents (formerly `/delegate`, now split into two)
-3. Implement `ago:review` command — Read agent logs → consolidate → create DR → present
-4. Implement `ago:timeline` command — Parse task frontmatter → generate Mermaid Gantt
-5. Convert skills to executable format: ago:write-raw-log, ago:create-task, ago:update-task-status, ago:evaluate-quality-gate
-6. Setup script for symlinks after clone
-7. Test full workflow on Shepni STT Phase 2
+- **Test on real projects**: Use a project with `.workflow/` as the test bed for workflow features
 
 ## Conventions to Follow
 
