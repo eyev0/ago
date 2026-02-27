@@ -36,6 +36,48 @@ If `.workflow/config.md` does not exist, STOP and tell the user:
 
 Also read `.workflow/registry.md` if it exists, to understand the current state of tasks, epics, and decisions.
 
+## Step 1.5: Check for Superpowers Integration
+
+Determine whether the `superpowers` plugin is available by checking if the following skills appear in your available skills list (shown in system-reminder messages at the start of this session):
+
+- `superpowers:brainstorming`
+- `superpowers:writing-plans`
+
+Both must be present. If only one is available, treat superpowers as unavailable.
+
+**If superpowers IS available — Enhanced Path:**
+
+After completing Step 3 (COLLABORATE), you have clarified requirements with the user. Instead of doing your own decomposition (Steps 4-5), delegate to superpowers:
+
+1. **Invoke the `brainstorming` skill** with the clarified requirements as input. Pass as context:
+   - Project name and description (from `.workflow/config.md`)
+   - Active roles list
+   - Existing epics and their status
+   - The full clarified requirements from Step 3
+   - Any constraints, dependencies, or out-of-scope items identified during COLLABORATE
+
+   The brainstorming skill will explore the solution space interactively with the user, considering approaches, trade-offs, and constraints. Wait for it to produce a validated design.
+
+2. **Invoke the `writing-plans` skill** to convert the validated design into a structured task breakdown. The writing-plans skill produces bite-sized implementation tasks with steps, tests, and commits — but NOT in ago: format.
+
+3. **Convert the writing-plans output to ago: task format.** For each task in the writing-plans output:
+   - **Map to a role:** Choose the appropriate role from the Active Roles list based on the task's nature (code → DEV, architecture → ARCH, tests → QAD, docs → DOC, security → SEC)
+   - **Assign a task ID:** Use the next increment from `task_counter` (same as Step 4)
+   - **Set priority:** Tasks in earlier dependency waves get higher priority. First wave = `high`, subsequent waves = `medium`, independent nice-to-haves = `low`
+   - **Extract acceptance criteria:** Convert the writing-plans verification steps into 2-5 checkable acceptance criteria per task
+   - **Set `depends_on`:** Map the writing-plans task dependencies to ago: task IDs
+   - **Set status:** All tasks start with `backlog`
+
+4. **Skip Steps 4-5** (DECOMPOSE and Present Decomposition) — the converted output replaces these.
+
+5. **Continue at Step 6** (APPROVE) with the converted task breakdown.
+
+**If superpowers is NOT available — Standard Path:**
+
+Proceed with Steps 2-5 as written below. No changes to existing behavior.
+
+**Error handling:** If either skill invocation fails mid-execution (skill not found, timeout, or error), fall back to the standard path (Steps 4-5). Inform the user: "Superpowers skill failed to load. Falling back to standard decomposition."
+
 ## Step 2: Get the Request
 
 The user's input is: `$ARGUMENTS`
