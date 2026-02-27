@@ -36,7 +36,7 @@ Create `hooks/hooks.json`:
           {
             "type": "command",
             "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/evaluate-and-log.sh",
-            "timeout": 60
+            "timeout": 120
           }
         ]
       }
@@ -704,12 +704,12 @@ Add new entry:
 1. **Created** `hooks/hooks.json` — SubagentStop verification hooks (two command hooks)
 2. **Created** `hooks/scripts/verify-and-log.sh` — deterministic 3-stage artifact/criteria/log verification
 3. **Created** `hooks/scripts/evaluate-and-log.sh` — LLM evaluation via claude -p haiku, writes eval log
-3. **Updated** `commands/clarify.md` — optional superpowers integration (brainstorming + writing-plans)
-4. **Updated** `commands/execute.md` — optional superpowers integration (subagent-driven-development)
-5. **Updated** `agents/master-session.md` — verification hooks reference, superpowers note
-6. **Updated** `conventions/logging.md` — verification log format documentation
-7. **Updated** `conventions/file-structure.md` — verification log naming
-8. **Updated** `.claude-plugin/plugin.json` — hooks registration, version bump to 0.3.0
+4. **Updated** `commands/clarify.md` — optional superpowers integration (brainstorming + writing-plans)
+5. **Updated** `commands/execute.md` — optional superpowers integration (subagent-driven-development)
+6. **Updated** `agents/master-session.md` — verification hooks reference, superpowers note
+7. **Updated** `conventions/logging.md` — verification log format documentation
+8. **Updated** `conventions/file-structure.md` — verification log naming
+9. **Updated** `.claude-plugin/plugin.json` — hooks registration, version bump to 0.3.0
 ```
 
 **Step 5: Commit**

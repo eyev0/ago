@@ -14,6 +14,8 @@ Add a verification loop to the ago: workflow so that agent work is automatically
 
 **Mechanism:** Two parallel SubagentStop command hooks fire when any subagent tries to stop:
 
+> **Format note:** Plugin hooks.json uses the wrapper format: `{"hooks": {"SubagentStop": [...]}}`. This differs from the settings.json direct format where events are top-level keys. See the hook-development skill for details.
+
 1. **Deterministic hook** (`hooks/scripts/verify-and-log.sh`) — shell-based, 3 sequential stages:
    - **Stage 1 — Artifact check:** Verify required outputs exist (log entry written, task status updated, referenced files exist, frontmatter valid)
    - **Stage 2 — Criteria check:** Parse acceptance criteria from task.md, grep subagent transcript for evidence of each criterion being addressed
@@ -28,7 +30,7 @@ Add a verification loop to the ago: workflow so that agent work is automatically
 - Max 2 retries (3 total attempts). After max retries, approve with warnings in log.
 - Retry count tracked via verify log files: count `verify-{task_id}-*.md` files in `.workflow/log/{role}/`
 
-**Task ID extraction:** Parse from subagent transcript (`grep -oP 'Task: T\d+'` from `transcript_path` in stdin JSON).
+**Task ID extraction:** Parse from subagent transcript (`grep -oE 'Task:[[:space:]]*T[0-9]+'` from `transcript_path` in stdin JSON — POSIX-compatible, no Perl regex).
 
 ### Part B: Superpowers Integration (Deep Merge)
 
@@ -165,7 +167,7 @@ Example: `.workflow/log/dev/eval-T001-1.md`
 - LLM hook calls `claude -p --model haiku` — uses current session auth, no API key needed
 - LLM hook gracefully degrades: if `claude -p` fails, approve by default (no false blocks)
 - SubagentStop hook receives `transcript_path` in stdin JSON — primary data source
-- Max script timeout: 30s for deterministic hook, 60s for LLM evaluation hook
+- Max script timeout: 30s for deterministic hook (shell-only, no network), 120s for LLM evaluation hook (includes cold-start latency for `claude -p`; original 60s was insufficient)
 - Superpowers dependency is optional — never hard-fail if missing
 
 ## Open Questions Resolved
