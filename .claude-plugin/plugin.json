@@ -1,9 +1,10 @@
 {
   "name": "ago",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Agentic Orchestration — multi-agent workflow system for software development",
   "author": {
     "name": "eyev"
   },
-  "keywords": ["orchestration", "agents", "workflow", "multi-agent"]
+  "keywords": ["orchestration", "agents", "workflow", "multi-agent"],
+  "hooks": "hooks/hooks.json"
 }
