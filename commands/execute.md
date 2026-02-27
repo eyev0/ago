@@ -31,6 +31,43 @@ Read these files (skip any that don't exist and note their absence):
 2. `.workflow/registry.md` — entity index (epics, tasks)
 3. `.workflow/docs/status.md` — current phase, blockers
 
+### Step 2.5 — Check for Superpowers Integration
+
+Determine whether the `superpowers` plugin is available by checking if the following skill appears in your available skills list (shown in system-reminder messages):
+
+- `superpowers:subagent-driven-development`
+
+**If superpowers IS available — Enhanced Execution:**
+
+In Step 7 (Execute each wave), replace the default parallel-within-wave execution with the subagent-driven-development pattern:
+
+1. **Within each wave, execute tasks sequentially** (not in parallel):
+   - Launch a fresh subagent for the first task in the wave
+   - Wait for the subagent to complete
+   - Perform a code review checkpoint (see below)
+   - If the checkpoint passes, launch the next task's subagent
+   - Continue until all tasks in the wave are complete
+
+2. **Code review checkpoint after each task:**
+   - Read the agent's raw log entry (`.workflow/log/{role}/{date}.md`)
+   - Check for verification logs from SubagentStop hooks: `.workflow/log/{role}/verify-{task_id}-*.md` and `eval-{task_id}-*.md`
+   - If the verification hook blocked the agent and it retried, review whether the retry addressed the gaps
+   - Summarize the result to the user: what was done, what the verification found, and whether to proceed
+
+3. **Between waves** remains sequential (same as standard path).
+
+4. **Inform the user about the trade-off** at the start of execution:
+
+   > Using superpowers mode: tasks within each wave will execute sequentially with code review checkpoints between tasks. This provides tighter feedback loops at the cost of longer total execution time.
+
+**If superpowers is NOT available — Standard Execution:**
+
+Proceed with Step 7 as written (parallel launch within waves, sequential between waves). No changes to existing behavior.
+
+**Error handling:** If the subagent-driven-development skill fails to load, fall back to standard parallel execution and notify the user: "Superpowers skill unavailable. Using standard parallel execution."
+
+**Note:** SubagentStop verification hooks fire regardless of execution path (superpowers or standard). The hooks are orthogonal to the execution strategy.
+
 ### Step 3 — Find target tasks
 
 Determine which tasks are candidates for execution based on `$ARGUMENTS`:
