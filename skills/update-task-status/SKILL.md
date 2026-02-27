@@ -1,6 +1,6 @@
 ---
 name: ago:update-task-status
-description: Update a task's status in its frontmatter. Invoke when starting, completing, blocking, or unblocking a task.
+description: This skill should be used when an agent needs to "update task status", "mark task as done", "start a task", or "block a task". Updates a task's status in its YAML frontmatter.
 version: 0.2.0
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: ago:evaluate-quality-gate
-description: Evaluate agent output for quality and hallucination risk, assign T1-T4 tiers, trigger senior review. Invoke during consolidation for each completed task.
+description: This skill should be used when an agent needs to "evaluate quality", "check for hallucinations", "assign quality tiers", or "run quality gate". Evaluates agent output for quality and hallucination risk, assigns T1-T4 tiers, and triggers senior review during consolidation.
 version: 0.2.0
 ---
 
@@ -80,3 +80,7 @@ During the CONSOLIDATE step, for each agent output. Called by MASTER or CONS. Re
 - If no log entries found for task: Report "No agent logs found for {task_id}" — cannot evaluate
 - If artifacts directory is empty: Evaluate based on log entries only
 - If role not in review hierarchy: Default reviewer is MASTER
+
+## References
+
+- `conventions/quality-gates.md` — canonical source for tier definitions and review hierarchy

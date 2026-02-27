@@ -7,6 +7,8 @@ set -euo pipefail
 #   2. Criteria check — parse acceptance criteria, check transcript
 #   3. Write verification log — mandatory log with evaluation + retry prompt
 
+source "$(dirname "$0")/lib/parse-criteria.sh"
+
 input=$(cat)
 
 # Extract fields from stdin JSON
@@ -29,7 +31,7 @@ if [ -z "$task_id" ]; then
 fi
 
 # Find the task directory
-task_dir=$(find "$cwd/.workflow/epics" -type d -name "${task_id}-*" 2>/dev/null | head -1)
+task_dir=$(find "$cwd/.workflow/epics" -type d -name "${task_id}-*" 2>/dev/null | head -1 || true)
 
 if [ -z "$task_dir" ] || [ ! -f "$task_dir/task.md" ]; then
   echo '{"decision": "approve", "systemMessage": "ago: verify-and-log: task directory not found for '"$task_id"'"}'
@@ -68,13 +70,7 @@ fi
 
 # --- Stage 2: Criteria Check ---
 
-# Extract acceptance_criteria — try YAML frontmatter first, fall back to markdown body
-criteria=$(awk '/^---$/{n++; next} n==1 && /acceptance_criteria:/{found=1; next} found && /^  - /{print; next} found && !/^  -/{found=0}' "$task_file")
-
-# Fallback: parse "## Acceptance Criteria" section checkboxes from markdown body
-if [ -z "$criteria" ]; then
-  criteria=$(awk '/^## Acceptance Criteria/{found=1; next} found && /^## /{exit} found && /^- \[.\] /{print}' "$task_file")
-fi
+criteria=$(parse_criteria "$task_file")
 
 criteria_total=0
 criteria_met=0
@@ -82,8 +78,7 @@ criteria_results=""
 
 if [ -n "$criteria" ]; then
   while IFS= read -r criterion; do
-    # Strip both frontmatter format ("  - text") and body format ("- [ ] text")
-    criterion_text=$(echo "$criterion" | sed 's/^  - //; s/^- \[.\] //')
+    criterion_text=$(strip_criterion "$criterion")
     criteria_total=$((criteria_total + 1))
     # Search transcript for evidence (fuzzy: first 3 significant words)
     search_words=$(echo "$criterion_text" | tr -cs '[:alnum:]' ' ' | awk '{for(i=1;i<=3&&i<=NF;i++) printf "%s.*", $i}')
@@ -105,7 +100,7 @@ fi
 
 # --- Stage 3: Write Verification Log ---
 
-verify_count=$(find "$log_dir" -name "verify-${task_id}-*.md" 2>/dev/null | wc -l | tr -d ' ')
+verify_count=$(set +o pipefail; find "$log_dir" -name "verify-${task_id}-*.md" 2>/dev/null | wc -l | tr -d ' ')
 attempt=$((verify_count + 1))
 max_retries=3
 
@@ -136,7 +131,7 @@ if [ "$decision" = "BLOCK" ]; then
   fi
   if [ -n "$criteria" ]; then
     while IFS= read -r criterion; do
-      criterion_text=$(echo "$criterion" | sed 's/^  - //; s/^- \[.\] //')
+      criterion_text=$(strip_criterion "$criterion")
       search_words=$(echo "$criterion_text" | tr -cs '[:alnum:]' ' ' | awk '{for(i=1;i<=3&&i<=NF;i++) printf "%s.*", $i}')
       if ! grep -qiE "$search_words" "$transcript_path" 2>/dev/null; then
         retry_prompt="${retry_prompt}${gap_num}. $criterion_text\n"

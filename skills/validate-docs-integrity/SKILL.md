@@ -1,6 +1,6 @@
 ---
 name: ago:validate-docs-integrity
-description: Check documentation integrity — wikilinks, references, cross-document consistency. Invoke periodically or after major changes.
+description: This skill should be used when an agent needs to "validate documentation", "check doc integrity", "verify wikilinks", or "check cross-references". Checks documentation integrity including wikilinks, references, and cross-document consistency.
 version: 0.2.0
 ---
 
@@ -98,3 +98,7 @@ Generate a report:
 
 - If `.workflow/` doesn't exist: STOP — project not initialized
 - If a file can't be parsed: Skip it, add a warning to the report
+
+## References
+
+- `conventions/documentation.md` — canonical source for documentation standards and integrity rules

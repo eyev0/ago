@@ -1,6 +1,6 @@
 ---
 name: ago:update-registry
-description: Rebuild the registry.md index from the current filesystem state. Invoke after creating tasks, DRs, or changing statuses.
+description: This skill should be used when an agent needs to "update the registry", "rebuild the index", or "sync registry with filesystem". Rebuilds the registry.md index from the current filesystem state after creating tasks, DRs, or changing statuses.
 version: 0.2.0
 ---
 

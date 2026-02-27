@@ -1,6 +1,6 @@
 ---
 name: ago:consolidate-logs
-description: Read agent raw logs, extract significant decisions into DRs, flag conflicts. Invoke after agents complete work (CONSOLIDATE step).
+description: This skill should be used when an agent needs to "consolidate logs", "extract decisions from logs", or "review agent output". Reads agent raw logs, extracts significant decisions into DRs, and flags conflicts after agents complete work.
 version: 0.2.0
 ---
 
@@ -65,3 +65,7 @@ During the CONSOLIDATE step (step 8 of session lifecycle), after agents have com
 
 - If no log files found for the date: Report "No logs found for {date}" — this is not an error if no work was done
 - If log entry has malformed format: Skip it, log a warning
+
+## References
+
+- `conventions/logging.md` — canonical source for log format and conventions

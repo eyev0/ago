@@ -1,6 +1,6 @@
 ---
 name: ago:generate-timeline
-description: Generate Mermaid Gantt charts from task metadata at project and epic levels. Invoke after status changes or via ago:timeline command.
+description: This skill should be used when an agent needs to "generate a timeline", "create a Gantt chart", or "visualize project schedule". Generates Mermaid Gantt charts from task metadata at project and epic levels.
 version: 0.2.0
 ---
 
@@ -89,3 +89,7 @@ gantt
 - If no tasks exist in an epic: Write a timeline with an empty section
 - If task has no `created` date: Use today's date
 - If circular dependencies in `depends_on`: Log warning, use `created` date instead of `after`
+
+## References
+
+- `conventions/timeline.md` — canonical source for timeline generation rules

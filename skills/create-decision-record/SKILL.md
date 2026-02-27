@@ -1,6 +1,6 @@
 ---
 name: ago:create-decision-record
-description: Create a formal Decision Record from agent log findings. Invoke during consolidation when a significant decision is found.
+description: This skill should be used when an agent needs to "create a decision record", "write a DR", or "formalize a decision". Creates a formal Decision Record from agent log findings during consolidation.
 version: 0.2.0
 ---
 
@@ -81,3 +81,7 @@ supersedes:
 - If `.workflow/decisions/` doesn't exist: Create it
 - If task.md not found: Create the DR anyway, log a warning about missing task link
 - If a DR with the same filename already exists: Append a numeric suffix (e.g., `-2`)
+
+## References
+
+- `conventions/decision-records.md` — canonical source for DR format and lifecycle

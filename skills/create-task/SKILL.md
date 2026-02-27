@@ -1,6 +1,6 @@
 ---
 name: ago:create-task
-description: Create a new task with proper directory structure, frontmatter, and registry entry. Invoke during task decomposition (ago:clarify).
+description: This skill should be used when an agent needs to "create a task", "add a new task", or "decompose work into subtasks". Creates a new task with proper directory structure, frontmatter, and registry entry during task decomposition.
 version: 0.2.0
 ---
 
@@ -85,3 +85,8 @@ related_decisions: []
 - If `.workflow/config.md` doesn't exist: STOP — project not initialized
 - If the epic directory doesn't exist (`.workflow/epics/{epic_id}/`): Create it with an `epic.md` stub
 - If `task_counter` can't be read: STOP — config.md may be corrupt
+
+## References
+
+- `conventions/naming.md` — naming patterns for task IDs and directory slugs
+- `conventions/file-structure.md` — canonical `.workflow/` directory layout

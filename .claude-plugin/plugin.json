@@ -1,10 +1,12 @@
 {
   "name": "ago",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Agentic Orchestration — multi-agent workflow system for software development",
   "author": {
     "name": "eyev"
   },
+  "license": "MIT",
+  "repository": "https://github.com/eyev/claude-workflow",
   "keywords": ["orchestration", "agents", "workflow", "multi-agent"],
   "hooks": "hooks/hooks.json"
 }

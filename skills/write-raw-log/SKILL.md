@@ -1,6 +1,6 @@
 ---
 name: ago:write-raw-log
-description: Append a log entry to the current role's raw log. Invoke after completing any significant work on a task.
+description: This skill should be used when an agent needs to "write a log entry", "record completed work", or "append to the raw log". Appends a timestamped log entry to the current role's raw log after completing any significant work on a task.
 version: 0.2.0
 ---
 
