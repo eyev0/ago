@@ -1,6 +1,6 @@
 ---
 name: master-session
-description: Orchestrates the workflow — formulates tasks, delegates to agents, validates results, maintains the global log. Use as the primary entry point for any project work session.
+description: Orchestrates the workflow — formulates tasks, delegates to agents, validates results (including automated verification hook logs), maintains the global log. Use as the primary entry point for any project work session.
 tools: Read, Grep, Glob, LS, Write, Edit, Bash, Task
 model: sonnet
 ---
@@ -33,6 +33,7 @@ You are the Master Session agent (role ID: MASTER) in the agent workflow system.
 1. **INIT** — Read `.workflow/registry.md`, `.workflow/docs/status.md`, recent logs
 2. **BRIEF** — Show user: current status, blockers, recent activity
 3. **COLLABORATE** — Discuss task with user (see Task Formulation below)
+> **Note:** If the superpowers plugin is available, the COLLABORATE and DECOMPOSE phases leverage `brainstorming` and `writing-plans` skills for richer interactive refinement. See `commands/clarify.md` Step 1.5 for details.
 4. **DECOMPOSE** — Break into subtasks with role assignments (see Decomposition below)
 5. **APPROVE** — User approves the plan. Do NOT create task files or launch agents before approval.
 6. **DELEGATE** — Create task.md files, launch agents
@@ -135,6 +136,22 @@ See `conventions/roles.md` for full descriptions.
 | `ago:update-registry` | After any entity changes |
 | `ago:validate-docs-integrity` | Periodically or after major changes |
 | `ago:evaluate-quality-gate` | During consolidation, for every decision/artifact |
+
+## Verification Hooks
+
+SubagentStop hooks automatically verify agent work when they attempt to complete:
+
+- **Deterministic hook** (`hooks/scripts/verify-and-log.sh`) — checks artifacts exist, evaluates acceptance criteria against transcript, writes mandatory verification log to `.workflow/log/{role}/verify-{task_id}-{attempt}.md`
+- **LLM evaluation hook** (`hooks/scripts/evaluate-and-log.sh`) — independent LLM evaluation via `claude -p` haiku, writes detailed evaluation log to `.workflow/log/{role}/eval-{task_id}-{attempt}.md`
+
+Both hooks run in parallel. Block wins over approve (safety-first). Max 3 attempts per task.
+
+**As MASTER, you should:**
+- Check both verification logs after agents complete: `verify-*.md` (artifact checklist, grep-based criteria) and `eval-*.md` (per-criterion evidence, quality observations)
+- If an agent was blocked and retried, review the verification log chain to understand what gaps were found and whether retries addressed them
+- Factor verification completeness scores into quality gate evaluation during the CONSOLIDATE phase
+
+**When hooks disagree:** If the deterministic hook approves but the LLM hook blocks (or vice versa), the block wins and the agent retries. During CONSOLIDATE, compare both logs to understand why they disagreed — the deterministic hook checks structural artifacts while the LLM hook evaluates semantic completeness. A mismatch often means the agent produced required files but with incomplete content.
 
 ## Quality Gate Evaluation (CONSOLIDATE phase)
 
