@@ -28,11 +28,9 @@ Session lifecycle: INIT → BRIEF → COLLABORATE → DECOMPOSE → APPROVE → 
 
 Quality gates: See conventions/quality-gates.md (canonical source for T1-T4 tiers and review hierarchy)
 
-## Plugin Structure
+Verification: SubagentStop hooks auto-check agent work against acceptance criteria (see hooks/hooks.json)
 
-- Commands: `commands/*.md` → `ago:status`, `ago:readiness`, `ago:clarify`, `ago:execute`, `ago:review`, `ago:timeline`
-- Skills: `skills/*/SKILL.md` → `ago:write-raw-log`, `ago:create-task`, etc.
-- Agents: `agents/*.md` → `ago:product-manager`, `ago:architect`, etc.
+Superpowers: ago:clarify and ago:execute optionally leverage superpowers skills when available
 
 ## Editing Conventions
 
@@ -42,7 +40,13 @@ Quality gates: See conventions/quality-gates.md (canonical source for T1-T4 tier
 - Task IDs are globally unique (strict increment, never reused)
 - Decision Records are generated from raw logs by CONS role — agents don't write DRs directly
 
+## Plugin Structure
+
+- Commands: `commands/*.md` → `ago:status`, `ago:readiness`, `ago:clarify`, `ago:execute`, `ago:review`, `ago:timeline`
+- Skills: `skills/*/SKILL.md` → `ago:write-raw-log`, `ago:create-task`, etc.
+- Agents: `agents/*.md` → `ago:product-manager`, `ago:architect`, etc.
+- Hooks: `hooks/hooks.json` → SubagentStop verification (deterministic + LLM evaluation)
+
 ## Roadmap
 
-Phase 2 (Activate) is in progress. See README.md for full roadmap.
-Done: all 9 executable skills, all 6 commands. TODO: end-to-end test, plugin install script.
+Phase 2 (Activate) is in progress, Phase 3 (Hooks) is in progress. See README.md for full roadmap.

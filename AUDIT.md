@@ -464,6 +464,23 @@ All 17 patches resolved. Cross-references to AUDIT issues shown in parentheses.
 
 **Remaining open:** Нет
 
+### 2026-02-27 — Phase 3: Verification hooks + superpowers integration
+
+**Выполнено:**
+1. **Created** `hooks/hooks.json` — SubagentStop verification hooks (two command hooks, parallel execution)
+2. **Created** `hooks/scripts/verify-and-log.sh` — deterministic 3-stage artifact/criteria/log verification (POSIX-portable)
+3. **Created** `hooks/scripts/evaluate-and-log.sh` — LLM evaluation via claude -p haiku, writes eval log (injection-safe)
+4. **Created** `hooks/tests/` — test infrastructure (run-hook-tests.sh, test fixtures)
+5. **Updated** `commands/clarify.md` — optional superpowers integration (brainstorming + writing-plans)
+6. **Updated** `commands/execute.md` — optional superpowers integration (subagent-driven-development)
+7. **Updated** `agents/master-session.md` — verification hooks reference, hook disagreement edge case, superpowers note
+8. **Updated** `conventions/logging.md` — verification log format, LLM evaluation log format, hook documentation
+9. **Updated** `conventions/file-structure.md` — verification log naming convention
+10. **Updated** `.claude-plugin/plugin.json` — hooks registration, version bump to 0.3.0
+11. **Updated** `README.md`, `CLAUDE.md`, `MEMORY.md` — Phase 3 roadmap and architecture updates
+
+**Remaining open:** CONS agent as periodic process, docs integrity CI check
+
 ### 2026-02-27 — Executable skills v0.2.0 + full consistency pass
 
 **Выполнено:**

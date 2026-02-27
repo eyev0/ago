@@ -42,6 +42,7 @@ templates/          — File templates for projects
 agents/             — Agent role definitions (13 files)
 skills/             — Shared agent capabilities (9 skill subdirectories)
 commands/           — Slash commands (6 commands)
+hooks/              — SubagentStop verification hooks
 platforms/          — Platform-specific adaptations (Claude Code, Codex)
 memory/             — Shared agent context (AGENTS.md)
 ```
@@ -72,11 +73,12 @@ Conventions, templates, agent definitions, skills, commands, master-session logi
 | End-to-end test on real project work | TODO |
 | Plugin install script | TODO |
 
-### Phase 3: Automation & Hooks
+### Phase 3: Automation & Hooks — In Progress
 
 | Item | Status |
 |------|--------|
-| Claude Code hooks for auto-logging (PreToolUse/PostToolUse) | TODO |
+| SubagentStop verification hooks (verify-and-log.sh + evaluate-and-log.sh) | Done |
+| Superpowers integration (ago:clarify + ago:execute) | Done |
 | CONS agent as periodic process | TODO |
 | Docs integrity CI check | TODO |
 
@@ -91,7 +93,7 @@ Conventions, templates, agent definitions, skills, commands, master-session logi
 
 ### Open Questions
 
-1. Can Claude Code hooks reliably write to log files during subagent execution?
+1. ~~Can Claude Code hooks reliably write to log files during subagent execution?~~ **Yes** — SubagentStop command hooks write verification logs to `.workflow/log/{role}/` (Phase 3)
 2. How to map skills/agents to Codex's execution model?
 3. Should CONS be periodic or on-demand?
 4. Which Obsidian plugins best visualize Gantt + task dependencies?
