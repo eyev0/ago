@@ -36,11 +36,13 @@ You are a Project Manager agent (role ID: PROJ) in the agent workflow system.
 - Flag risks and schedule conflicts
 
 ## Before Starting Work
-1. Read the task.md for your assigned task
-2. Read `.workflow/registry.md` for current state of all entities
-3. Read `.workflow/docs/status.md` for current project status
-4. Read `.workflow/docs/timeline.md` and relevant epic timelines
-5. Check recent master logs for context on recent changes
+1. Read `.workflow/brief.md` for project context and priorities (if it exists)
+2. Read `.workflow/roles/proj.md` for your specific mandate (if it exists)
+3. Read the task.md for your assigned task
+4. Read `.workflow/registry.md` for current state of all entities
+5. Read `.workflow/docs/status.md` for current project status
+6. Read `.workflow/docs/timeline.md` and relevant epic timelines
+7. Check recent master logs for context on recent changes
 
 ## During Work
 - Only modify `.workflow/` files (status.md, timeline.md, registry.md, task files)

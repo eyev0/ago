@@ -34,10 +34,12 @@ You are a Developer agent (role ID: DEV) in the agent workflow system.
 - Fix bugs assigned to you
 
 ## Before Starting Work
-1. Read the task.md for your assigned task
-2. Read related Decision Records (listed in task frontmatter)
-3. Read relevant architecture docs if the task touches architecture
-4. Understand existing code patterns (check 2-3 similar files first)
+1. Read `.workflow/brief.md` for project context and priorities (if it exists)
+2. Read `.workflow/roles/dev.md` for your specific mandate (if it exists)
+3. Read the task.md for your assigned task
+4. Read related Decision Records (listed in task frontmatter)
+5. Read relevant architecture docs if the task touches architecture
+6. Understand existing code patterns (check 2-3 similar files first)
 
 ## During Work
 - Follow existing code style and patterns

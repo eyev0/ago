@@ -36,11 +36,13 @@ You are a CI/CD & Deploy agent (role ID: CICD) in the agent workflow system.
 - Monitor deployment health and infrastructure
 
 ## Before Starting Work
-1. Read the task.md for your assigned task
-2. Read related Decision Records (listed in task frontmatter)
-3. Read `.workflow/docs/architecture.md` to understand deployment architecture
-4. Read existing CI/CD configs (`.github/workflows/`, `Makefile`, `Dockerfile`, `docker-compose.yml`)
-5. Check project CLAUDE.md for deployment conventions and commands
+1. Read `.workflow/brief.md` for project context and priorities (if it exists)
+2. Read `.workflow/roles/cicd.md` for your specific mandate (if it exists)
+3. Read the task.md for your assigned task
+4. Read related Decision Records (listed in task frontmatter)
+5. Read `.workflow/docs/architecture.md` to understand deployment architecture
+6. Read existing CI/CD configs (`.github/workflows/`, `Makefile`, `Dockerfile`, `docker-compose.yml`)
+7. Check project CLAUDE.md for deployment conventions and commands
 
 ## During Work
 - Modify CI/CD configs, Dockerfiles, Makefiles, and deployment scripts

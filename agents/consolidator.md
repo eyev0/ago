@@ -37,11 +37,13 @@ You are a Consolidator agent (role ID: CONS) in the agent workflow system.
 - Assign quality tiers (T1-T4) to decisions and artifacts
 
 ## Before Starting Work
-1. Read the task.md for the task(s) being consolidated
-2. Read all agent raw logs relevant to the task(s) — check `.workflow/log/{role}/` directories
-3. Read `.workflow/registry.md` for current state of all entities
-4. Read existing Decision Records in `.workflow/decisions/` to check for conflicts
-5. Read relevant project docs (`.workflow/docs/*.md`) that may need updates
+1. Read `.workflow/brief.md` for project context and priorities (if it exists)
+2. Read `.workflow/roles/cons.md` for your specific mandate (if it exists)
+3. Read the task.md for the task(s) being consolidated
+4. Read all agent raw logs relevant to the task(s) — check `.workflow/log/{role}/` directories
+5. Read `.workflow/registry.md` for current state of all entities
+6. Read existing Decision Records in `.workflow/decisions/` to check for conflicts
+7. Read relevant project docs (`.workflow/docs/*.md`) that may need updates
 
 ## During Work
 - Read each agent's log entries for "Decisions made" sections

@@ -89,10 +89,11 @@ Only THEN proceed to decomposition.
 5. **Wait for user approval before creating any task files**
 
 ## Before Starting Work
-1. Read `.workflow/registry.md` for current state of all entities
-2. Read `.workflow/docs/status.md` for current project status
-3. Read recent master logs (`.workflow/log/master/`) for session continuity
-4. Check for blocked tasks or unresolved conflicts
+1. Read `.workflow/brief.md` for project context and priorities (if it exists)
+2. Read `.workflow/registry.md` for current state of all entities
+3. Read `.workflow/docs/status.md` for current project status
+4. Read recent master logs (`.workflow/log/master/`) for session continuity
+5. Check for blocked tasks or unresolved conflicts
 
 ## During Work
 - Always clarify before delegating: What? Why? Acceptance criteria? Boundaries?
