@@ -121,80 +121,6 @@ Verification hooks automatically check agent work against acceptance criteria.
 
 Consolidates agent logs, evaluates quality tiers, and generates decision records.
 
-## Commands
-
-| Command | Description |
-|---------|-------------|
-| `ago:readiness` | Scan project, recommend roles, create `.workflow/` |
-| `ago:bootstrap` | Capture product brief and role mandates |
-| `ago:clarify` | Clarify requirements, decompose into tasks |
-| `ago:execute` | Launch agents for planned tasks |
-| `ago:review` | Consolidate results, evaluate quality |
-| `ago:status` | Show current project state |
-| `ago:timeline` | Generate/update Mermaid Gantt timeline |
-
-## How It Works
-
-### Roles
-
-13 agent roles with clear boundaries. Each role has a definition file that specifies its responsibilities, constraints, and review relationships.
-
-| Role | Name | Responsibility |
-|------|------|----------------|
-| MASTER | Orchestrator | Coordinates all agent work (never executes directly) |
-| PM | Product Manager | Requirements, user stories, ePRD |
-| PROJ | Project Manager | Scheduling, status tracking, timeline |
-| ARCH | Architect | System design, tech decisions, reviews DEV work |
-| SEC | Security Engineer | Threat modeling, security review |
-| DEV | Developer | Implementation |
-| QAL | QA Lead | Test strategy, reviews QAD work |
-| QAD | QA Developer | Test implementation |
-| MKT | Marketer | Positioning, launch materials |
-| DOC | Documentation | Technical writing, API docs |
-| CICD | CI/CD Engineer | Pipelines, deployment |
-| CONS | Consolidator | Generates decision records from agent logs |
-
-### Quality Gates
-
-Four-tier system to prevent hallucinated or ungrounded decisions:
-
-- **T1 Verified** — backed by artifacts (code, test results, docs)
-- **T2 Probable** — supported by evidence but not fully verified
-- **T3 Speculative** — reasonable inference without direct evidence
-- **T4 Ungrounded** — assumption or guess
-
-Senior roles review junior roles: ARCH reviews DEV, QAL reviews QAD, PM reviews MKT, SEC reviews DEV.
-
-### Verification Hooks
-
-When an agent finishes, two hooks run automatically:
-
-1. **Deterministic check** — verifies artifacts exist and acceptance criteria are met
-2. **LLM evaluation** — uses Claude Haiku to assess completeness (80% threshold)
-
-Failed verification blocks the agent and triggers a retry (max 3 attempts).
-
-### Session Lifecycle
-
-```
-INIT → BRIEF → COLLABORATE → DECOMPOSE → APPROVE → DELEGATE → MONITOR → CONSOLIDATE → REVIEW → UPDATE
-```
-
-The user is always in control — agents present plans and wait for approval before acting.
-
-## Plugin Structure
-
-```
-.claude-plugin/         Plugin manifest and marketplace config
-conventions/            Rules: roles, naming, file structure, lifecycle, quality gates
-templates/              YAML frontmatter templates for all entity types
-agents/                 13 agent role definitions
-skills/                 9 shared capabilities (logging, task management, quality)
-commands/               7 user-facing slash commands
-hooks/                  SubagentStop verification hooks
-platforms/              Platform-specific guides
-```
-
 ## Superpowers Integration
 
 If the [superpowers](https://github.com/anthropics/claude-code) plugin is also installed, `ago:` commands automatically enhance their behavior:
@@ -211,7 +137,7 @@ This is detected at runtime — `ago:` works fine without it.
 | 1. Foundation | Done | Conventions, templates, agents, skills, commands |
 | 2. Activate | In Progress | All commands working; end-to-end test pending |
 | 3. Hooks | In Progress | Verification hooks done; CONS periodic pending |
-| 4. Platform Expansion | Planned | Codex integration, Obsidian sync |
+| 4. Expand | Planned | Additional integrations |
 
 ## License
 

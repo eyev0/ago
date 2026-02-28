@@ -5,17 +5,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What This Is
 
 Claude Code plugin (`ago:`) for agentic orchestration. All markdown, no code.
-Installed as a plugin via `claude plugin add /path/to/claude-workflow`.
-See `platforms/claude-code.md` for integration instructions.
 
-## Key Files
+### Install
 
-- `agents/master-session.md` — Master session: lifecycle, quality gates, collaborative workflow
-- `conventions/roles.md` — 13 roles (12 project + WFDEV meta) (MASTER, PM, PROJ, ARCH, SEC, DEV, QAL, QAD, MKT, DOC, CICD, CONS, WFDEV)
-- `conventions/file-structure.md` — `.workflow/` directory structure for target projects
-- `conventions/naming.md` — Naming patterns: `E{NN}-name`, `T{NNN}-ROLE-name`, DR format
-- `conventions/task-lifecycle.md` — Status flow: backlog → planned → in_progress → review → done
-- `.claude-plugin/plugin.json` — Plugin manifest (name: `ago`)
+From GitHub:
+```
+/plugin marketplace add eyev0/claude-workflow
+/plugin install ago@claude-workflow
+```
+
+From a local clone:
+```
+/plugin marketplace add ./path/to/claude-workflow
+/plugin install ago@claude-workflow
+```
+
+First-time setup in target project: `ago:readiness` → `ago:bootstrap` → `ago:clarify`
 
 ## Architecture
 
@@ -25,13 +30,39 @@ The system has two sides:
 
 Session lifecycle: INIT → BRIEF → COLLABORATE → DECOMPOSE → APPROVE → DELEGATE → MONITOR → CONSOLIDATE → REVIEW → UPDATE
 
-First-time flow: `ago:readiness` → `ago:bootstrap` → `ago:clarify`
-
 Quality gates: See conventions/quality-gates.md (canonical source for T1-T4 tiers and review hierarchy)
 
 Verification: SubagentStop hooks auto-check agent work against acceptance criteria (see hooks/hooks.json)
 
 Superpowers: ago:clarify and ago:execute optionally leverage superpowers skills when available
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `ago:readiness` | Scan project, recommend roles, create `.workflow/` |
+| `ago:bootstrap` | Capture product brief and role mandates |
+| `ago:clarify` | Clarify requirements, decompose into tasks |
+| `ago:execute` | Launch agents for planned tasks |
+| `ago:review` | Consolidate results, evaluate quality |
+| `ago:status` | Show current project state |
+| `ago:timeline` | Generate/update Mermaid Gantt timeline |
+
+## Skills
+
+Skills are invoked by agents during execution (not directly by users):
+
+| Skill | Purpose |
+|-------|---------|
+| `ago:write-raw-log` | Log agent work |
+| `ago:create-task` | Create task files |
+| `ago:update-task-status` | Transition task status |
+| `ago:create-decision-record` | Generate DRs |
+| `ago:consolidate-logs` | Merge agent logs |
+| `ago:generate-timeline` | Build Mermaid Gantt |
+| `ago:update-registry` | Rebuild entity index |
+| `ago:validate-docs-integrity` | Check doc references |
+| `ago:evaluate-quality-gate` | Assess quality tier |
 
 ## Agent Rules
 
@@ -60,10 +91,25 @@ Superpowers: ago:clarify and ago:execute optionally leverage superpowers skills 
 
 ## Plugin Structure
 
-- Commands: `commands/*.md` → `ago:status`, `ago:readiness`, `ago:bootstrap`, `ago:clarify`, `ago:execute`, `ago:review`, `ago:timeline`
-- Skills: `skills/*/SKILL.md` → `ago:write-raw-log`, `ago:create-task`, etc.
-- Agents: `agents/*.md` → `ago:product-manager`, `ago:architect`, etc.
-- Hooks: `hooks/hooks.json` → SubagentStop verification (deterministic + LLM evaluation)
+| Directory | Contents |
+|-----------|----------|
+| `.claude-plugin/` | Plugin manifest and marketplace config |
+| `commands/` | 7 user-facing slash commands |
+| `agents/` | 13 agent role definitions |
+| `skills/` | 9 shared capabilities (logging, task management, quality) |
+| `hooks/` | SubagentStop verification hooks |
+| `conventions/` | Rules: roles, naming, file structure, lifecycle, quality gates |
+| `templates/` | YAML frontmatter templates for all entity types |
+
+### Mapping
+
+| Workflow Concept | Claude Code Entity |
+|-----------------|-------------------|
+| Role | Agent definition (`agents/`) |
+| Skill | `ago:{skill-name}` (`skills/{skill-name}/SKILL.md`) |
+| Command | `ago:{command}` (`commands/{command}.md`) |
+| Master Session | Main conversation running `ago:execute` |
+| Agent Logs | `.workflow/log/{role}/*.md` |
 
 ## Roadmap
 

@@ -11,7 +11,7 @@
       "name": "ago",
       "source": "./",
       "description": "Agentic Orchestration — multi-agent workflow system for software development",
-      "version": "0.3.1",
+      "version": "0.4.0",
       "author": {
         "name": "eyev"
       },
