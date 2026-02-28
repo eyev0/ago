@@ -9,7 +9,11 @@ Follow the session lifecycle: INIT → BRIEF → COLLABORATE → DECOMPOSE → A
 
 ## For Role Agents
 
-Each agent role is defined in `agents/{role-name}.md`. Follow your role definition strictly.
+Before starting any work:
+0. Read `.workflow/brief.md` for project context, decision philosophy, and role priorities (if it exists)
+1. Read `.workflow/roles/{your-role}.md` for your project-specific mandate and focus areas (if it exists)
+2. Follow your role definition in `agents/{your-role}.md`
+
 Always invoke the `ago:write-raw-log` skill after completing work.
 
 ## Key Rules
@@ -48,6 +52,7 @@ Read these files for the full rule set:
 
 - `ago:status` — Show project status
 - `ago:readiness` — Assess project readiness and bootstrap `.workflow/` from existing docs
+- `ago:bootstrap` — Capture operational context: product brief, role mandates, decision philosophy
 - `ago:clarify` — Clarify requirements and decompose into tasks
 - `ago:execute` — Launch agents for planned tasks
 - `ago:review` — Consolidate and review agent work
