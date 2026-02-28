@@ -68,3 +68,18 @@ Fixed names in `.workflow/docs/`:
 - `marketing.md` — Marketing strategy
 - `status.md` — Project status tracker
 - `timeline.md` — Mermaid Gantt (project-level)
+
+## Role Mandate Documents
+
+Format: `.workflow/roles/{role-id-lowercase}.md`
+
+Examples:
+- `.workflow/roles/pm.md`
+- `.workflow/roles/arch.md`
+- `.workflow/roles/dev.md`
+- `.workflow/roles/sec.md`
+
+Rules:
+- Lowercase role ID from `conventions/roles.md`
+- One file per active role (excluding MASTER and WFDEV)
+- Created by `ago:bootstrap`

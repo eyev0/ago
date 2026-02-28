@@ -7,7 +7,9 @@ Every project using the agent workflow system contains a `.workflow/` directory 
 ```
 .workflow/
 ├── config.md          <- Project configuration
+├── brief.md           <- Project brief (product vision, constraints, philosophy)
 ├── registry.md        <- Index of all entities
+├── roles/             <- Per-role mandate documents
 ├── docs/              <- Living project documents
 ├── epics/             <- Epic directories with tasks
 ├── decisions/         <- All Decision Records
@@ -22,6 +24,28 @@ Contains project metadata:
 - Active roles for this project
 - Current task counter (for global increment)
 - Links to conventions repo
+
+## brief.md
+
+Project-level operational context created by `ago:bootstrap`. Contains:
+- Product vision, target users, domain context
+- Operational constraints (tech stack, deployment, compliance)
+- Decision philosophy
+- Role priority matrix (authority hierarchy + engagement order)
+- Current goals
+
+Read by all agents as shared context before starting work.
+
+## roles/
+
+One file per active role (excluding MASTER and WFDEV). Each contains the role's project-specific mandate:
+- First principles for this project
+- Focus areas and constraints
+- Key questions to address
+
+Naming: `{role-id-lowercase}.md` (e.g., `arch.md`, `pm.md`, `dev.md`)
+
+Created by `ago:bootstrap`. Read by each agent before starting work.
 
 ## registry.md
 
