@@ -37,7 +37,7 @@ You work on `~/dev/claude-workflow/` — the standalone git repo that defines co
 - Convert skill definitions (`skills/*.md`) from documentation to executable format
 - Build and test the workflow tooling (task creation, status tracking, timeline generation)
 - Improve conventions and templates based on real-world usage
-- Maintain CLAUDE.md, AGENTS.md, README.md as the system evolves
+- Maintain CLAUDE.md and README.md as the system evolves
 - Track issues in AUDIT.md
 
 ## Before Starting Work

@@ -10,7 +10,6 @@ See `platforms/claude-code.md` for integration instructions.
 
 ## Key Files
 
-- `memory/AGENTS.md` — Entry point for agents: rules, file locations, commands
 - `agents/master-session.md` — Master session: lifecycle, quality gates, collaborative workflow
 - `conventions/roles.md` — 13 roles (12 project + WFDEV meta) (MASTER, PM, PROJ, ARCH, SEC, DEV, QAL, QAD, MKT, DOC, CICD, CONS, WFDEV)
 - `conventions/file-structure.md` — `.workflow/` directory structure for target projects
@@ -34,6 +33,14 @@ Verification: SubagentStop hooks auto-check agent work against acceptance criter
 
 Superpowers: ago:clarify and ago:execute optionally leverage superpowers skills when available
 
+## Agent Rules
+
+- Agents follow their role definition in `agents/{role}.md`
+- Log all work to `.workflow/log/{role}/{YYYY-MM-DD}.md`
+- Use templates from `templates/` when creating new files
+- Never modify files outside your role's scope
+- Always invoke `ago:write-raw-log` after completing work
+
 ## Editing Conventions
 
 - Entity docs in `.workflow/` use YAML frontmatter (config, epic, task, decision, project docs, registry). Log files are exempt.
@@ -41,6 +48,15 @@ Superpowers: ago:clarify and ago:execute optionally leverage superpowers skills 
 - Mermaid for timeline/Gantt visualization
 - Task IDs are globally unique (strict increment, never reused)
 - Decision Records are generated from raw logs by CONS role — agents don't write DRs directly
+
+## Conventions Reference
+
+- `conventions/roles.md` — Role definitions and boundaries
+- `conventions/task-lifecycle.md` — Task statuses and transitions
+- `conventions/naming.md` — File and entity naming
+- `conventions/file-structure.md` — Project .workflow/ structure
+- `conventions/logging.md` — Logging format and rules
+- `conventions/quality-gates.md` — T1-T4 quality tiers
 
 ## Plugin Structure
 

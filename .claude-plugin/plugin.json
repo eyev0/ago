@@ -7,6 +7,5 @@
   },
   "license": "MIT",
   "repository": "https://github.com/eyev/claude-workflow",
-  "keywords": ["orchestration", "agents", "workflow", "multi-agent"],
-  "hooks": "hooks/hooks.json"
+  "keywords": ["orchestration", "agents", "workflow", "multi-agent"]
 }

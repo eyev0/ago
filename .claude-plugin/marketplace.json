@@ -1,0 +1,24 @@
+{
+  "name": "claude-workflow",
+  "owner": {
+    "name": "eyev"
+  },
+  "metadata": {
+    "description": "Agentic Orchestration plugin for multi-agent software development workflows"
+  },
+  "plugins": [
+    {
+      "name": "ago",
+      "source": "./",
+      "description": "Agentic Orchestration — multi-agent workflow system for software development",
+      "version": "0.3.1",
+      "author": {
+        "name": "eyev"
+      },
+      "repository": "https://github.com/eyev/claude-workflow",
+      "license": "MIT",
+      "keywords": ["orchestration", "agents", "workflow", "multi-agent"],
+      "category": "development-workflows"
+    }
+  ]
+}

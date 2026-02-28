@@ -1,100 +1,218 @@
 # Claude Workflow (`ago:`)
 
-Universal conventions for orchestrating AI agents across software projects. Packaged as a Claude Code plugin.
+A Claude Code plugin that orchestrates multiple AI agents to work together on software projects — with roles, task management, quality gates, and structured decision-making.
 
-## What Is This?
+## What It Does
 
-A system of rules, templates, and agent definitions that standardize how AI agents (Claude Code, Codex) work together on projects. It defines:
+You describe what you want to build. `ago:` breaks it into tasks, assigns them to specialized agent roles (Architect, Developer, QA, etc.), launches them, verifies their work, and consolidates the results. Everything is tracked in a `.workflow/` directory in your project.
 
-- **Roles** — 13 agent roles (12 project + WFDEV meta) (Product Manager, Architect, Developer, etc.)
-- **Conventions** — Naming, file structure, task lifecycle, decision records, logging
-- **Templates** — Standardized formats for tasks, epics, DRs, project docs
-- **Skills** — Shared capabilities any agent can invoke (`ago:write-raw-log`, `ago:create-task`, etc.)
-- **Commands** — User-facing commands (`ago:status`, `ago:readiness`, `ago:bootstrap`, `ago:clarify`, `ago:execute`, `ago:review`, `ago:timeline`)
-- **Master Session** — Orchestrator that coordinates all agent work
-- **Quality Gates** — T1-T4 tier system to catch hallucinations and ensure grounded decisions
-
-## Features
-
-- **13 Agent Roles** with clear boundaries: MASTER, PM, PROJ, ARCH, SEC, DEV, QAL, QAD, MKT, DOC, CICD, CONS, WFDEV
-- **Quality Gates** — T1-T4 tier system with senior-reviews-junior hierarchy (see conventions/quality-gates.md)
-- **Two-level logging**: master log (delegations/decisions) + agent raw logs (actions/local decisions)
-- **Decision Records generated from raw logs** by CONS role — agents don't write DRs directly
-- **YAML frontmatter + Mermaid Gantt** — Obsidian-compatible, renders in GitHub
-- **Platform-agnostic** — works with Claude Code (plugin); Codex support planned
-- **Per-project `.workflow/`** directory with epics, tasks, docs, logs, decision records
-- **Session lifecycle**: INIT → BRIEF → COLLABORATE → DECOMPOSE → APPROVE → DELEGATE → MONITOR → CONSOLIDATE → REVIEW → UPDATE
-- **Collaborative mode** (default): master presents plan, user approves before delegation
-
-## Quick Start
-
-1. Install as Claude Code plugin: `claude plugin add /path/to/claude-workflow`
-2. In your project, run `ago:readiness` to assess and bootstrap `.workflow/`
-3. Run `ago:bootstrap` to capture operational context: product brief, role mandates, decision philosophy
-4. Use `ago:status` to see project state
-5. Use `ago:clarify` to decompose tasks, then `ago:execute` to launch agents
-
-## Structure
+**The workflow:**
 
 ```
-.claude-plugin/     — Plugin manifest (plugin.json)
-conventions/        — Rules and standards
-templates/          — File templates for projects
-agents/             — Agent role definitions (13 files)
-skills/             — Shared agent capabilities (9 skill subdirectories)
-commands/           — Slash commands (6 commands)
-hooks/              — SubagentStop verification hooks
-platforms/          — Platform-specific adaptations (Claude Code, Codex)
-memory/             — Shared agent context (AGENTS.md)
+ago:readiness → ago:bootstrap → ago:clarify → ago:execute → ago:review
 ```
 
-## Applying to a Project
+1. **Readiness** — scans your project, recommends roles, creates `.workflow/` structure
+2. **Bootstrap** — captures your product vision, constraints, and role priorities
+3. **Clarify** — you describe a feature; `ago:` decomposes it into tasks with role assignments
+4. **Execute** — launches agent subprocesses for each task (with dependency ordering)
+5. **Review** — consolidates results, generates decision records, evaluates quality
 
-See `conventions/file-structure.md` for the standard `.workflow/` structure.
-See `platforms/claude-code.md` for Claude Code integration.
-See `platforms/codex.md` for Codex integration.
+## Prerequisites
+
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI (v1.0.33+)
+
+## Install
+
+### From GitHub
+
+```
+/plugin marketplace add eyev/claude-workflow
+/plugin install ago@claude-workflow
+```
+
+### From a local clone
+
+```bash
+git clone https://github.com/eyev/claude-workflow.git
+```
+
+Then in Claude Code:
+
+```
+/plugin marketplace add ./path/to/claude-workflow
+/plugin install ago@claude-workflow
+```
+
+### Verify installation
+
+Run `/plugin` in Claude Code and check the **Installed** tab — you should see `ago` listed.
+
+## Getting Started
+
+### 1. Initialize your project
+
+Open Claude Code in your project directory and run:
+
+```
+/ago:readiness
+```
+
+This scans your project for existing docs, package manifests, CI config, and tests. It recommends which roles to activate and creates the `.workflow/` directory with:
+
+```
+.workflow/
+├── config.md          Project config (roles, epics, task counter)
+├── registry.md        Index of all entities
+├── docs/              Project document stubs (ePRD, architecture, etc.)
+├── epics/             Epic and task files (created by ago:clarify)
+├── decisions/         Decision records (generated by CONS role)
+└── log/               Agent work logs
+    └── master/
+```
+
+### 2. Capture operational context
+
+```
+/ago:bootstrap
+```
+
+Interactive conversation that captures your product vision, technical constraints, team philosophy, and role priorities. Creates `brief.md` and per-role mandate files that give agents grounded context for decisions.
+
+### 3. Plan work
+
+```
+/ago:clarify Add user authentication with OAuth
+```
+
+Walks you through requirements clarification, then decomposes into tasks:
+
+```
+| ID   | Title              | Role | Priority | Depends On |
+|------|--------------------|------|----------|------------|
+| T001 | Auth architecture  | ARCH | high     | —          |
+| T002 | OAuth integration  | DEV  | high     | T001       |
+| T003 | Auth tests         | QAD  | medium   | T002       |
+| T004 | Security review    | SEC  | medium   | T002       |
+```
+
+You approve before any files are created.
+
+### 4. Execute
+
+```
+/ago:execute
+```
+
+Launches agent subprocesses for eligible tasks (status = `planned`, dependencies met). Independent tasks run in parallel, dependent tasks wait. Each agent:
+
+- Reads its role definition and task file
+- Does the work
+- Logs what it did
+- Sets task status to `review`
+
+Verification hooks automatically check agent work against acceptance criteria.
+
+### 5. Review results
+
+```
+/ago:review
+```
+
+Consolidates agent logs, evaluates quality tiers, and generates decision records.
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `ago:readiness` | Scan project, recommend roles, create `.workflow/` |
+| `ago:bootstrap` | Capture product brief and role mandates |
+| `ago:clarify` | Clarify requirements, decompose into tasks |
+| `ago:execute` | Launch agents for planned tasks |
+| `ago:review` | Consolidate results, evaluate quality |
+| `ago:status` | Show current project state |
+| `ago:timeline` | Generate/update Mermaid Gantt timeline |
+
+## How It Works
+
+### Roles
+
+13 agent roles with clear boundaries. Each role has a definition file that specifies its responsibilities, constraints, and review relationships.
+
+| Role | Name | Responsibility |
+|------|------|----------------|
+| MASTER | Orchestrator | Coordinates all agent work (never executes directly) |
+| PM | Product Manager | Requirements, user stories, ePRD |
+| PROJ | Project Manager | Scheduling, status tracking, timeline |
+| ARCH | Architect | System design, tech decisions, reviews DEV work |
+| SEC | Security Engineer | Threat modeling, security review |
+| DEV | Developer | Implementation |
+| QAL | QA Lead | Test strategy, reviews QAD work |
+| QAD | QA Developer | Test implementation |
+| MKT | Marketer | Positioning, launch materials |
+| DOC | Documentation | Technical writing, API docs |
+| CICD | CI/CD Engineer | Pipelines, deployment |
+| CONS | Consolidator | Generates decision records from agent logs |
+
+### Quality Gates
+
+Four-tier system to prevent hallucinated or ungrounded decisions:
+
+- **T1 Verified** — backed by artifacts (code, test results, docs)
+- **T2 Probable** — supported by evidence but not fully verified
+- **T3 Speculative** — reasonable inference without direct evidence
+- **T4 Ungrounded** — assumption or guess
+
+Senior roles review junior roles: ARCH reviews DEV, QAL reviews QAD, PM reviews MKT, SEC reviews DEV.
+
+### Verification Hooks
+
+When an agent finishes, two hooks run automatically:
+
+1. **Deterministic check** — verifies artifacts exist and acceptance criteria are met
+2. **LLM evaluation** — uses Claude Haiku to assess completeness (80% threshold)
+
+Failed verification blocks the agent and triggers a retry (max 3 attempts).
+
+### Session Lifecycle
+
+```
+INIT → BRIEF → COLLABORATE → DECOMPOSE → APPROVE → DELEGATE → MONITOR → CONSOLIDATE → REVIEW → UPDATE
+```
+
+The user is always in control — agents present plans and wait for approval before acting.
+
+## Plugin Structure
+
+```
+.claude-plugin/         Plugin manifest and marketplace config
+conventions/            Rules: roles, naming, file structure, lifecycle, quality gates
+templates/              YAML frontmatter templates for all entity types
+agents/                 13 agent role definitions
+skills/                 9 shared capabilities (logging, task management, quality)
+commands/               7 user-facing slash commands
+hooks/                  SubagentStop verification hooks
+platforms/              Platform-specific guides
+```
+
+## Superpowers Integration
+
+If the [superpowers](https://github.com/anthropics/claude-code) plugin is also installed, `ago:` commands automatically enhance their behavior:
+
+- `ago:clarify` uses `superpowers:brainstorming` + `superpowers:writing-plans` for deeper task decomposition
+- `ago:execute` uses `superpowers:subagent-driven-development` for sequential execution with code review checkpoints
+
+This is detected at runtime — `ago:` works fine without it.
 
 ## Roadmap
 
-### Phase 1: Foundation — Done
+| Phase | Status | What |
+|-------|--------|------|
+| 1. Foundation | Done | Conventions, templates, agents, skills, commands |
+| 2. Activate | In Progress | All commands working; end-to-end test pending |
+| 3. Hooks | In Progress | Verification hooks done; CONS periodic pending |
+| 4. Platform Expansion | Planned | Codex integration, Obsidian sync |
 
-Conventions, templates, agent definitions, skills, commands, master-session logic, platform guides. Applied to first project (Shepni).
+## License
 
-### Phase 2: Activate on Real Tasks — In Progress
-
-| Item | Status |
-|------|--------|
-| `ago:status` command | Done (tested on Shepni) |
-| `ago:readiness` command — bootstrap project into workflow system | Done |
-| `ago:clarify` command — requirements + task decomposition | Done |
-| `ago:execute` command — launch agents for planned tasks | Done |
-| `ago:review` command | Done |
-| `ago:timeline` command | Done |
-| Executable skills (all 9 skill SKILL.md files) | Done |
-| End-to-end test on real project work | TODO |
-| Plugin install script | TODO |
-
-### Phase 3: Automation & Hooks — In Progress
-
-| Item | Status |
-|------|--------|
-| SubagentStop verification hooks (verify-and-log.sh + evaluate-and-log.sh) | Done |
-| Superpowers integration (ago:clarify + ago:execute) | Done |
-| CONS agent as periodic process | TODO |
-| Docs integrity CI check | TODO |
-
-### Phase 4: Platform Expansion & Infra
-
-| Item | Status |
-|------|--------|
-| Codex full integration | TODO |
-| Self-hosted git (Gitea/Forgejo) | TODO |
-| Obsidian vault sync (Dataview/Tasks plugins) | TODO |
-| Cross-project task management | TODO |
-
-### Open Questions
-
-1. ~~Can Claude Code hooks reliably write to log files during subagent execution?~~ **Yes** — SubagentStop command hooks write verification logs to `.workflow/log/{role}/` (Phase 3)
-2. How to map skills/agents to Codex's execution model?
-3. Should CONS be periodic or on-demand?
-4. Which Obsidian plugins best visualize Gantt + task dependencies?
+MIT
