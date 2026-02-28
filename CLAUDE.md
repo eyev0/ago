@@ -24,15 +24,15 @@ First-time setup in target project: `ago:readiness` → `ago:bootstrap` → `ago
 
 ## Architecture
 
-The system has two sides:
-1. **This repo (plugin)** — conventions, templates, agent definitions, skills, commands
+The repo uses a marketplace layout with plugins under `plugins/`:
+1. **This repo** — marketplace wrapper; plugin content lives in `plugins/ago/`
 2. **Target projects** — install this plugin; each gets a `.workflow/` directory
 
 Session lifecycle: INIT → BRIEF → COLLABORATE → DECOMPOSE → APPROVE → DELEGATE → MONITOR → CONSOLIDATE → REVIEW → UPDATE
 
-Quality gates: See conventions/quality-gates.md (canonical source for T1-T4 tiers and review hierarchy)
+Quality gates: See plugins/ago/conventions/quality-gates.md (canonical source for T1-T4 tiers and review hierarchy)
 
-Verification: SubagentStop hooks auto-check agent work against acceptance criteria (see hooks/hooks.json)
+Verification: SubagentStop hooks auto-check agent work against acceptance criteria (see plugins/ago/hooks/hooks.json)
 
 Superpowers: ago:clarify and ago:execute optionally leverage superpowers skills when available
 
@@ -66,9 +66,9 @@ Skills are invoked by agents during execution (not directly by users):
 
 ## Agent Rules
 
-- Agents follow their role definition in `agents/{role}.md`
+- Agents follow their role definition in `plugins/ago/agents/{role}.md`
 - Log all work to `.workflow/log/{role}/{YYYY-MM-DD}.md`
-- Use templates from `templates/` when creating new files
+- Use templates from `plugins/ago/templates/` when creating new files
 - Never modify files outside your role's scope
 - Always invoke `ago:write-raw-log` after completing work
 
@@ -82,32 +82,33 @@ Skills are invoked by agents during execution (not directly by users):
 
 ## Conventions Reference
 
-- `conventions/roles.md` — Role definitions and boundaries
-- `conventions/task-lifecycle.md` — Task statuses and transitions
-- `conventions/naming.md` — File and entity naming
-- `conventions/file-structure.md` — Project .workflow/ structure
-- `conventions/logging.md` — Logging format and rules
-- `conventions/quality-gates.md` — T1-T4 quality tiers
+- `plugins/ago/conventions/roles.md` — Role definitions and boundaries
+- `plugins/ago/conventions/task-lifecycle.md` — Task statuses and transitions
+- `plugins/ago/conventions/naming.md` — File and entity naming
+- `plugins/ago/conventions/file-structure.md` — Project .workflow/ structure
+- `plugins/ago/conventions/logging.md` — Logging format and rules
+- `plugins/ago/conventions/quality-gates.md` — T1-T4 quality tiers
 
 ## Plugin Structure
 
 | Directory | Contents |
 |-----------|----------|
-| `.claude-plugin/` | Plugin manifest and marketplace config |
-| `commands/` | 7 user-facing slash commands |
-| `agents/` | 13 agent role definitions |
-| `skills/` | 9 shared capabilities (logging, task management, quality) |
-| `hooks/` | SubagentStop verification hooks |
-| `conventions/` | Rules: roles, naming, file structure, lifecycle, quality gates |
-| `templates/` | YAML frontmatter templates for all entity types |
+| `.claude-plugin/` | Marketplace config |
+| `plugins/ago/.claude-plugin/` | Plugin manifest |
+| `plugins/ago/commands/` | 7 user-facing slash commands |
+| `plugins/ago/agents/` | 13 agent role definitions |
+| `plugins/ago/skills/` | 9 shared capabilities (logging, task management, quality) |
+| `plugins/ago/hooks/` | SubagentStop verification hooks |
+| `plugins/ago/conventions/` | Rules: roles, naming, file structure, lifecycle, quality gates |
+| `plugins/ago/templates/` | YAML frontmatter templates for all entity types |
 
 ### Mapping
 
 | Workflow Concept | Claude Code Entity |
 |-----------------|-------------------|
-| Role | Agent definition (`agents/`) |
-| Skill | `ago:{skill-name}` (`skills/{skill-name}/SKILL.md`) |
-| Command | `ago:{command}` (`commands/{command}.md`) |
+| Role | Agent definition (`plugins/ago/agents/`) |
+| Skill | `ago:{skill-name}` (`plugins/ago/skills/{skill-name}/SKILL.md`) |
+| Command | `ago:{command}` (`plugins/ago/commands/{command}.md`) |
 | Master Session | Main conversation running `ago:execute` |
 | Agent Logs | `.workflow/log/{role}/*.md` |
 

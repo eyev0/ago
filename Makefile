@@ -12,12 +12,12 @@ test-hooks: test-hooks-smoke test-hooks-integration
 # Run quick smoke tests
 test-hooks-smoke:
 	@echo "=== Hook Smoke Tests ==="
-	@bash hooks/tests/run-hook-tests.sh
+	@bash plugins/ago/hooks/tests/run-hook-tests.sh
 
 # Run full integration tests
 test-hooks-integration:
 	@echo "=== Hook Integration Tests ==="
-	@bash hooks/tests/run-integration-tests.sh
+	@bash plugins/ago/hooks/tests/run-integration-tests.sh
 
 # --- Structural lint tests (require yq) ---
 
@@ -26,12 +26,12 @@ test-lint: test-skills test-agents test-structure
 
 # Validate skill frontmatter, naming, and references
 test-skills:
-	@bash tests/test-skills.sh
+	@bash plugins/ago/tests/test-skills.sh
 
 # Validate agent metadata, examples, and triggering
 test-agents:
-	@bash tests/test-agents.sh
+	@bash plugins/ago/tests/test-agents.sh
 
 # Validate plugin structure, manifest, and cross-references
 test-structure:
-	@bash tests/test-structure.sh
+	@bash plugins/ago/tests/test-structure.sh
