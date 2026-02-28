@@ -24,6 +24,7 @@
 
 | Document | Owner | Last Updated |
 |----------|-------|-------------|
+| [[brief]] | MASTER | |
 | [[eprd]] | PM | |
 | [[architecture]] | ARCH | |
 | [[security]] | SEC | |
@@ -31,3 +32,9 @@
 | [[marketing]] | MKT | |
 | [[status]] | PROJ | |
 | [[timeline]] | PROJ | |
+
+## Role Mandates
+
+| Role | Focus | Priority |
+|------|-------|----------|
+| | | |
