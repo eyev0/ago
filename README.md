@@ -27,7 +27,7 @@ ago:readiness → ago:bootstrap → ago:clarify → ago:execute → ago:review
 ### From GitHub
 
 ```
-/plugin marketplace add eyev/claude-workflow
+/plugin marketplace add eyev0/claude-workflow
 /plugin install ago@claude-workflow
 ```
 
