@@ -26,6 +26,8 @@ The system has two sides:
 
 Session lifecycle: INIT → BRIEF → COLLABORATE → DECOMPOSE → APPROVE → DELEGATE → MONITOR → CONSOLIDATE → REVIEW → UPDATE
 
+First-time flow: `ago:readiness` → `ago:bootstrap` → `ago:clarify`
+
 Quality gates: See conventions/quality-gates.md (canonical source for T1-T4 tiers and review hierarchy)
 
 Verification: SubagentStop hooks auto-check agent work against acceptance criteria (see hooks/hooks.json)
@@ -42,7 +44,7 @@ Superpowers: ago:clarify and ago:execute optionally leverage superpowers skills 
 
 ## Plugin Structure
 
-- Commands: `commands/*.md` → `ago:status`, `ago:readiness`, `ago:clarify`, `ago:execute`, `ago:review`, `ago:timeline`
+- Commands: `commands/*.md` → `ago:status`, `ago:readiness`, `ago:bootstrap`, `ago:clarify`, `ago:execute`, `ago:review`, `ago:timeline`
 - Skills: `skills/*/SKILL.md` → `ago:write-raw-log`, `ago:create-task`, etc.
 - Agents: `agents/*.md` → `ago:product-manager`, `ago:architect`, etc.
 - Hooks: `hooks/hooks.json` → SubagentStop verification (deterministic + LLM evaluation)

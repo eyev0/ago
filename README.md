@@ -10,7 +10,7 @@ A system of rules, templates, and agent definitions that standardize how AI agen
 - **Conventions** — Naming, file structure, task lifecycle, decision records, logging
 - **Templates** — Standardized formats for tasks, epics, DRs, project docs
 - **Skills** — Shared capabilities any agent can invoke (`ago:write-raw-log`, `ago:create-task`, etc.)
-- **Commands** — User-facing commands (`ago:status`, `ago:clarify`, `ago:execute`, `ago:review`, `ago:timeline`)
+- **Commands** — User-facing commands (`ago:status`, `ago:readiness`, `ago:bootstrap`, `ago:clarify`, `ago:execute`, `ago:review`, `ago:timeline`)
 - **Master Session** — Orchestrator that coordinates all agent work
 - **Quality Gates** — T1-T4 tier system to catch hallucinations and ensure grounded decisions
 
@@ -30,8 +30,9 @@ A system of rules, templates, and agent definitions that standardize how AI agen
 
 1. Install as Claude Code plugin: `claude plugin add /path/to/claude-workflow`
 2. In your project, run `ago:readiness` to assess and bootstrap `.workflow/`
-3. Use `ago:status` to see project state
-4. Use `ago:clarify` to decompose tasks, then `ago:execute` to launch agents
+3. Run `ago:bootstrap` to capture operational context: product brief, role mandates, decision philosophy
+4. Use `ago:status` to see project state
+5. Use `ago:clarify` to decompose tasks, then `ago:execute` to launch agents
 
 ## Structure
 
