@@ -523,30 +523,93 @@ Write it to `docs/.last-audit`:
 
 This is a single line containing only the SHA, no trailing newline or extra content. Create the file if it does not exist. Create the `docs/` directory if it does not exist.
 
-## Step 9 — Final Summary
+## Step 9 — Save Audit Report
 
-Present the closing summary:
+Write the full audit report to `docs/audit/{YYYY-MM-DD}-audit.md`. Create the `docs/audit/` directory if it does not exist.
+
+The report file captures everything from this audit in a format that future sessions can read and act on:
+
+```markdown
+# Audit Report — {YYYY-MM-DD}
+
+**Scope:** {commits count} commits ({date range})
+**Agents:** ARCH, SEC, QAL, PM
+**ADRs created:** {list with links}
+
+## Summary
+{2-3 sentence synthesis across all perspectives}
+
+## Critical & High Findings
+
+| # | Agent | Severity | Finding | File |
+|---|-------|----------|---------|------|
+{table of critical and high items}
+
+## All Findings
+
+### ARCH
+{numbered findings}
+
+### SEC
+{numbered findings}
+
+### QAL
+{numbered findings}
+
+### PM
+{numbered findings}
+
+## Decisions → ADRs
+{list of ADRs created with links}
+
+## Action Items
+
+### Critical
+{for each critical finding:}
+- [ ] **{title}** — {description}
+  - Acceptance: {how to verify this is fixed}
+  - Refs: {agent}-{finding#}, {ADR link if relevant}
+  - Files: {specific file paths to change}
+
+### High
+{same format}
+
+### Medium
+{same format}
+
+### Low / Recommendations
+{same format, less detail}
+```
+
+The Action Items section uses checkbox format so it can be:
+- Fed into a new session: "Fix issues from `docs/audit/{date}-audit.md`"
+- Tracked visually as items are resolved
+- Parsed by `writing-plans` as input requirements
+
+**Do not ask permission to write the report file** — this is the primary output of the audit command, like how `ago:research` writes its artifact without asking.
+
+## Step 10 — Final Summary
+
+Present the closing summary in chat:
 
 ```
 ## Audit Complete
 
 **Scope:** {scope description}
 **Commits reviewed:** {N}
-**Findings:** {total count across all agents}
-**ADRs created:** {count} ({list filenames if any})
+**Findings:** {total count across all agents} ({critical} critical, {high} high, {medium} medium, {low} low)
+**ADRs created:** {count} ({list filenames})
+**Report saved:** docs/audit/{YYYY-MM-DD}-audit.md
 **Last-audit bookmark:** updated to {short SHA}
 
-### Action Items
-{List any CRITICAL or HIGH severity items that need follow-up, with the responsible area:}
-- [{AGENT}] {title} — {one-line description of needed action}
-
-{If no action items:}
-No critical or high severity items requiring immediate action.
+### Top Action Items
+{List critical and high items as checkboxes:}
+- [ ] {title} — {one-line description}
 
 ### Next Steps
-- Review created ADRs and adjust if needed
-- Address any critical/high findings
-- Run `ago:audit` again after the next batch of work
+- Open a new session and run: "Fix critical issues from docs/audit/{date}-audit.md"
+- Or use /writing-plans with the report as input
+- Run `ago:audit` again after fixes to verify
 ```
 
 ## Rules
