@@ -1,11 +1,11 @@
 {
   "name": "ago",
-  "version": "0.5.0",
-  "description": "Agentic Orchestration — multi-agent workflow system for software development",
+  "version": "1.0.0",
+  "description": "Lightweight code audit, research, and documentation review commands",
   "author": {
     "name": "eyev"
   },
   "license": "MIT",
-  "repository": "https://github.com/eyev/claude-workflow",
-  "keywords": ["orchestration", "agents", "workflow", "multi-agent"]
+  "repository": "https://github.com/eyev0/claude-workflow",
+  "keywords": ["audit", "review", "research", "documentation", "adr"]
 }
