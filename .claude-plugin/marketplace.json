@@ -4,20 +4,20 @@
     "name": "eyev"
   },
   "metadata": {
-    "description": "Agentic Orchestration plugin for multi-agent software development workflows"
+    "description": "Lightweight code audit, research, and documentation review commands"
   },
   "plugins": [
     {
       "name": "ago",
       "source": "./plugins/ago",
-      "description": "Agentic Orchestration — multi-agent workflow system for software development",
-      "version": "0.5.0",
+      "description": "Lightweight code audit, research, and documentation review commands",
+      "version": "1.0.0",
       "author": {
         "name": "eyev"
       },
-      "repository": "https://github.com/eyev/claude-workflow",
+      "repository": "https://github.com/eyev0/claude-workflow",
       "license": "MIT",
-      "keywords": ["orchestration", "agents", "workflow", "multi-agent"],
+      "keywords": ["audit", "review", "research", "documentation", "adr"],
       "category": "development-workflows"
     }
   ]

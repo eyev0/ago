@@ -1,8 +1,0 @@
-{
-  "session_id": "test-session-001",
-  "transcript_path": "/tmp/ago-test-transcript.txt",
-  "cwd": "/tmp/ago-test-project",
-  "permission_mode": "allow",
-  "hook_event_name": "SubagentStop",
-  "reason": "Task completed"
-}
