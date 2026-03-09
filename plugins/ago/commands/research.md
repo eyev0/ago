@@ -305,8 +305,36 @@ Present the closing summary:
 ### Key Takeaways
 {Numbered list — same as Conclusions from the artifact, for quick reference}
 
-### Next Steps
-{Same as Recommendations from the artifact, for quick reference}
+### Bridge to Implementation
+
+If the research produced no actionable recommendations, skip this section and end with the summary above.
+
+Prepare the bridge context from this session's output:
+
+```
+## Ready to plan?
+
+Based on this research, here's the context for implementation planning:
+
+**Artifacts:**
+- `docs/research/{YYYY-MM-DD}-{slug}.md` (this session's research)
+{- `docs/adr/{NNN}-{title}.md` (for each ADR created this session)}
+
+**Key decisions:**
+{- 1-line per ADR created, or "No ADRs created"}
+
+**Top recommendations:**
+{- Top 3-5 recommendations from the research artifact}
+
+**Suggested pipeline:** brainstorming → writing-plans → implementation
+
+Want to start brainstorming with this context?
+[yes / adjust context / not now]
+```
+
+- **"yes"** — Invoke `superpowers:brainstorming` skill. Pass the context above — brainstorming will read the referenced artifact files for full details.
+- **"adjust context"** — Let the user modify the context block, then invoke brainstorming with the adjusted version.
+- **"not now"** — End the command. All artifacts are on disk for later use.
 ```
 
 ## Rules

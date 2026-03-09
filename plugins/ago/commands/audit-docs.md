@@ -77,6 +77,32 @@ Assemble these into a structured `DECISION_MAP`:
 | ... | ... | ... | ... |
 ```
 
+### ADR Health
+
+Perform internal consistency checks on the ADR corpus:
+
+| Check | How |
+|-------|-----|
+| **Pending review** | ADRs with status "To Review", "Proposed", or "Draft". Flag any older than 4 days as stale proposals. |
+| **Conflicting decisions** | Two or more **accepted** ADRs that assert contradictory things (e.g., one says "use SQLite", another says "use PostgreSQL" for the same concern). |
+| **Broken supersession chains** | ADR-X says "Supersedes ADR-Y" but ADR-Y does not say "Superseded by ADR-X" (or vice versa). |
+| **Missing required sections** | ADR lacks one or more of: Context, Decision, Consequences. |
+
+Present results:
+
+```
+### ADR Health
+| Check | Count | Details |
+|-------|-------|---------|
+| Pending review | {N} | {ADR-NNN, ADR-NNN — awaiting acceptance} |
+| Stale proposals (>4 days) | {N} | {ADR-NNN (created YYYY-MM-DD)} |
+| Conflicting decisions | {N} | {ADR-NNN vs ADR-NNN — both accepted, contradict on {topic}} |
+| Broken supersession chains | {N} | {ADR-NNN supersedes ADR-NNN but back-reference missing} |
+| Missing sections | {N} | {ADR-NNN: no Consequences section} |
+
+{If all checks pass: "All ADRs are internally consistent."}
+```
+
 If no ADRs exist, note "No ADRs found. Analysis will rely on code-to-documentation comparison only." and proceed to Step 3 without a decision map. The command is still useful for finding stale, missing, and outdated documentation even without ADRs.
 
 ## Step 3 — Cross-Reference ADRs with Code and Documentation
@@ -99,6 +125,32 @@ For each **superseded** ADR, check whether documentation still references the ol
 - If ADR-005 removed a component called "DataSync," search docs for references to "DataSync" outside of ADRs.
 
 Record all findings with file paths and line numbers.
+
+### 3c — ADR Internal Consistency
+
+For each issue detected in the ADR Health check (Step 2), create a finding in the appropriate category:
+
+1. **Conflicting ADRs** — Two accepted ADRs contradict each other.
+   - Category: **Outdated** (one of them must be wrong)
+   - Record both ADRs, the contradiction, and suggest the user resolve by superseding one
+   - Severity: **Critical** — conflicting truth sources undermine all documentation
+
+2. **Stale proposals** — ADR with status "To Review" or "Proposed" created more than 4 days ago.
+   - Category: **Outdated** (the proposal is aging without resolution)
+   - Record the ADR, its creation date, and days since creation
+   - Action item: "Accept, reject, or revise ADR-{NNN}"
+
+3. **Broken supersession chains** — One-sided supersession reference.
+   - Category: **Outdated** (metadata is inconsistent)
+   - This is **auto-fixable**: add the missing "Superseded by ADR-{NNN}" or "Supersedes ADR-{NNN}" field
+   - Record both ADRs and which direction is missing
+
+4. **Missing required sections** — ADR lacks Context, Decision, or Consequences.
+   - Category: **Missing**
+   - Record the ADR and which section(s) are absent
+   - Action item: "Add missing {section} to ADR-{NNN}"
+
+These findings flow into Step 4's classification and are presented alongside documentation findings in Step 5. They are actioned in Step 7 like any other finding (auto-fix for broken chains, user action for conflicts and stale proposals).
 
 ## Step 4 — Find Documentation Gaps
 
@@ -352,6 +404,77 @@ No changes were applied. Run `ago:audit-docs` again to re-evaluate.
 {If no remaining issues:}
 All detected issues have been addressed.
 ```
+
+## Step 10 — Bridge to Implementation
+
+If the audit found **zero actionable issues**, skip this step.
+
+Classify the findings from this session into two categories:
+
+### Architectural issues
+Findings that require design decisions or code changes:
+- Conflicting ADRs (from Step 3c)
+- ADR vs Code mismatches (from Step 3a)
+- Major missing documentation that implies missing features
+
+### Editorial issues
+Findings that require only documentation edits:
+- Stale references, outdated text, missing sections
+- Broken supersession chains
+- Minor documentation gaps
+
+Present the appropriate bridge based on what was found:
+
+### If architectural issues exist
+
+```
+## Ready to plan?
+
+This audit found architectural issues that need design decisions:
+
+**Artifacts:**
+- `docs/audit/{YYYY-MM-DD}-docs.md` (this session's report)
+{- list any ADRs flagged as conflicting or mismatched}
+
+**Architectural issues:**
+- {1-line per architectural issue found}
+
+**Suggested pipeline:** brainstorming → writing-plans → implementation
+
+Want to start brainstorming with this context?
+[yes / adjust context / not now]
+```
+
+- **"yes"** — Invoke `superpowers:brainstorming` skill with the context above.
+- **"adjust context"** — User modifies, then invoke.
+- **"not now"** — End the command.
+
+### If only editorial issues remain (no architectural issues, or architectural ones already addressed)
+
+```
+## Ready to fix documentation?
+
+This audit found editorial issues that can be planned and fixed:
+
+**Artifacts:**
+- `docs/audit/{YYYY-MM-DD}-docs.md` (this session's report)
+
+**Remaining editorial issues:**
+- {1-line per remaining editorial issue}
+
+**Suggested pipeline:** writing-plans → implementation (no brainstorming needed for editorial fixes)
+
+Want to create an implementation plan for these fixes?
+[yes / adjust context / not now]
+```
+
+- **"yes"** — Invoke `superpowers:writing-plans` skill with the context above.
+- **"adjust context"** — User modifies, then invoke.
+- **"not now"** — End the command.
+
+### If both types exist
+
+Present both bridges separately — architectural first, editorial second. The user can choose to address one, both, or neither.
 
 ## Rules
 

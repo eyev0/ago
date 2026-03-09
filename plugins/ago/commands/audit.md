@@ -606,10 +606,36 @@ Present the closing summary in chat:
 {List critical and high items as checkboxes:}
 - [ ] {title} — {one-line description}
 
-### Next Steps
-- Open a new session and run: "Fix critical issues from docs/audit/{date}-audit.md"
-- Or use /writing-plans with the report as input
-- Run `ago:audit` again after fixes to verify
+### Bridge to Implementation
+
+If the audit found zero action items, skip this section and end.
+
+Prepare the bridge context from this session's output:
+
+```
+## Ready to plan?
+
+Based on this audit's findings, here's the context for implementation planning:
+
+**Artifacts:**
+- `docs/audit/{YYYY-MM-DD}-audit.md` (this session's report)
+{- `docs/adr/{NNN}-{title}.md` (for each ADR created this session)}
+
+**Key decisions:**
+{- 1-line per ADR created}
+
+**Top action items:**
+{- Top 3-5 Critical/High items from the report}
+
+**Suggested pipeline:** brainstorming → writing-plans → implementation
+
+Want to start brainstorming with this context?
+[yes / adjust context / not now]
+```
+
+- **"yes"** — Invoke `superpowers:brainstorming` skill. Pass the context above — brainstorming will read the referenced artifact files for full details.
+- **"adjust context"** — Let the user modify the context block, then invoke brainstorming with the adjusted version.
+- **"not now"** — End the command. All artifacts are on disk for later use. Suggest: "Run `ago:audit` again after fixes to verify resolution."
 ```
 
 ## Rules
