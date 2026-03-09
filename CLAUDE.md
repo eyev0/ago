@@ -47,6 +47,9 @@ Superpowers: ago:clarify and ago:execute optionally leverage superpowers skills 
 | `ago:review` | Consolidate results, evaluate quality |
 | `ago:status` | Show current project state |
 | `ago:timeline` | Generate/update Mermaid Gantt timeline |
+| `ago:audit` | Multi-role retrospective review from git history + docs |
+| `ago:research` | Structured research session → artifact in docs/research/ |
+| `ago:sync-docs` | Synchronize documentation with ADRs and current code |
 
 ## Skills
 
@@ -95,7 +98,7 @@ Skills are invoked by agents during execution (not directly by users):
 |-----------|----------|
 | `.claude-plugin/` | Marketplace config |
 | `plugins/ago/.claude-plugin/` | Plugin manifest |
-| `plugins/ago/commands/` | 7 user-facing slash commands |
+| `plugins/ago/commands/` | 10 user-facing slash commands |
 | `plugins/ago/agents/` | 13 agent role definitions |
 | `plugins/ago/skills/` | 9 shared capabilities (logging, task management, quality) |
 | `plugins/ago/hooks/` | SubagentStop verification hooks |
