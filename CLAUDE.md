@@ -49,7 +49,7 @@ Superpowers: ago:clarify and ago:execute optionally leverage superpowers skills 
 | `ago:timeline` | Generate/update Mermaid Gantt timeline |
 | `ago:audit` | Multi-role retrospective review from git history + docs |
 | `ago:research` | Structured research session → artifact in docs/research/ |
-| `ago:sync-docs` | Synchronize documentation with ADRs and current code |
+| `ago:audit-docs` | Audit documentation against ADRs and current code, generate action items |
 
 ## Skills
 
