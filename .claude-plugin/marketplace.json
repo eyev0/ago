@@ -1,20 +1,20 @@
 {
-  "name": "claude-workflow",
+  "name": "ago",
   "owner": {
     "name": "eyev"
   },
   "metadata": {
-    "description": "Lightweight code audit, research, documentation review, ADR capture, and automated fix commands"
+    "description": "Cross-platform agent workflows for audit, research, documentation review, ADR capture, and remediation"
   },
   "plugins": [
     {
       "name": "ago",
       "source": "./plugins/ago",
-      "description": "Lightweight code audit, research, documentation review, ADR capture, and automated fix commands",
+      "description": "Claude plugin adapter for the ago workflow set",
       "author": {
         "name": "eyev"
       },
-      "repository": "https://github.com/eyev0/claude-workflow",
+      "repository": "https://github.com/eyev0/ago",
       "license": "MIT",
       "keywords": ["audit", "review", "research", "documentation", "adr", "fix"],
       "category": "development-workflows"

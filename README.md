@@ -1,105 +1,77 @@
-# ago — Lightweight Audit & Research for Claude Code
+# ago
 
-Five commands that give your project multi-angle code review, structured research, documentation auditing, ADR capture, and automated fix execution — all working directly with your existing `docs/` directory.
+`ago` is a lightweight set of agent workflows for retrospective audit, structured research, documentation review, ADR capture, and audit-driven remediation.
+
+It is designed as one product with platform-specific adapters:
+- Claude installs `ago` as a marketplace plugin with `ago:*` commands
+- Codex installs `ago` as a native skill set with `ago-*` scenarios
+
+All workflows operate directly on the project you are in. There is no required `.workflow/` directory and no extra runtime service to install.
+
+## Workflows
+
+### Audit
+
+Run a multi-angle retrospective review of recent project work. The workflow inspects git history, recent changes, and documentation context, then produces a consolidated audit report with actionable findings.
+
+Artifact: `docs/audit/YYYY-MM-DD-audit.md`
+
+### Research
+
+Run a structured research session on a technical topic. The workflow combines project context, codebase analysis, and external research, then saves a reusable research artifact.
+
+Artifact: `docs/research/YYYY-MM-DD-{topic}.md`
+
+### Audit Docs
+
+Check project documentation against ADRs and current code. The workflow identifies stale docs, missing docs, outdated statements, and ADR consistency issues.
+
+Artifact: `docs/audit/YYYY-MM-DD-docs.md`
+
+### Write ADR
+
+Capture a decision from the current conversation as an ADR with explicit user approval before writing it.
+
+Artifact: `docs/adr/NNN-{title}.md`
+
+### Fix Audit
+
+Take an existing audit report, group findings by dependency, plan fixes, and execute them through agents with review gates.
+
+Artifacts: draft PRs, ADRs when needed, and an updated audit report
 
 ## Install
 
-```
-/plugin marketplace add eyev0/claude-workflow
-/plugin install ago@claude-workflow
-```
+### Claude
 
-## Publishing Updates
-
-Claude Code resolves plugin updates from the marketplace Git repository, not from GitHub Releases.
-
-Author workflow:
-
-1. Update `plugins/ago/.claude-plugin/plugin.json` and bump `version`.
-2. Commit and push to `master` in `eyev0/claude-workflow`.
-3. Optional: create a GitHub Release or tag for changelog/distribution hygiene. Claude Code does not require it for plugin updates.
-
-User update flow:
-
-1. Claude Code refreshes marketplace sources in the background on startup.
-2. After the marketplace refresh sees a newer plugin `version`, Claude Code can update the installed plugin.
-3. For an immediate refresh without restarting Claude Code, run:
-
-```
-/plugin marketplace update claude-workflow
-/plugin update ago@claude-workflow
+```text
+/plugin marketplace add eyev0/ago
+/plugin install ago@ago
 ```
 
-Notes:
+Detailed guide: [docs/install/claude.md](docs/install/claude.md)
 
-- `marketplace update` refreshes the local cached copy of the marketplace repo.
-- `plugin update` refreshes the installed plugin from that cached marketplace state.
-- Bumping `version` in `plugin.json` is required. If the version does not change, Claude Code will keep the currently installed copy.
+### Codex
 
-## Commands
-
-### `ago:audit`
-
-Multi-role retrospective review. Four agents (ARCH, SEC, QAL, PM) analyze recent git commits from different angles. Produces a consolidated report with action items and proposes ADRs for architectural decisions found in the code.
-
-```
-ago:audit              # review since last audit
-ago:audit 20           # review last 20 commits
-ago:audit abc123..def456  # review specific range
+```text
+Fetch and follow instructions from https://raw.githubusercontent.com/eyev0/ago/main/.codex/INSTALL.md
 ```
 
-Output: `docs/audit/YYYY-MM-DD-audit.md`
+Detailed guide: [docs/install/codex.md](docs/install/codex.md)
 
-### `ago:research`
+## Verify
 
-Structured research session. Formulates questions, researches using code analysis and web search, produces a persistent artifact.
+After installation, start a fresh session and invoke one of the platform-native entry points:
 
-```
-ago:research CoreML acceleration for Parakeet TDT
-ago:research migrating from SQLite to PostgreSQL
-```
+- Claude: `ago:audit`, `ago:research`, `ago:audit-docs`, `ago:write-adr`, `ago:fix-audit`
+- Codex: `ago-audit`, `ago-research`, `ago-audit-docs`, `ago-write-adr`, `ago-fix-audit`
 
-Output: `docs/research/YYYY-MM-DD-{topic}.md`
+## Updating
 
-### `ago:audit-docs`
+- Claude updates through the plugin marketplace flow
+- Codex refreshes through the documented skill install/update flow
 
-Documentation audit using ADRs as source of truth. Finds stale, missing, and outdated documentation, proposes fixes, and generates a report with action items.
-
-```
-ago:audit-docs                    # audit all docs
-ago:audit-docs docs/README.md     # audit specific file
-```
-
-Output: `docs/audit/YYYY-MM-DD-docs.md`
-
-### `ago:write-adr`
-
-Captures an architectural decision from the current conversation as an ADR with status "To Review".
-
-```
-ago:write-adr                    # infer topic from conversation
-ago:write-adr Migrate to Rust    # hint for ADR title
-```
-
-Output: `docs/adr/NNN-{title}.md`
-
-### `ago:fix-audit`
-
-Parses an audit report, groups action items by dependency, plans fixes via parallel agents, executes in worktrees with ADR generation and draft PRs.
-
-```
-ago:fix-audit docs/audit/2026-03-10-audit.md
-```
-
-Output: draft PRs, ADRs, updated audit report with resolved items marked.
-
-## No Dependencies
-
-- No `.workflow/` directory
-- No agent definitions or role files
-- No built-in skills, hooks, or conventions required
-- Works with any project that has a `docs/` directory
-- Commands are self-contained markdown instructions
+Codex currently uses native skill installation rather than a plugin marketplace, so the update path is a managed reinstall of the `ago-*` skills, not a marketplace auto-update.
 
 ## License
 

@@ -1,12 +1,17 @@
 # CLAUDE.md
 
-Claude-facing notes for the `ago` plugin marketplace repository.
+Claude-facing notes for the `ago` marketplace package.
 
-For canonical install, update, and usage instructions, see `README.md`.
-For the minimal cross-agent repository overview, see `AGENTS.md`.
+For the canonical product overview and cross-platform install paths, see `README.md`.
 
-This repository contains the marketplace source and command definitions for the `ago` plugin under `plugins/ago/`.
-This plugin is intended for Codex-compatible agent workflows only.
+This repository contains the Claude marketplace source and command definitions for the `ago` plugin under `plugins/ago/`.
+
+## Install
+
+```text
+/plugin marketplace add eyev0/ago
+/plugin install ago@ago
+```
 
 ## Commands
 
@@ -18,7 +23,7 @@ This plugin is intended for Codex-compatible agent workflows only.
 | `ago:write-adr` | Capture an architectural decision from current conversation as ADR (To Review) |
 | `ago:fix-audit` | Parse audit report, plan + execute fixes via parallel agents in worktrees |
 
-All commands are self-contained. No `.workflow/` directory, no agent definitions, no external dependencies. They work with any project that has a `docs/` directory.
+All commands are self-contained. No `.workflow/` directory, no agent definitions, and no external runtime dependencies. They work with any project that has a `docs/` directory.
 
 ## Output
 
