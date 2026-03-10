@@ -10,8 +10,7 @@
     {
       "name": "ago",
       "source": "./plugins/ago",
-      "description": "Lightweight code audit, research, and documentation review commands",
-      "version": "1.0.0",
+      "description": "Lightweight code audit, research, documentation review, and ADR capture commands",
       "author": {
         "name": "eyev"
       },
