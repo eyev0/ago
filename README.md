@@ -57,7 +57,7 @@ Detailed guide: [docs/install/claude.md](docs/install/claude.md)
 Fetch and follow instructions from https://raw.githubusercontent.com/eyev0/ago/main/.codex/INSTALL.md
 ```
 
-Detailed guide: [docs/install/codex.md](docs/install/codex.md)
+Canonical instructions: [.codex/INSTALL.md](.codex/INSTALL.md)
 
 ## Verify
 
