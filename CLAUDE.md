@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Claude Code plugin (`ago:`) — lightweight code audit, research, and documentation review.
+Claude Code plugin (`ago:`) — lightweight code audit, research, documentation review, and automated fix commands.
 
 ## Install
 
@@ -17,6 +17,7 @@ Claude Code plugin (`ago:`) — lightweight code audit, research, and documentat
 | `ago:research` | Structured research session with persistent artifact in `docs/research/` |
 | `ago:audit-docs` | Audit documentation against ADRs and current code, generate action items |
 | `ago:write-adr` | Capture an architectural decision from current conversation as ADR (To Review) |
+| `ago:fix-audit` | Parse audit report, plan + execute fixes via parallel agents in worktrees |
 
 All commands are self-contained. No `.workflow/` directory, no agent definitions, no external dependencies. They work with any project that has a `docs/` directory.
 
