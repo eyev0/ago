@@ -1,17 +1,17 @@
-# CLAUDE.md
+# AGENTS.md
 
-Claude Code plugin (`ago:`) — lightweight code audit, research, documentation review, and automated fix commands.
+Agent-facing instructions for the `ago` plugin marketplace repository. Keep this file aligned with `CLAUDE.md` when command inventory, install flow, or update flow changes.
 
 ## Install
 
-```
+```text
 /plugin marketplace add eyev0/claude-workflow
 /plugin install ago@claude-workflow
 ```
 
 ## Updates
 
-Claude Code reads this marketplace from the GitHub repository itself. A GitHub Release is optional and is not required for plugin updates.
+This marketplace is resolved from the GitHub repository itself. A GitHub Release is optional and is not required for plugin updates.
 
 Publish flow:
 
@@ -21,9 +21,9 @@ Publish flow:
 How users receive it:
 
 1. Claude Code refreshes marketplace sources in the background on startup.
-2. If Claude Code is already running and you want the new version immediately:
+2. If Claude Code is already running and the new version must be visible immediately:
 
-```
+```text
 /plugin marketplace update claude-workflow
 /plugin update ago@claude-workflow
 ```
