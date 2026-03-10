@@ -18,7 +18,27 @@ Fetch and follow instructions from https://raw.githubusercontent.com/eyev0/ago/m
 
 ## Explicit Install
 
-Use the preinstalled `$skill-installer` to install these skill directories from `eyev0/ago`:
+Use this canonical command:
+
+```bash
+rm -rf "$HOME/.codex/skills/ago-audit" \
+       "$HOME/.codex/skills/ago-research" \
+       "$HOME/.codex/skills/ago-audit-docs" \
+       "$HOME/.codex/skills/ago-write-adr" \
+       "$HOME/.codex/skills/ago-fix-audit" && \
+python3 "$HOME/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py" \
+  --method download \
+  --repo eyev0/ago \
+  --path codex/skills/ago-audit \
+         codex/skills/ago-research \
+         codex/skills/ago-audit-docs \
+         codex/skills/ago-write-adr \
+         codex/skills/ago-fix-audit
+```
+
+This uses the preinstalled Codex installer script and refreshes any older installed copy first.
+
+The skill set being installed is:
 
 - `codex/skills/ago-audit`
 - `codex/skills/ago-research`
@@ -40,9 +60,9 @@ Restart Codex if needed, then confirm these skills are available:
 
 ## Refresh / Update
 
-Codex does not currently provide marketplace-style auto-updates for repo-hosted skills. To refresh `ago`, re-run the documented install/update flow for the same five skill paths.
+Codex does not currently provide marketplace-style auto-updates for repo-hosted skills. To refresh `ago`, run the same canonical command again.
 
-If the existing installed `ago-*` skill directories block reinstall, remove those installed copies first and then reinstall the same set.
+The delete step is required because the current installer does not overwrite an existing destination directory.
 
 ## Uninstall
 
