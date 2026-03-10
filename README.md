@@ -1,6 +1,6 @@
 # ago — Lightweight Audit & Research for Claude Code
 
-Three commands that give your project multi-angle code review, structured research, and documentation auditing — all working directly with your existing `docs/` directory.
+Five commands that give your project multi-angle code review, structured research, documentation auditing, ADR capture, and automated fix execution — all working directly with your existing `docs/` directory.
 
 ## Install
 
@@ -8,6 +8,33 @@ Three commands that give your project multi-angle code review, structured resear
 /plugin marketplace add eyev0/claude-workflow
 /plugin install ago@claude-workflow
 ```
+
+## Publishing Updates
+
+Claude Code resolves plugin updates from the marketplace Git repository, not from GitHub Releases.
+
+Author workflow:
+
+1. Update `plugins/ago/.claude-plugin/plugin.json` and bump `version`.
+2. Commit and push to `master` in `eyev0/claude-workflow`.
+3. Optional: create a GitHub Release or tag for changelog/distribution hygiene. Claude Code does not require it for plugin updates.
+
+User update flow:
+
+1. Claude Code refreshes marketplace sources in the background on startup.
+2. After the marketplace refresh sees a newer plugin `version`, Claude Code can update the installed plugin.
+3. For an immediate refresh without restarting Claude Code, run:
+
+```
+/plugin marketplace update claude-workflow
+/plugin update ago@claude-workflow
+```
+
+Notes:
+
+- `marketplace update` refreshes the local cached copy of the marketplace repo.
+- `plugin update` refreshes the installed plugin from that cached marketplace state.
+- Bumping `version` in `plugin.json` is required. If the version does not change, Claude Code will keep the currently installed copy.
 
 ## Commands
 
@@ -45,12 +72,33 @@ ago:audit-docs docs/README.md     # audit specific file
 
 Output: `docs/audit/YYYY-MM-DD-docs.md`
 
+### `ago:write-adr`
+
+Captures an architectural decision from the current conversation as an ADR with status "To Review".
+
+```
+ago:write-adr                    # infer topic from conversation
+ago:write-adr Migrate to Rust    # hint for ADR title
+```
+
+Output: `docs/adr/NNN-{title}.md`
+
+### `ago:fix-audit`
+
+Parses an audit report, groups action items by dependency, plans fixes via parallel agents, executes in worktrees with ADR generation and draft PRs.
+
+```
+ago:fix-audit docs/audit/2026-03-10-audit.md
+```
+
+Output: draft PRs, ADRs, updated audit report with resolved items marked.
+
 ## No Dependencies
 
 - No `.workflow/` directory
 - No agent definitions or role files
-- No skills, hooks, or conventions
-- Works with any project that has documentation files
+- No built-in skills, hooks, or conventions required
+- Works with any project that has a `docs/` directory
 - Commands are self-contained markdown instructions
 
 ## License

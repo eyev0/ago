@@ -4,19 +4,19 @@
     "name": "eyev"
   },
   "metadata": {
-    "description": "Lightweight code audit, research, and documentation review commands"
+    "description": "Lightweight code audit, research, documentation review, ADR capture, and automated fix commands"
   },
   "plugins": [
     {
       "name": "ago",
       "source": "./plugins/ago",
-      "description": "Lightweight code audit, research, documentation review, and ADR capture commands",
+      "description": "Lightweight code audit, research, documentation review, ADR capture, and automated fix commands",
       "author": {
         "name": "eyev"
       },
       "repository": "https://github.com/eyev0/claude-workflow",
       "license": "MIT",
-      "keywords": ["audit", "review", "research", "documentation", "adr"],
+      "keywords": ["audit", "review", "research", "documentation", "adr", "fix"],
       "category": "development-workflows"
     }
   ]
