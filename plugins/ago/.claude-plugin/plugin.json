@@ -1,6 +1,6 @@
 {
   "name": "ago",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Lightweight code audit, research, documentation review, ADR capture, and automated fix commands",
   "author": {
     "name": "eyev"
