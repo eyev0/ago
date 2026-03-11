@@ -6,7 +6,7 @@ This installs the Claude marketplace adapter for `ago`. After installation, Clau
 - `ago:research`
 - `ago:audit-docs`
 - `ago:write-adr`
-- `ago:fix-audit`
+
 
 ## Install
 

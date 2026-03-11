@@ -63,8 +63,8 @@ Canonical instructions: [.codex/INSTALL.md](.codex/INSTALL.md)
 
 After installation, start a fresh session and invoke one of the platform-native entry points:
 
-- Claude: `ago:audit`, `ago:research`, `ago:audit-docs`, `ago:write-adr`, `ago:fix-audit`
-- Codex: `ago-audit`, `ago-research`, `ago-audit-docs`, `ago-write-adr`, `ago-fix-audit`
+- Claude: `ago:audit`, `ago:research`, `ago:audit-docs`, `ago:write-adr`
+- Codex: `ago-audit`, `ago-research`, `ago-audit-docs`, `ago-write-adr`
 
 ## Updating
 

@@ -8,16 +8,14 @@ Install `ago` through Codex's native skills ecosystem. Do not use manual local r
 rm -rf "$HOME/.codex/skills/ago-audit" \
        "$HOME/.codex/skills/ago-research" \
        "$HOME/.codex/skills/ago-audit-docs" \
-       "$HOME/.codex/skills/ago-write-adr" \
-       "$HOME/.codex/skills/ago-fix-audit" && \
+       "$HOME/.codex/skills/ago-write-adr" && \
 python3 "$HOME/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py" \
   --method download \
   --repo eyev0/ago \
   --path codex/skills/ago-audit \
          codex/skills/ago-research \
          codex/skills/ago-audit-docs \
-         codex/skills/ago-write-adr \
-         codex/skills/ago-fix-audit
+         codex/skills/ago-write-adr
 ```
 
 ## Install
@@ -30,7 +28,6 @@ If you need the explicit repo paths, the install target set is:
 - `codex/skills/ago-research`
 - `codex/skills/ago-audit-docs`
 - `codex/skills/ago-write-adr`
-- `codex/skills/ago-fix-audit`
 
 These install the full `ago` working set for Codex.
 
@@ -48,4 +45,3 @@ Confirm that these installed skill directories exist in the Codex skills directo
 - `ago-research`
 - `ago-audit-docs`
 - `ago-write-adr`
-- `ago-fix-audit`

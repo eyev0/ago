@@ -417,6 +417,26 @@ After all 4 agents return, consolidate their findings into a single structured r
 | Total items for follow-up | {N} |
 ```
 
+### Action Item Extraction
+
+After consolidating, classify **every individual finding** from all four agents as one of:
+- **Decision → ADR candidate** — goes to Step 6 for ADR proposal
+- **Action Item** — an issue, gap, or tech debt that needs fixing
+
+**Every finding that is not a pure architectural decision MUST become an action item.** This includes:
+- Bug fixes (missing phase updates, inconsistent behavior, dead code)
+- Test coverage gaps (UNTESTED, PARTIALLY_TESTED, deleted tests)
+- Technical debt (code duplication, naming inconsistency, missing error handling)
+- Security hardening (silent failures, panics, missing validation)
+- Documentation gaps (missing doc updates, stale references)
+- UX issues (dead UI code, missing user feedback)
+
+Pure informational observations may be excluded (e.g., "positive security decision", "follows existing pattern"). **When in doubt, include it.**
+
+Assign a **category** to each action item: `Bug Fix`, `Test Coverage`, `Tech Debt`, `Security`, `Documentation`, or `UX`.
+
+Store the full classified list as `ALL_ACTION_ITEMS` for use in Steps 9 and 9b.
+
 ## Step 6 — Propose ADRs
 
 Collect all **decisions** identified by the agents (from "Architecture Decisions Detected", "Decisions with Security Implications", "Quality Decisions", and "Product Decisions" sections). Filter to only those with **MEDIUM or HIGH confidence** — do not propose ADRs for LOW confidence decisions.
@@ -564,10 +584,13 @@ The report file captures everything from this audit in a format that future sess
 
 ## Action Items
 
+**IMPORTANT:** This section MUST include an action item for EVERY finding from all agents that is not a pure decision (→ ADR). Cross-reference the "All Findings" sections above — if a finding is listed there and is not an ADR candidate, it MUST appear here as an action item. Err on the side of inclusion.
+
 ### Critical
-{for each critical finding:}
+{for each critical-severity action item:}
 - [ ] **{title}** — {description}
   - Acceptance: {how to verify this is fixed}
+  - Category: {Bug Fix | Test Coverage | Tech Debt | Security | Documentation | UX}
   - Refs: {agent}-{finding#}, {ADR link if relevant}
   - Files: {specific file paths to change}
 
@@ -578,17 +601,64 @@ The report file captures everything from this audit in a format that future sess
 {same format}
 
 ### Low / Recommendations
-{same format, less detail}
+{same format}
 ```
 
 The Action Items section uses checkbox format so it can be:
 - Fed into a new session: "Fix issues from `docs/audit/{date}-audit.md`"
 - Tracked visually as items are resolved
 - Parsed by `writing-plans` as input requirements
+- Processed via parallel fix agents (Step 11-13)
 
 **Do not ask permission to write the report file** — this is the primary output of the audit command, like how `ago:research` writes its artifact without asking.
 
-## Step 10 — Final Summary
+## Step 9b — Save Action Items File
+
+Generate a standalone action items file at `docs/audit/{YYYY-MM-DD}-action-items.md`. This is a focused, categorized extract — ready for review and for parallel agent processing (Step 11-13).
+
+```markdown
+# Audit Report — Action Items ({YYYY-MM-DD})
+
+**Source:** docs/audit/{YYYY-MM-DD}-audit.md
+**Total items:** {N} ({X critical, Y high, Z medium, W low)
+
+## Category Overview
+
+| Category | Count | Severity Breakdown |
+|----------|-------|--------------------|
+| Bug Fix | {N} | {breakdown} |
+| Test Coverage | {N} | {breakdown} |
+| Tech Debt | {N} | {breakdown} |
+| Security | {N} | {breakdown} |
+| Documentation | {N} | {breakdown} |
+| UX | {N} | {breakdown} |
+
+(Omit categories with zero items.)
+
+## Action Items
+
+### Critical
+- [ ] **{title}** — {description}
+  - Acceptance: {criteria}
+  - Category: {category}
+  - Refs: {refs}
+  - Files: {files}
+
+### High
+{same format}
+
+### Medium
+{same format}
+
+### Low / Recommendations
+{same format}
+```
+
+The Category Overview table gives a quick view of where the gaps are concentrated. The action items themselves use the same format as the audit report.
+
+**Do not ask permission to write this file** — it is a companion output to the audit report.
+
+## Step 10 — Final Summary & Next Steps
 
 Present the closing summary in chat:
 
@@ -600,50 +670,207 @@ Present the closing summary in chat:
 **Findings:** {total count across all agents} ({critical} critical, {high} high, {medium} medium, {low} low)
 **ADRs created:** {count} ({list filenames})
 **Report saved:** docs/audit/{YYYY-MM-DD}-audit.md
+**Action items saved:** docs/audit/{YYYY-MM-DD}-action-items.md
 **Last-audit bookmark:** updated to {short SHA}
 
-### Top Action Items
-{List critical and high items as checkboxes:}
-- [ ] {title} — {one-line description}
+### Action Items by Category
 
-### Bridge to Implementation
+| Category | Count | Top Severity |
+|----------|-------|-------------|
+| Bug Fix | {N} | {highest severity in category} |
+| Test Coverage | {N} | ... |
+| Tech Debt | {N} | ... |
+| Security | {N} | ... |
+| Documentation | {N} | ... |
+| UX | {N} | ... |
 
-If the audit found zero action items, skip this section and end.
-
-Prepare the bridge context from this session's output:
-
-```
-## Ready to plan?
-
-Based on this audit's findings, here's the context for implementation planning:
-
-**Artifacts:**
-- `docs/audit/{YYYY-MM-DD}-audit.md` (this session's report)
-{- `docs/adr/{NNN}-{title}.md` (for each ADR created this session)}
-
-**Key decisions:**
-{- 1-line per ADR created}
-
-**Top action items:**
-{- Top 3-5 Critical/High items from the report}
-
-**Suggested pipeline:** brainstorming → writing-plans → implementation
-
-Want to start brainstorming with this context?
-[yes / adjust context / not now]
+(Omit categories with zero items.)
 ```
 
-- **"yes"** — Invoke `superpowers:brainstorming` skill. Pass the context above — brainstorming will read the referenced artifact files for full details.
-- **"adjust context"** — Let the user modify the context block, then invoke brainstorming with the adjusted version.
-- **"not now"** — End the command. All artifacts are on disk for later use. Suggest: "Run `ago:audit` again after fixes to verify resolution."
+If the audit found **zero action items**, end here with: "Clean audit — no action items. Run `ago:audit` again after the next batch of work."
+
+Otherwise, present the next steps:
+
 ```
+### What's Next?
+
+{N} action items across {M} categories. Choose how to proceed:
+
+1. **Fix now** — Launch parallel agents to fix items in isolated worktrees
+   - Groups items by category, one agent per group
+   - Each agent works independently, commits to its own branch
+   - Best for: mechanical fixes (bugs, test gaps, cleanups, docs)
+
+2. **Brainstorm first** — Collaborative design session for complex findings
+   - Best for: architectural decisions, trade-offs that need discussion
+   - Pipeline: brainstorming → writing-plans → implementation
+
+3. **Not now** — All artifacts saved to disk for later
+   - Report: docs/audit/{YYYY-MM-DD}-audit.md
+   - Action items: docs/audit/{YYYY-MM-DD}-action-items.md
+
+[1 / 2 / 3]
+```
+
+- **"1" (Fix now)** — Proceed to Step 11 (Parallel Fix).
+- **"2" (Brainstorm)** — Invoke `superpowers:brainstorming` skill with this context:
+  ```
+  Based on this audit's findings:
+  - Audit report: docs/audit/{YYYY-MM-DD}-audit.md
+  - Action items: docs/audit/{YYYY-MM-DD}-action-items.md
+  {- ADRs: docs/adr/{NNN}-{title}.md (for each created)}
+  Top items: {top 3-5 Critical/High items}
+  ```
+- **"3" (Not now)** — End the command. Suggest: "Run `ago:audit` again after fixes to verify."
+
+**Do NOT proceed to Step 11 unless the user explicitly chooses option 1.**
+
+## Step 11 — Group & Approve Fix Plan
+
+Group action items for parallel execution.
+
+### 11a — Categorized grouping
+
+Group items by their **Category** tag (Bug Fix, Test Coverage, Tech Debt, Security, Documentation, UX). Each category becomes one agent group.
+
+Within each group, order items by severity: Critical → High → Medium → Low.
+
+If a category has **more than 8 items**, split it into sub-groups of 5-8 items each (e.g., "Test Coverage (1/2)", "Test Coverage (2/2)").
+
+If a category has **only 1 item at Low severity**, batch it with other lone Low items into a "Low Batch" group (up to 5 items per batch).
+
+### 11b — File conflict check
+
+For each pair of groups, check if they share any files (from the `Files:` line of items). If two groups share files, **merge them** to avoid conflicts between parallel agents.
+
+### 11c — Present fix plan
+
+```
+## Fix Plan
+
+**Items:** {N} total ({severity breakdown})
+**Agent groups:** {M} parallel
+
+### Agent 1 — {category} [{file list, abbreviated if >5}]
+  {SEVERITY} — {title}
+  {SEVERITY} — {title}
+
+### Agent 2 — {category} [{file list}]
+  {SEVERITY} — {title}
+
+### Agent 3 — Low Batch [{file list}]
+  LOW x{N} — {title}, {title}, ...
+
+Proceed? [yes / adjust / cancel]
+```
+
+- **yes** — proceed to Step 12
+- **adjust** — user describes changes. Re-group and re-present.
+- **cancel** — end. All artifacts remain on disk.
+
+**Do NOT proceed until the user confirms.**
+
+## Step 12 — Dispatch Fix Agents
+
+Launch agents **in parallel** using the Agent tool. Each agent runs in an isolated worktree (`isolation: "worktree"`).
+
+For each agent group, use the Agent tool with `isolation: "worktree"` and this prompt:
+
+```
+You are fixing audit findings. Implement the fixes described below.
+
+## Your Items
+
+{For each item in this group:}
+
+### Item: {title}
+- **Severity:** {severity}
+- **Description:** {description}
+- **Acceptance criteria:** {acceptance}
+- **Category:** {category}
+- **Refs:** {refs}
+- **Files:** {files}
+
+{Repeat for each item}
+
+## Instructions
+
+For each item, in order:
+
+1. **Read the referenced files** to understand current state
+2. **Implement the fix** — prefer the simplest solution that meets acceptance criteria
+3. **Verify against acceptance criteria** — re-read changed code and confirm
+4. **Run relevant tests** if a test command exists:
+   - `Cargo.toml` → `cargo test`
+   - `Package.swift` → `swift test`
+   - `package.json` with test script → `npm test`
+   - `pyproject.toml` / `pytest.ini` → `pytest`
+   - `go.mod` → `go test ./...`
+   - No test command → skip, note in output
+5. **If tests fail** → diagnose, fix, retry once. If still failing, note and continue.
+
+After all items:
+
+6. **Self-review:** `git diff` all changes. Check for mistakes, debug leftovers, scope creep.
+7. **Commit:** Stage and commit:
+   ```
+   fix({scope}): {summary}
+
+   Refs: ago:audit {date}
+   Items: {list of item titles}
+   ```
+   Where `{scope}` is derived from the primary module/file changed.
+
+## Output
+
+Report back with:
+- List of items: title, severity, status (fixed/failed), acceptance result
+- Files changed
+- Test results (pass/fail/skipped)
+- Any issues encountered
+```
+
+## Step 13 — Collect Results
+
+After all fix agents complete, collect results and present:
+
+```
+## Fix Results
+
+**Items fixed:** {X}/{Y}
+**Agents:** {N} dispatched, {M} completed, {K} had failures
+
+### Results
+
+| # | Item | Severity | Category | Status |
+|---|------|----------|----------|--------|
+| 1 | {title} | HIGH | Bug Fix | fixed |
+| 2 | {title} | MEDIUM | Test Coverage | fixed |
+| 3 | {title} | LOW | Tech Debt | failed (test) |
+
+### Branches Created
+- `{branch-name}` — {summary of changes}
+- `{branch-name}` — {summary of changes}
+
+### Failed Items
+{If any items failed: list them with the failure reason and suggest next steps.}
+{If all items fixed: "All items resolved."}
+```
+
+After presenting results:
+
+1. **Update the action items file** — For each fixed item, change `- [ ]` to `- [x]` in `docs/audit/{YYYY-MM-DD}-action-items.md`.
+2. **Update the audit report** — Same checkbox update in `docs/audit/{YYYY-MM-DD}-audit.md`.
+3. Suggest: "Review the branches, then run `ago:audit` again to verify resolution."
 
 ## Rules
 
-- **Collaborative:** Never write ADR files or `docs/.last-audit` without user approval (except the bookmark, which is always written). Always present findings and ask before creating files.
+- **Collaborative:** Never write ADR files without user approval. Always present findings and ask before creating ADR files. The audit report, action items file, and `.last-audit` bookmark are always written without asking — they are primary outputs.
 - **Evidence-based:** Every finding must reference a specific commit SHA, file path, or code pattern. Instruct agents to never fabricate findings. If an agent returns findings without evidence, flag them as unsubstantiated in the consolidated report.
+- **Exhaustive action items:** Every finding that is not a pure decision (→ ADR) MUST become an action item. The action items file must cover ALL findings. Err on the side of inclusion.
 - **No `.workflow/` dependency:** This command does not read from or write to `.workflow/`. It uses only `docs/`, git history, and standard project files.
-- **Agents are read-only analysts:** The 4 review agents do NOT modify files, run commands with side effects, or use `ago:` skills. They analyze the provided context and return structured text.
+- **Agents are role-specific:** The 4 review agents (Step 4) are read-only analysts. The fix agents (Step 12) edit code in isolated worktrees. No cross-contamination.
 - **Idempotent scope:** If the user runs `ago:audit` twice with the same scope, only the second run should detect the ADRs created by the first run as "existing ADRs" — the audit itself should not change its own scope.
 - **Respect existing format:** When writing ADRs, match the style of existing ADRs in the project if any exist. The format in Step 7 is the default — adapt it if the project uses a different ADR format.
 - **Graceful degradation:** If git is unavailable, if `docs/` doesn't exist, or if any context source is missing, work with what is available. Only hard-fail if there are zero commits to review.
+- **Fix agents are isolated:** Each fix agent runs in its own worktree. No cross-agent communication. If file conflicts were detected in Step 11b, those groups are merged before dispatch.

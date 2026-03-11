@@ -21,8 +21,6 @@ This repository contains the Claude marketplace source and command definitions f
 | `ago:research` | Structured research session with persistent artifact in `docs/research/` |
 | `ago:audit-docs` | Audit documentation against ADRs and current code, generate action items |
 | `ago:write-adr` | Capture an architectural decision from current conversation as ADR (To Review) |
-| `ago:fix-audit` | Parse audit report, plan + execute fixes via parallel agents in worktrees |
-
 All commands are self-contained. No `.workflow/` directory, no agent definitions, and no external runtime dependencies. They work with any project that has a `docs/` directory.
 
 ## Output

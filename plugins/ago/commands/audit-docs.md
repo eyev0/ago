@@ -355,22 +355,73 @@ Write the report with this structure:
 
 ## Action Items
 
+**IMPORTANT:** This section MUST include an action item for EVERY finding from the audit — stale, missing, outdated, and ADR health issues. Mark applied items as `[x]`, remaining as `[ ]`.
+
 ### Applied in This Session
 
-- [x] {Description of change applied} — `{file path}`
+- [x] **{title}** — {description}
+  - Category: {Stale Reference | Missing Documentation | Outdated Documentation | ADR Maintenance}
+  - Files: `{file path}`
 
 ### Remaining
 
-- [ ] {Description of remaining issue} — `{file path}`
+{For EVERY finding not yet resolved — this MUST be exhaustive:}
+- [ ] **{title}** — {description}
+  - Acceptance: {how to verify this is fixed}
+  - Category: {Stale Reference | Missing Documentation | Outdated Documentation | ADR Maintenance}
   - Evidence: {ADR, code file, or other evidence}
+  - Files: `{file path}`
 
-{If user chose "none":}
-### Not Applied (User Deferred)
-
-- [ ] {Description of deferred issue} — `{file path}`
+{If user chose "none" — ALL items go here as unchecked:}
 ```
 
 Tell the user: "Report saved to `docs/audit/YYYY-MM-DD-docs.md`."
+
+## Step 8b — Save Action Items File
+
+If there are **remaining (unchecked) action items**, generate a standalone action items file at `docs/audit/{YYYY-MM-DD}-docs-action-items.md`. This is a focused extract for parallel processing.
+
+```markdown
+# Audit Report — Documentation Action Items ({YYYY-MM-DD})
+
+**Source:** docs/audit/{YYYY-MM-DD}-docs.md
+**Total items:** {N} ({breakdown by category})
+
+## Category Overview
+
+| Category | Count | Details |
+|----------|-------|---------|
+| Stale Reference | {N} | Dead links, removed components, superseded decisions |
+| Missing Documentation | {N} | Undocumented features, components, configs |
+| Outdated Documentation | {N} | Incorrect facts, version mismatches |
+| ADR Maintenance | {N} | Stale proposals, conflicts, broken chains |
+
+(Omit categories with zero items.)
+
+## Action Items
+
+{All remaining (unchecked) items, organized by category:}
+
+### Stale Reference
+- [ ] **{title}** — {description}
+  - Acceptance: {criteria}
+  - Category: Stale Reference
+  - Evidence: {evidence}
+  - Files: `{file path}`
+
+### Missing Documentation
+{same format}
+
+### Outdated Documentation
+{same format}
+
+### ADR Maintenance
+{same format}
+```
+
+**Do not ask permission to write this file** — it is a companion output to the doc audit report.
+
+If there are **zero remaining items** (all were applied in Step 7), skip this step.
 
 ## Step 9 — Final Summary
 
@@ -405,76 +456,151 @@ No changes were applied. Run `ago:audit-docs` again to re-evaluate.
 All detected issues have been addressed.
 ```
 
-## Step 10 — Bridge to Implementation
+## Step 10 — Bridge to Next Steps
 
-If the audit found **zero actionable issues**, skip this step.
+If the audit found **zero remaining action items**, end with: "All documentation issues resolved. Run `ago:audit-docs` again after code changes to verify." Skip this step.
 
-Classify the findings from this session into two categories:
+Classify remaining findings into:
 
-### Architectural issues
-Findings that require design decisions or code changes:
-- Conflicting ADRs (from Step 3c)
-- ADR vs Code mismatches (from Step 3a)
-- Major missing documentation that implies missing features
+- **Architectural issues** — conflicting ADRs, ADR-code mismatches, major missing docs that imply missing features
+- **Editorial issues** — stale references, outdated text, missing sections, broken chains
 
-### Editorial issues
-Findings that require only documentation edits:
-- Stale references, outdated text, missing sections
-- Broken supersession chains
-- Minor documentation gaps
-
-Present the appropriate bridge based on what was found:
-
-### If architectural issues exist
+Present options based on remaining item count:
 
 ```
-## Ready to plan?
+### What's Next?
 
-This audit found architectural issues that need design decisions:
+{N} remaining documentation action items across {M} categories.
 
-**Artifacts:**
-- `docs/audit/{YYYY-MM-DD}-docs.md` (this session's report)
-{- list any ADRs flagged as conflicting or mismatched}
+1. **Fix now** — Launch parallel agents to fix remaining items
+   - Groups items by category, one agent per group
+   - Each agent works on documentation files only (no code changes)
+   - Best for: editorial fixes (stale refs, missing sections, outdated text)
 
-**Architectural issues:**
-- {1-line per architectural issue found}
+2. **Brainstorm first** — For architectural issues that need design discussion
+   - Best for: conflicting ADRs, ADR-code mismatches, structural gaps
+   - Pipeline: brainstorming → writing-plans → implementation
 
-**Suggested pipeline:** brainstorming → writing-plans → implementation
+3. **Not now** — All artifacts saved to disk for later
+   - Report: docs/audit/{YYYY-MM-DD}-docs.md
+   - Action items: docs/audit/{YYYY-MM-DD}-docs-action-items.md
 
-Want to start brainstorming with this context?
-[yes / adjust context / not now]
+[1 / 2 / 3]
 ```
 
-- **"yes"** — Invoke `superpowers:brainstorming` skill with the context above.
-- **"adjust context"** — User modifies, then invoke.
-- **"not now"** — End the command.
+- **"1" (Fix now)** — Proceed to Step 11 (Parallel Doc Fix).
+- **"2" (Brainstorm)** — Invoke `superpowers:brainstorming` skill with context referencing the report and action items files.
+- **"3" (Not now)** — End the command.
 
-### If only editorial issues remain (no architectural issues, or architectural ones already addressed)
+**Do NOT proceed to Step 11 unless the user explicitly chooses option 1.**
+
+## Step 11 — Group & Approve Doc Fix Plan
+
+Group remaining action items by **category** (Stale Reference, Missing Documentation, Outdated Documentation, ADR Maintenance). Each category becomes one agent group.
+
+If a category has only 1-2 items, batch it with the nearest small category into a "Mixed Batch" group.
+
+### File conflict check
+
+For each pair of groups, check if they modify the same file. If so, merge those groups.
+
+Present the fix plan:
 
 ```
-## Ready to fix documentation?
+## Doc Fix Plan
 
-This audit found editorial issues that can be planned and fixed:
+**Items:** {N} remaining ({breakdown by category})
+**Agent groups:** {M} parallel
 
-**Artifacts:**
-- `docs/audit/{YYYY-MM-DD}-docs.md` (this session's report)
+### Agent 1 — {category} [{file list}]
+  {title}
+  {title}
 
-**Remaining editorial issues:**
-- {1-line per remaining editorial issue}
+### Agent 2 — {category} [{file list}]
+  {title}
 
-**Suggested pipeline:** writing-plans → implementation (no brainstorming needed for editorial fixes)
-
-Want to create an implementation plan for these fixes?
-[yes / adjust context / not now]
+Proceed? [yes / adjust / cancel]
 ```
 
-- **"yes"** — Invoke `superpowers:writing-plans` skill with the context above.
-- **"adjust context"** — User modifies, then invoke.
-- **"not now"** — End the command.
+**Do NOT proceed until the user confirms.**
 
-### If both types exist
+## Step 12 — Dispatch Doc Fix Agents
 
-Present both bridges separately — architectural first, editorial second. The user can choose to address one, both, or neither.
+Launch agents **in parallel** using the Agent tool. Each agent runs in an isolated worktree (`isolation: "worktree"`).
+
+For each agent group, use the Agent tool with `isolation: "worktree"` and this prompt:
+
+```
+You are fixing documentation issues. You ONLY modify documentation files (.md, .txt, .rst) — never source code.
+
+## Your Items
+
+{For each item in this group:}
+
+### Item: {title}
+- **Category:** {category}
+- **Description:** {description}
+- **Acceptance criteria:** {acceptance}
+- **Evidence:** {evidence}
+- **Files:** {files}
+
+{Repeat for each item}
+
+## Instructions
+
+For each item:
+
+1. **Read the referenced file(s)** to understand current state
+2. **Apply the fix** — match the existing doc style and tone
+3. **Verify** — re-read the changed section and confirm the acceptance criteria are met
+4. When fixing stale references to superseded ADRs, replace with current ADR reference
+5. When writing missing documentation, keep it minimal and accurate — don't over-elaborate
+
+After all items:
+
+6. **Self-review:** `git diff` all changes. Check for consistency.
+7. **Commit:**
+   ```
+   docs: {summary of documentation fixes}
+
+   Refs: ago:audit-docs {date}
+   ```
+
+## Output
+
+Report back with:
+- List of items: title, category, status (fixed/failed)
+- Files changed
+- Any issues encountered
+```
+
+## Step 13 — Collect Results
+
+After all doc fix agents complete, present results:
+
+```
+## Doc Fix Results
+
+**Items fixed:** {X}/{Y}
+**Agents:** {N} dispatched, {M} completed
+
+### Results
+
+| # | Item | Category | Status |
+|---|------|----------|--------|
+| 1 | {title} | Stale Reference | fixed |
+| 2 | {title} | Missing Documentation | fixed |
+
+### Branches Created
+- `{branch-name}` — {summary}
+
+{If any items failed: list with failure reason.}
+```
+
+After presenting results:
+
+1. **Update action items** — Change `- [ ]` to `- [x]` for fixed items in both report and action items files.
+2. Suggest: "Review the branches, then run `ago:audit-docs` again to verify."
 
 ## Rules
 
