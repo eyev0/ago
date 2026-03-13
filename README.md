@@ -34,6 +34,12 @@ Capture a decision from the current conversation as an ADR with explicit user ap
 
 Artifact: `docs/adr/NNN-{title}.md`
 
+### Review Plan
+
+Run a multi-role review of an implementation plan before execution. The workflow evaluates the plan through architecture, security, quality, and product lenses, then writes review artifacts next to the plan.
+
+Artifacts: `docs/plans/*.{arch,sec,qal,pm}-review.md`, `docs/plans/*.review-index.md`
+
 ### Fix Audit
 
 Take an existing audit report, group findings by dependency, plan fixes, and execute them through agents with review gates.
@@ -63,8 +69,8 @@ Canonical instructions: [.codex/INSTALL.md](.codex/INSTALL.md)
 
 After installation, start a fresh session and invoke one of the platform-native entry points:
 
-- Claude: `ago:audit`, `ago:research`, `ago:audit-docs`, `ago:write-adr`
-- Codex: `ago-audit`, `ago-research`, `ago-audit-docs`, `ago-write-adr`
+- Claude: `ago:audit`, `ago:research`, `ago:audit-docs`, `ago:write-adr`, `ago:review-plan`
+- Codex: `ago-audit`, `ago-research`, `ago-audit-docs`, `ago-write-adr`, `ago-review-plan`
 
 ## Updating
 
