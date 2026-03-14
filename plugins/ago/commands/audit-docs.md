@@ -103,6 +103,24 @@ Present results:
 {If all checks pass: "All ADRs are internally consistent."}
 ```
 
+### ADR Lifecycle Statuses
+
+These are the canonical ADR statuses. The audit MUST update ADR status fields when evidence warrants it.
+
+| Status | Meaning | Transition Triggers |
+|--------|---------|---------------------|
+| `Proposed` / `To Review` | Not yet accepted | New ADR, awaiting team review |
+| `Accepted` | Active decision, source of truth | Team approval |
+| `Deprecated` | Still works but not recommended | Better approach exists, migration not yet done |
+| `Superseded` | Replaced by another ADR | New ADR explicitly replaces this one. MUST include `Superseded by: ADR-{NNN}` |
+| `Rejected` | Considered and declined | Team decided against this approach |
+
+**Transition rules:**
+- `Proposed` → `Accepted` / `Rejected` (team decision)
+- `Accepted` → `Deprecated` (when code has moved on but old approach still partially exists)
+- `Accepted` → `Superseded` (when a new ADR explicitly replaces it — both ADRs MUST cross-reference)
+- `Deprecated` → `Superseded` (when migration is complete and a replacement ADR exists)
+
 If no ADRs exist, note "No ADRs found. Analysis will rely on code-to-documentation comparison only." and proceed to Step 3 without a decision map. The command is still useful for finding stale, missing, and outdated documentation even without ADRs.
 
 ## Step 3 — Cross-Reference ADRs with Code and Documentation
@@ -115,7 +133,11 @@ Verify that the technology, pattern, or component described in the ADR actually 
 
 - If an ADR says "We use SQLite for local storage," check that SQLite-related code, dependencies, or config exists.
 - If an ADR says "We adopted the repository pattern," check that the pattern appears in the code.
-- If the ADR's claims cannot be verified in code, flag it as a **potentially outdated ADR** (the code may have evolved beyond the ADR).
+- If the ADR's claims cannot be verified in code, flag it as a **potentially outdated ADR** and determine the appropriate status transition:
+  - If a newer ADR covers the same concern → status should be `Superseded` (with cross-reference)
+  - If the approach is partially abandoned but remnants exist → status should be `Deprecated`
+  - If the approach was completely removed with no replacement ADR → flag for user decision (may need a new superseding ADR, or status change to `Deprecated`/`Rejected`)
+- **Action item:** "Update ADR-{NNN} status from `Accepted` to `{new status}` — {evidence from code}"
 
 ### 3b — Superseded ADR Remnants in Docs
 
@@ -150,7 +172,20 @@ For each issue detected in the ADR Health check (Step 2), create a finding in th
    - Record the ADR and which section(s) are absent
    - Action item: "Add missing {section} to ADR-{NNN}"
 
-These findings flow into Step 4's classification and are presented alongside documentation findings in Step 5. They are actioned in Step 7 like any other finding (auto-fix for broken chains, user action for conflicts and stale proposals).
+5. **ADR needs status update** — Code evidence from Step 3a shows the ADR's decision no longer holds.
+   - Category: **ADR Maintenance**
+   - This is **auto-fixable** for clear cases (e.g., another ADR explicitly supersedes it)
+   - For ambiguous cases (code diverged but no replacement ADR), flag for user decision
+   - Record the ADR, current status, proposed new status, and evidence
+   - Action item: "Update ADR-{NNN} status: `{current}` → `{proposed}` — {reason}"
+
+6. **Active ADR missing current details** — An accepted ADR is correct in spirit but its details are incomplete or don't reflect the current implementation state (e.g., new constraints discovered, scope expanded, additional consequences observed).
+   - Category: **ADR Maintenance**
+   - This is **append-only**: original text MUST NOT be modified
+   - Record the ADR, what details are missing, and the evidence from code
+   - Action item: "Append update to ADR-{NNN} — {what's missing}" (see Step 7 for the append format)
+
+These findings flow into Step 4's classification and are presented alongside documentation findings in Step 5. They are actioned in Step 7 like any other finding (auto-fix for broken chains and status updates, user action for conflicts, stale proposals, and ambiguous status changes).
 
 ## Step 4 — Find Documentation Gaps
 
@@ -295,6 +330,57 @@ For each approved change, apply it according to its category:
 - When the correct state comes from an ADR, add a parenthetical reference: e.g., "(see ADR-007)".
 - For version number updates, update to the actual value from the source of truth (package.json, Cargo.toml, etc.).
 - For architecture or feature list updates, rewrite the relevant section to match reality.
+
+### ADR Maintenance items
+
+ADR maintenance follows two distinct patterns depending on the finding type:
+
+#### Status Updates
+
+When the audit determines an ADR's status must change (finding type 5 from Step 3c):
+
+1. **Update the `Status:` field** in the ADR's frontmatter or header to the new status (`Deprecated`, `Superseded`, `Rejected`).
+2. **Add cross-references** when superseding:
+   - In the old ADR: add `Superseded by: ADR-{NNN}` field
+   - In the new ADR: add `Supersedes: ADR-{NNN}` field (if not already present)
+3. **Do NOT modify** the original Context, Decision, or Consequences text — the historical record stays intact.
+
+#### Append-Only Updates for Active ADRs
+
+When an accepted ADR needs additional details (finding type 6 from Step 3c), the original text MUST NOT be modified. Instead:
+
+1. **Add an inline reference** at the point in the original text where the fact has evolved. Insert a parenthetical note:
+   ```
+   {original text} *(updated — see Appendix {YYYY-MM-DD})*
+   ```
+   Example: `We use a flat file structure for configuration *(updated — see Appendix 2026-03-14)*`
+
+2. **Append an Appendix section** at the bottom of the ADR file:
+   ```markdown
+   ## Appendix — {YYYY-MM-DD}
+
+   **Source:** `ago:audit-docs`
+
+   ### {Topic of update}
+
+   {Describe what changed, what the current state is, and why. Reference code files or other ADRs as evidence.}
+
+   - **Evidence:** `{file path or ADR reference}`
+   - **Impact:** {how this affects the original decision — narrows scope, adds constraint, extends to new area, etc.}
+   ```
+
+3. If the ADR already has an Appendix section from a previous audit, **add a new dated subsection** — do not overwrite the previous appendix:
+   ```markdown
+   ## Appendix — {YYYY-MM-DD} (2)
+
+   {new content}
+   ```
+
+**Rules for append-only updates:**
+- NEVER rewrite, rephrase, or delete original ADR text — it is a historical record
+- Inline references must be minimal and non-disruptive (parenthetical only)
+- Appendix entries must be self-contained — a reader should understand the update without reading the audit report
+- Only append details that are **factually evidenced** by current code — do not speculate
 
 ### Show before/after
 
@@ -613,5 +699,8 @@ After presenting results:
 - **Never delete doc files silently.** Even if a documentation file is entirely stale, ask the user before deleting it. Prefer emptying/rewriting over deletion.
 - **Respect existing style.** When drafting new documentation sections, match the tone, formatting, and conventions of the existing docs in the project.
 - **Graceful degradation.** If no ADRs exist, the command still works — it compares docs against code directly. If `docs/` does not exist, scan for top-level and component docs only. Only hard-fail if zero documentation files are found anywhere.
+- **ADR statuses are mandatory.** When the audit finds evidence that an ADR's status is wrong, updating it is not optional — it MUST be included as an action item and auto-fixed when the evidence is clear.
+- **ADR text is append-only.** Never rewrite, rephrase, or delete original ADR content (Context, Decision, Consequences). ADRs are historical records. Updates go in an Appendix with inline references from the original text.
+- **ADR cross-references are bidirectional.** Every supersession must be recorded on both sides. If only one side exists, the other is auto-fixed.
 - **Idempotent.** Running `ago:audit-docs` twice in a row should produce no changes on the second run if all issues were addressed in the first.
 - **Focused mode.** When `$ARGUMENTS` specifies a file, still build the full decision map (ADR truth is global) but only report and fix issues in that file.
