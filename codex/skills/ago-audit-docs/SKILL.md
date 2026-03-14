@@ -34,7 +34,7 @@ If the user gives a path, validate that it exists before continuing.
 
 Collect:
 - ADRs from `docs/adr/` or `docs/decisions/`
-- plans from `docs/plans/` or `docs/plan/`
+- plans from `docs/superpowers/plans/` or `docs/plans/`
 - top-level docs such as `README.md` and `CLAUDE.md`
 - product and component docs under `docs/` and subdirectories
 

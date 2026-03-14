@@ -1,6 +1,6 @@
 ---
 description: Multi-role implementation plan review — ARCH, SEC, QAL, PM review a plan before execution
-argument-hint: "[@docs/plans/...-impl.md] [--spec @docs/plans/...-design.md]"
+argument-hint: "[@docs/superpowers/plans/...-impl.md] [--spec @docs/superpowers/plans/...-design.md]"
 ---
 
 # ago:review-plan

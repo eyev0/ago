@@ -30,6 +30,6 @@ All commands are self-contained. No `.workflow/` directory, no agent definitions
 - `docs/audit/YYYY-MM-DD-docs.md` — documentation audit report with action items
 - `docs/research/YYYY-MM-DD-{topic}.md` — research artifact
 - `docs/adr/NNN-{title}.md` — ADRs proposed by audit/research/write-adr (written with user approval)
-- `docs/plans/*.{arch,sec,qal,pm}-review.md` — per-role implementation plan review artifacts
-- `docs/plans/*.review-index.md` — consolidated review summary index
+- `docs/superpowers/plans/*.{arch,sec,qal,pm}-review.md` — per-role implementation plan review artifacts
+- `docs/superpowers/plans/*.review-index.md` — consolidated review summary index
 - `docs/.last-audit` — git SHA bookmark for incremental audits

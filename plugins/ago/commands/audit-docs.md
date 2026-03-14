@@ -16,7 +16,7 @@ You are executing the `ago:audit-docs` command. This command audits project docu
 Scan the project for all documentation files. Collect them into these categories:
 
 - **ADRs:** `docs/adr/*.md` (also check `docs/decisions/`)
-- **Plans:** `docs/plans/*.md` (also check `docs/plan/`)
+- **Plans:** `docs/superpowers/plans/*.md` (also check `docs/plan/`)
 - **Product docs:** `docs/**/*.md` (excluding ADRs and plans)
 - **Top-level docs:** `README.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `CHANGELOG.md`, and similar at the project root
 - **Component docs:** `*/README.md`, `*/docs/*.md` — documentation inside subdirectories that describes specific components

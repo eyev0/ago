@@ -38,7 +38,7 @@ Artifact: `docs/adr/NNN-{title}.md`
 
 Run a multi-role review of an implementation plan before execution. The workflow evaluates the plan through architecture, security, quality, and product lenses, then writes review artifacts next to the plan.
 
-Artifacts: `docs/plans/*.{arch,sec,qal,pm}-review.md`, `docs/plans/*.review-index.md`
+Artifacts: `docs/superpowers/plans/*.{arch,sec,qal,pm}-review.md`, `docs/superpowers/plans/*.review-index.md`
 
 ### Fix Audit
 

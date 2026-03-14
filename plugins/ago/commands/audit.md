@@ -44,7 +44,7 @@ Run `git diff --stat {scope_start}..HEAD` (or equivalent for the resolved scope)
 ### 2c — Plans and decisions
 
 Read any files in these locations (if they exist):
-- `docs/plans/` or `docs/plan/` — project plans, design docs
+- `docs/superpowers/plans/` or `docs/plans/` — project plans, design docs
 - `docs/adr/` — existing Architecture Decision Records
 - `docs/decisions/` — alternative ADR location
 
